@@ -29,8 +29,8 @@
 	};
 
 	const path: string = '/authentication/sign-in';
-  const description: string = 'Sign in example - Flowbite Svelte Admin Dashboard';
-	const metaTitle: string = 'Flowbite Svelte Admin Dashboard - Sign in';
+  const description: string = 'Sign in example - Octobrain Admin Dashboard';
+	const metaTitle: string = 'Octobrain Admin Dashboard - Sign in';
   const subtitle: string = 'Sign in';
 </script>
 

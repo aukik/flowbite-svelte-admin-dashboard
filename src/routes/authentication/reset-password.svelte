@@ -24,10 +24,10 @@
 		}
 		console.log(data);
 	};
-	
+
 	const path: string = '/authentication/reset-password';
-  const description: string = 'Reset password example - Flowbite Svelte Admin Dashboard';
-	const metaTitle: string = 'Flowbite Svelte Admin Dashboard - Reset password';
+  const description: string = 'Reset password example - Octobrain Admin Dashboard';
+	const metaTitle: string = 'Octobrain Admin Dashboard - Reset password';
   const subtitle: string = 'Reset password';
 </script>
 

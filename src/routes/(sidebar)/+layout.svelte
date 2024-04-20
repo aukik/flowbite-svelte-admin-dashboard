@@ -15,6 +15,6 @@
 	<Sidebar bind:drawerHidden />
 	<div class="relative h-full w-full overflow-y-auto lg:ml-64">
 		<slot />
-		<Footer />
+		<!-- <Footer /> -->
 	</div>
 </div>

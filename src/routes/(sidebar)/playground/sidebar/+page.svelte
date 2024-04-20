@@ -3,8 +3,8 @@
 	import MetaTag from '../../../utils/MetaTag.svelte';
 
 	const path: string = '/playground/sidebar';
-  const description: string = 'Playground Sidebar example - Flowbite Svelte Admin Dashboard';
-	const metaTitle: string = 'Flowbite Svelte Admin Dashboard - Playground Sidebar';
+  const description: string = 'Playground Sidebar example - Octobrain Admin Dashboard';
+	const metaTitle: string = 'Octobrain Admin Dashboard - Playground Sidebar';
   const subtitle: string = 'Playground Sidebar';
 </script>
 

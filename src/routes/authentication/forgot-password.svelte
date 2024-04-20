@@ -14,8 +14,8 @@
 	};
 
 	const path: string = '/authentication/forgot-password';
-  const description: string = 'Forgot password example - Flowbite Svelte Admin Dashboard';
-	const title: string = 'Flowbite Svelte Admin Dashboard - Forgot password';
+  const description: string = 'Forgot password example - Octobrain Admin Dashboard';
+	const title: string = 'Octobrain Admin Dashboard - Forgot password';
   const subtitle: string = 'Forgot password';
 </script>
 

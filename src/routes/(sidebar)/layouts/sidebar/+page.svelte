@@ -3,10 +3,10 @@
 	import Dashboard from '../../../../lib/dashboard/Dashboard.svelte';
 	import MetaTag from '../../../utils/MetaTag.svelte';
 	export let data: PageData;
-	
+
 	const path: string = '/layouts/sidebar';
-  const description: string = 'Sidebar layout examaple - Flowbite Svelte Admin Dashboard';
-  const title: string = 'Flowbite Svelte Admin Dashboard - Sidebar Layout';
+  const description: string = 'Sidebar layout examaple - Octobrain Admin Dashboard';
+  const title: string = 'Octobrain Admin Dashboard - Sidebar Layout';
   const subtitle: string = 'Sidebar Layout';
 </script>
 

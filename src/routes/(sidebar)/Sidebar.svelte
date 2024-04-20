@@ -49,15 +49,15 @@
 	});
 
 	let posts = [
-		{ name: 'Dashboard', icon: ChartPieOutline, href: '/dashboard' },
-		{
-			name: 'Layouts',
-			icon: TableColumnSolid,
-			children: {
-				Stacked: '/layouts/stacked',
-				Sidebar: '/layouts/sidebar'
-			}
-		},
+		// { name: 'Dashboard', icon: ChartPieOutline, href: '/dashboard' },
+		// {
+		// 	name: 'Layouts',
+		// 	icon: TableColumnSolid,
+		// 	children: {
+		// 		Stacked: '/layouts/stacked',
+		// 		Sidebar: '/layouts/sidebar'
+		// 	}
+		// },
 		{
 			name: 'CRUD',
 			icon: RectangleListSolid,
@@ -66,17 +66,17 @@
 				Users: '/crud/users'
 			}
 		},
-		{ name: 'Settings', icon: CogOutline, href: '/settings' },
-		{
-			name: 'Pages',
-			icon: FileChartBarSolid,
-			children: {
-				Pricing: '/pages/pricing',
-				Maintenance: '/errors/400',
-				'404 not found': '/errors/404',
-				'500 server error': '/errors/500'
-			}
-		},
+		// { name: 'Settings', icon: CogOutline, href: '/settings' },
+		// {
+		// 	name: 'Pages',
+		// 	icon: FileChartBarSolid,
+		// 	children: {
+		// 		Pricing: '/pages/pricing',
+		// 		Maintenance: '/errors/400',
+		// 		'404 not found': '/errors/404',
+		// 		'500 server error': '/errors/500'
+		// 	}
+		// },
 		{
 			name: 'Authenication',
 			icon: LockSolid,
@@ -88,37 +88,37 @@
 				'Profile lock': '/authentication/profile-lock'
 			}
 		},
-		{
-			name: 'Playground',
-			icon: WandMagicSparklesOutline,
-			children: {
-				Stacked: '/playground/stacked',
-				Sidebar: '/playground/sidebar'
-			}
-		}
+		// {
+		// 	name: 'Playground',
+		// 	icon: WandMagicSparklesOutline,
+		// 	children: {
+		// 		Stacked: '/playground/stacked',
+		// 		Sidebar: '/playground/sidebar'
+		// 	}
+		// }
 	];
 
 	let links = [
 		{
 			label: 'GitHub Repository',
-			href: 'https://github.com/themesberg/flowbite-svelte-admin-dashboard',
+			href: 'https://github.com/aukik/flowbite-svelte-admin-dashboard',
 			icon: GithubSolid
 		},
-		{
-			label: 'Flowbite Svelte',
-			href: 'https://flowbite-svelte.com/docs/pages/quickstart',
-			icon: ClipboardListSolid
-		},
-		{
-			label: 'Components',
-			href: 'https://flowbite-svelte.com/docs/components/accordion',
-			icon: LayersSolid
-		},
-		{
-			label: 'Support',
-			href: 'https://github.com/themesberg/flowbite-svelte-admin-dashboard/issues',
-			icon: LifeSaverSolid
-		}
+		// {
+		// 	label: 'Flowbite Svelte',
+		// 	href: 'https://flowbite-svelte.com/docs/pages/quickstart',
+		// 	icon: ClipboardListSolid
+		// },
+		// {
+		// 	label: 'Components',
+		// 	href: 'https://flowbite-svelte.com/docs/components/accordion',
+		// 	icon: LayersSolid
+		// },
+		// {
+		// 	label: 'Support',
+		// 	href: 'https://github.com/themesberg/flowbite-svelte-admin-dashboard/issues',
+		// 	icon: LifeSaverSolid
+		// }
 	];
 	let dropdowns = Object.fromEntries(Object.keys(posts).map((x) => [x, false]));
 </script>

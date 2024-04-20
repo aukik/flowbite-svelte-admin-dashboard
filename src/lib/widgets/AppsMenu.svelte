@@ -14,14 +14,14 @@
 	} from 'flowbite-svelte-icons';
 
 	const menu = [
-		{ name: 'Sales', href: '/sales', icon: ShoppingBagSolid },
-		{ name: 'Users', href: '/users', icon: UsersGroupSolid },
-		{ name: 'Inbox', href: '/inbox', icon: InboxOutline },
-		{ name: 'Profile', href: '/profile', icon: ProfileCardOutline },
-		{ name: 'Settings', href: '/settings', icon: CogOutline },
-		{ name: 'Prouducts', href: '/products', icon: ArchiveSolid },
-		{ name: 'Pricing', href: '/pricing', icon: DollarOutline },
-		{ name: 'Billing', href: '/billing', icon: SalePercentOutline },
+		// { name: 'Sales', href: '/sales', icon: ShoppingBagSolid },
+		{ name: 'Users', href: '/crud/users', icon: UsersGroupSolid },
+		// { name: 'Inbox', href: '/inbox', icon: InboxOutline },
+		// { name: 'Profile', href: '/profile', icon: ProfileCardOutline },
+		// { name: 'Settings', href: '/settings', icon: CogOutline },
+		{ name: 'Prouducts', href: '/crud/products', icon: ArchiveSolid },
+		// { name: 'Pricing', href: '/pricing', icon: DollarOutline },
+		// { name: 'Billing', href: '/billing', icon: SalePercentOutline },
 		{ name: 'Logout', href: '/logout', icon: ArrowRightToBracketOutline }
 	];
 </script>

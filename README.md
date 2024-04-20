@@ -1,4 +1,4 @@
-# [🚧 Flowbite Svelte Admin Dashboard 🚧 ](https://flowbite-admin-dashboard.vercel.app) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fthemesberg%2Fflowbite-svelte-admin-dashboard&text=Check%20out%20this%20open-source%20admin%20dashboard%20built%20with%20Flowbite%20and%20Tailwind%20CSS)
+# [🚧 Octobrain Admin Dashboard 🚧 ](https://flowbite-admin-dashboard.vercel.app) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fthemesberg%2Fflowbite-svelte-admin-dashboard&text=Check%20out%20this%20open-source%20admin%20dashboard%20built%20with%20Flowbite%20and%20Tailwind%20CSS)
 
 [![version](https://img.shields.io/npm/v/flowbite-svelte-admin-dashboard)](https://www.npmjs.com/package/flowbite-svelte-admin-dashboard)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
@@ -90,7 +90,7 @@ At present, we officially aim to support the last two versions of the following 
 
 ## Reporting Issues
 
-We use GitHub Issues as the official bug tracker for Flowbite Svelte Admin Dashboard. Here are some advices for our users that want to report an issue:
+We use GitHub Issues as the official bug tracker for Octobrain Admin Dashboard. Here are some advices for our users that want to report an issue:
 
 1. Make sure that you are using the latest version of Flowbite Admin Dashboard. Check the CHANGELOG from your dashboard on the [GitHub releases page](https://github.com/themesberg/flowbite-svelte-admin-dashboard/releases).
 2. Providing us reproducible steps for the issue will shorten the time it takes for it to be fixed.

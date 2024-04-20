@@ -3,8 +3,8 @@
 	import MetaTag from '../../../utils/MetaTag.svelte';
 
 	const path: string = '/playground/stacked';
-  const description: string = 'Playground stacked example - Flowbite Svelte Admin Dashboard';
-	const metaTitle: string = 'Flowbite Svelte Admin Dashboard - Playground stacked';
+  const description: string = 'Playground stacked example - Octobrain Admin Dashboard';
+	const metaTitle: string = 'Octobrain Admin Dashboard - Playground stacked';
   const subtitle: string = 'Playground stacked';
 </script>
 

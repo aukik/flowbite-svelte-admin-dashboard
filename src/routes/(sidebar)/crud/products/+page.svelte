@@ -19,8 +19,8 @@
 	};
 
 	const path: string = '/crud/products';
-  const description: string = 'CRUD products examaple - Flowbite Svelte Admin Dashboard';
-  const title: string = 'Flowbite Svelte Admin Dashboard - CRUD Products';
+  const description: string = 'CRUD products examaple - Octobrain Admin Dashboard';
+  const title: string = 'Octobrain Admin Dashboard - CRUD Products';
   const subtitle: string = 'CRUD Products';
 </script>
 
@@ -38,7 +38,7 @@
 			All products
 		</Heading>
 
-		<Toolbar embedded class="w-full py-4 text-gray-500 dark:text-gray-400">
+		<!-- <Toolbar embedded class="w-full py-4 text-gray-500 dark:text-gray-400">
 			<Input placeholder="Search for products" class="me-6 w-80 border xl:w-96" />
 			<ToolbarButton
 				color="dark"
@@ -68,11 +68,11 @@
 			<div slot="end" class="space-x-2">
 				<Button class="whitespace-nowrap" on:click={() => toggle(Product)}>Add new product</Button>
 			</div>
-		</Toolbar>
+		</Toolbar> -->
 	</div>
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
-			<TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell>
+			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
 			{#each ['Product Name', 'Technology', 'Description', 'ID', 'Price', 'Discount', 'Actions'] as title}
 				<TableHeadCell class="ps-4 font-normal">{title}</TableHeadCell>
 			{/each}
@@ -80,7 +80,7 @@
 		<TableBody>
 			{#each Products as product}
 				<TableBodyRow class="text-base">
-					<TableBodyCell class="w-4 p-4"><Checkbox /></TableBodyCell>
+					<!-- <TableBodyCell class="w-4 p-4"><Checkbox /></TableBodyCell> -->
 					<TableBodyCell class="flex items-center space-x-6 whitespace-nowrap p-4">
 						<div class="text-sm font-normal text-gray-500 dark:text-gray-400">
 							<div class="text-base font-semibold text-gray-900 dark:text-white">

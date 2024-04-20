@@ -30,14 +30,14 @@
 		/>
 		<NavBrand href="/" class={list ? 'w-40' : 'lg:w-60'}>
 			<img
-				src="/images/flowbite-svelte-icon-logo.svg"
+				src="https://octobrain.org/images/7942340828b8e19f31bfc4817f72bd27.png"
 				class="me-2.5 h-6 sm:h-8"
 				alt="Flowbite Logo"
 			/>
 			<span
 				class="ml-px self-center whitespace-nowrap text-xl font-semibold dark:text-white sm:text-2xl"
 			>
-				Flowbite
+				Octobrain
 			</span>
 		</NavBrand>
 		<div class="hidden lg:block lg:ps-3">
@@ -58,13 +58,13 @@
 					</Dropdown>
 				</NavUl>
 			{:else}
-				<form>
+				<!-- <form>
 					<Search size="md" class="mt-1 w-96 border focus:outline-none" />
-				</form>
+				</form> -->
 			{/if}
 		</div>
 		<div class="ms-auto flex items-center text-gray-500 dark:text-gray-400 sm:order-2">
-			<Notifications />
+			<!-- <Notifications /> -->
 			<AppsMenu />
 			<DarkMode />
 			<UserMenu {...Users[4]} />

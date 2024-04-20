@@ -16,8 +16,8 @@
 	import MetaTag from '../../../utils/MetaTag.svelte';
 
 	const path: string = '/pages/pricing';
-  const description: string = 'Pricing examaple - Flowbite Svelte Admin Dashboard';
-  const title: string = 'Flowbite Svelte Admin Dashboard - Pricing';
+  const description: string = 'Pricing examaple - Octobrain Admin Dashboard';
+  const title: string = 'Octobrain Admin Dashboard - Pricing';
   const subtitle: string = 'Pricing';
 </script>
 

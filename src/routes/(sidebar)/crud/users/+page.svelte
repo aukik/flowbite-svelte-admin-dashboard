@@ -29,8 +29,8 @@
 
 	let current_user: any = {};
 	const path: string = '/crud/users';
-  const description: string = 'CRUD users examaple - Flowbite Svelte Admin Dashboard';
-  const title: string = 'Flowbite Svelte Admin Dashboard - CRUD Users';
+  const description: string = 'CRUD users examaple - Octobrain Admin Dashboard';
+  const title: string = 'Octobrain Admin Dashboard - CRUD Users';
   const subtitle: string = 'CRUD Users';
 </script>
 
@@ -47,7 +47,7 @@
 			All users
 		</Heading>
 
-		<Toolbar embedded class="w-full py-4 text-gray-500  dark:text-gray-400">
+		<!-- <Toolbar embedded class="w-full py-4 text-gray-500  dark:text-gray-400">
 			<Input placeholder="Search for users" class="me-4 w-80 border xl:w-96" />
 			<div class="border-l border-gray-100 pl-2 dark:border-gray-700">
 				<ToolbarButton
@@ -88,11 +88,11 @@
 					<DownloadSolid size="md" class="-ml-1" />Export
 				</Button>
 			</div>
-		</Toolbar>
+		</Toolbar> -->
 	</div>
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
-			<TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell>
+			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
 			{#each ['Name', 'Biography', 'Position', 'Country', 'Status', 'Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
@@ -100,7 +100,7 @@
 		<TableBody>
 			{#each Users as user}
 				<TableBodyRow class="text-base">
-					<TableBodyCell class="w-4 p-4"><Checkbox /></TableBodyCell>
+					<!-- <TableBodyCell class="w-4 p-4"><Checkbox /></TableBodyCell> -->
 					<TableBodyCell class="mr-12 flex items-center space-x-6 whitespace-nowrap p-4">
 						<Avatar src={imagesPath(user.avatar, 'users')} />
 						<div class="text-sm font-normal text-gray-500 dark:text-gray-400">
