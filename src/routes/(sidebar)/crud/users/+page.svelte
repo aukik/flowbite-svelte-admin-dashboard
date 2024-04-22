@@ -1,5 +1,5 @@
 <script lang="ts">
-	
+
 	import {
 		Avatar,
 		Breadcrumb,
@@ -119,8 +119,8 @@ const updateTokens = async () => {
         // Set the new token and refresh token to session storage
         //sessionStorage.setItem('token', newToken);
         //sessionStorage.setItem('refreshToken', newRefreshToken);
-		setCookie('token', newToken, 7); 
-		setCookie('refreshToken', newRefreshToken, 7); 
+		setCookie('token', newToken, 7);
+		setCookie('refreshToken', newRefreshToken, 7);
 
 
 
@@ -143,7 +143,7 @@ setInterval(updateTokens, 10000); // Poll every 5 seconds
 onMount(async () => {
   // Retrieve the token from session storage
   //const token = sessionStorage.getItem('token');
-  
+
   const token = getCookie('token');
   console.log("token",token);
 
@@ -184,8 +184,8 @@ onMount(async () => {
 			All users
 		</Heading>
 
-		<!-- <Toolbar embedded class="w-full py-4 text-gray-500  dark:text-gray-400">
-			<Input placeholder="Search for users" class="me-4 w-80 border xl:w-96" />
+		<Toolbar embedded class="w-full py-4 text-gray-500  dark:text-gray-400">
+			<!-- <Input placeholder="Search for users" class="me-4 w-80 border xl:w-96" />
 			<div class="border-l border-gray-100 pl-2 dark:border-gray-700">
 				<ToolbarButton
 					color="dark"
@@ -211,7 +211,7 @@ onMount(async () => {
 				>
 					<DotsVerticalOutline size="lg" />
 				</ToolbarButton>
-			</div>
+			</div> -->
 
 			<div slot="end" class="flex items-center space-x-2">
 				<Button
@@ -221,11 +221,11 @@ onMount(async () => {
 				>
 					<PlusOutline size="sm" />Add user
 				</Button>
-				<Button size="sm" color="alternative" class="gap-2 px-3">
+				<!-- <Button size="sm" color="alternative" class="gap-2 px-3">
 					<DownloadSolid size="md" class="-ml-1" />Export
-				</Button>
+				</Button> -->
 			</div>
-		</Toolbar> -->
+		</Toolbar>
 	</div>
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
@@ -239,7 +239,7 @@ onMount(async () => {
 				<TableBodyRow class="text-base">
 					<!-- <TableBodyCell class="w-4 p-4"><Checkbox /></TableBodyCell> -->
 					<TableBodyCell class="mr-12 flex items-center space-x-6 whitespace-nowrap p-4">
-						
+
 						<div class="text-sm font-normal text-gray-500 dark:text-gray-400">
 							<div class="text-base font-semibold text-gray-900 dark:text-white">{user.name}</div>
 							<div class="text-sm font-normal text-gray-500 dark:text-gray-400">{user.email}</div>
@@ -255,7 +255,7 @@ onMount(async () => {
 					<TableBodyCell class="p-4">{user.student_medium_of_education}</TableBodyCell>
 					<TableBodyCell class="p-4">{user.is_admin}</TableBodyCell>
 
-				
+
 					<TableBodyCell class="space-x-2 p-4">
 						<Button
 							size="sm"
