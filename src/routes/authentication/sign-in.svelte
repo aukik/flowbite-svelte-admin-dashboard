@@ -17,16 +17,61 @@
 	let registerLink = 'sign-up';
 	let createAccountTitle = 'Create account';
 
-	const onSubmit = (e: Event) => {
-		const formData = new FormData(e.target as HTMLFormElement);
+	function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+      let date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+  }
 
-		const data: Record<string, string | File> = {};
-		for (const field of formData.entries()) {
-			const [key, value] = field;
-			data[key] = value;
-		}
-		console.log(data);
-	};
+	const onSubmit = async (e: Event) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target as HTMLFormElement);
+
+    const data: Record<string, string | File> = {};
+    for (const field of formData.entries()) {
+        const [key, value] = field;
+        // Exclude fields that are not needed for login
+        if (key === 'email' || key === 'password') {
+            data[key] = value;
+        }
+	console.log(data);
+    }
+
+    try {
+        const response = await fetch('http://localhost:3000/admin/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error('Login failed');
+        }
+
+        const responseData = await response.json();
+
+        // Store token and refresh token in session storage
+       // sessionStorage.setItem('token', responseData.result.token);
+       // sessionStorage.setItem('refreshToken', responseData.result.refreshToken);
+		setCookie('token', responseData.result.token, 7); 
+		setCookie('refreshToken', responseData.result.refreshToken, 7); 
+
+        // Redirect or perform other actions upon successful login
+        console.log('Login successful');
+        console.log('User:', responseData.result.user);
+		window.location.href = "/crud/users";
+    } catch (error) {
+        console.error('Login error:');
+    }
+};
+
 
 	const path: string = '/authentication/sign-in';
   const description: string = 'Sign in example - Octobrain Admin Dashboard';

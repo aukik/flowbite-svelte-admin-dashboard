@@ -1,4 +1,5 @@
 <script lang="ts">
+	
 	import {
 		Avatar,
 		Breadcrumb,
@@ -23,6 +24,142 @@
 	import User from './User.svelte';
 	import Delete from './Delete.svelte';
 	import MetaTag from '../../../utils/MetaTag.svelte';
+	import { onMount } from 'svelte';
+	import axios from 'axios';
+
+
+	function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+      let date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+  }
+
+  function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith(name + '=')) {
+        return cookie.substring(name.length + 1);
+      }
+    }
+    return null;
+  }
+
+ // Define the base URL for the API
+ const BASE_URL = 'http://localhost:3000';
+
+// Define userData variable
+let userData = [];
+
+// Function to fetch all user data
+const fetchAllUserData = async (token) => {
+  try {
+	// Make a GET request to the endpoint with the Authorization header
+	const response = await axios.get(`${BASE_URL}/admin/alluserData`, {
+	  headers: {
+		Authorization: `Bearer ${token}`
+	  }
+	});
+
+	// Update userData with response data
+	userData = response.data;
+  } catch (error) {
+	// Log and handle errors
+	console.error('Error fetching user data:');
+  }
+};
+
+
+const BASE_URL_refreshtoken = 'http://localhost:3000';
+
+// Function to get refresh token
+const getRefreshToken = async () => {
+    try {
+        // Retrieve token and refresh token from session storage
+        const token = sessionStorage.getItem('token');
+        const refreshToken = sessionStorage.getItem('refreshToken');
+
+        // Check if both token and refresh token exist
+        if (!token || !refreshToken) {
+            throw new Error('Token or refresh token not found in session storage.');
+        }
+
+        // Make a POST request to the refreshToken endpoint with the token and refresh token
+		console.log(token);
+		console.log(refreshToken);
+        const response = await axios.post(`${BASE_URL_refreshtoken}/admin/refreshToken/`, {
+            token,
+            refreshToken
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+		const { token: newToken, refreshToken: newRefreshToken } = response.data.result;
+        // Return the response data
+		console.log(response.data);
+        return { newToken, newRefreshToken };
+    } catch (error) {
+        // Log and handle errors
+        console.error('Error refreshing token:');
+        throw error;
+    }
+};
+
+const updateTokens = async () => {
+    try {
+        const { newToken, newRefreshToken } = await getRefreshToken();
+        console.log('New token:', newToken);
+        console.log('New refresh token:', newRefreshToken);
+
+        // Set the new token and refresh token to session storage
+        //sessionStorage.setItem('token', newToken);
+        //sessionStorage.setItem('refreshToken', newRefreshToken);
+		setCookie('token', newToken, 7); 
+		setCookie('refreshToken', newRefreshToken, 7); 
+
+
+
+
+    } catch (error) {
+        // Handle errors
+        console.error('Error:');
+    }
+};
+
+const startPolling = () => {
+
+//updateTokens(); // Initial call
+setInterval(updateTokens, 10000); // Poll every 5 seconds
+};
+
+
+
+// Call fetchAllUserData on component mount
+onMount(async () => {
+  // Retrieve the token from session storage
+  //const token = sessionStorage.getItem('token');
+  
+  const token = getCookie('token');
+  console.log("token",token);
+
+  //const sessionData = sessionStorage.getItem('key');
+ // console.log(sessionData);
+
+  // If token exists, call fetchAllUserData
+  if (token) {
+	await fetchAllUserData(token);
+  } else {
+	console.error('Token not found in session storage.');
+  }
+
+  console.log("GG");
+  startPolling();
+});
 
 	let openUser: boolean = false; // modal control
 	let openDelete: boolean = false; // modal control
@@ -93,34 +230,32 @@
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
-			{#each ['Name', 'Biography', 'Position', 'Country', 'Status', 'Actions'] as title}
+			{#each ['Name', 'Account Type', 'Institution',"Institution Address","Teacher's Accreditation", "Teacher Designation","Student ID","Student Medium","Is Admin", 'Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
 		<TableBody>
-			{#each Users as user}
+			{#each userData as user}
 				<TableBodyRow class="text-base">
 					<!-- <TableBodyCell class="w-4 p-4"><Checkbox /></TableBodyCell> -->
 					<TableBodyCell class="mr-12 flex items-center space-x-6 whitespace-nowrap p-4">
-						<Avatar src={imagesPath(user.avatar, 'users')} />
+						
 						<div class="text-sm font-normal text-gray-500 dark:text-gray-400">
 							<div class="text-base font-semibold text-gray-900 dark:text-white">{user.name}</div>
 							<div class="text-sm font-normal text-gray-500 dark:text-gray-400">{user.email}</div>
 						</div>
 					</TableBodyCell>
-					<TableBodyCell
-						class="max-w-sm overflow-hidden truncate p-4 text-base font-normal text-gray-500 dark:text-gray-400 xl:max-w-xs"
-					>
-						{user.biography}
-					</TableBodyCell>
-					<TableBodyCell class="p-4">{user.position}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.country}</TableBodyCell>
-					<TableBodyCell class="p-4 font-normal">
-						<div class="flex items-center gap-2">
-							<Indicator color={user.status === 'Active' ? 'green' : 'red'} />
-							{user.status}
-						</div>
-					</TableBodyCell>
+
+					<TableBodyCell class="p-4">{user.account_type}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.institution_name}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.institution_address}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.teacher_institution_accreditation}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.teacher_designation}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.student_id}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.student_medium_of_education}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.is_admin}</TableBodyCell>
+
+				
 					<TableBodyCell class="space-x-2 p-4">
 						<Button
 							size="sm"
