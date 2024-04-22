@@ -41,9 +41,9 @@
 	},
 	{
 		"id": 5,
-		"name": "Bonnie Green",
+		"name": "Admin",
 		"avatar": "bonnie-green.png",
-		"email": "bonnie.green@flowbite.com",
+		"email": "admin@gmail.com",
 		"biography": "I love working with React and Flowbites to create efficient and user-friendly interfaces. In my spare time, I enjoys baking, hiking, and spending time with my family.",
 		"position": "UI/UX Engineer",
 		"country": "Australia",

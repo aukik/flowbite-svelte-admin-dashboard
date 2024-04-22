@@ -77,17 +77,17 @@
 		// 		'500 server error': '/errors/500'
 		// 	}
 		// },
-		{
-			name: 'Authenication',
-			icon: LockSolid,
-			children: {
-				'Sign in': '/authentication/sign-in',
-				'Sign up': '/authentication/sign-up',
-				'Forgot password': '/authentication/forgot-password',
-				'Reset password': '/authentication/reset-password',
-				'Profile lock': '/authentication/profile-lock'
-			}
-		},
+		// {
+		// 	name: 'Authenication',
+		// 	icon: LockSolid,
+		// 	children: {
+		// 		'Sign in': '/authentication/sign-in',
+		// 		'Sign up': '/authentication/sign-up',
+		// 		'Forgot password': '/authentication/forgot-password',
+		// 		'Reset password': '/authentication/reset-password',
+		// 		'Profile lock': '/authentication/profile-lock'
+		// 	}
+		// },
 		// {
 		// 	name: 'Playground',
 		// 	icon: WandMagicSparklesOutline,
