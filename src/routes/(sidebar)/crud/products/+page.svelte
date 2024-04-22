@@ -38,8 +38,8 @@
 			All products
 		</Heading>
 
-		<!-- <Toolbar embedded class="w-full py-4 text-gray-500 dark:text-gray-400">
-			<Input placeholder="Search for products" class="me-6 w-80 border xl:w-96" />
+		<Toolbar embedded class="w-full py-4 text-gray-500 dark:text-gray-400">
+			<!-- <Input placeholder="Search for products" class="me-6 w-80 border xl:w-96" />
 			<ToolbarButton
 				color="dark"
 				class="m-0 rounded p-1 hover:bg-gray-100 focus:ring-0 dark:hover:bg-gray-700"
@@ -63,12 +63,12 @@
 				class="m-0 rounded p-1 hover:bg-gray-100 focus:ring-0 dark:hover:bg-gray-700"
 			>
 				<DotsVerticalOutline size="lg" />
-			</ToolbarButton>
+			</ToolbarButton> -->
 
 			<div slot="end" class="space-x-2">
 				<Button class="whitespace-nowrap" on:click={() => toggle(Product)}>Add new product</Button>
 			</div>
-		</Toolbar> -->
+		</Toolbar>
 	</div>
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">

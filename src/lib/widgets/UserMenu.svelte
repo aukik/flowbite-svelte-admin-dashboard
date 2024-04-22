@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { imagesPath } from '$lib/variables';
 	import { Avatar, Dropdown, DropdownDivider, DropdownHeader, DropdownItem } from 'flowbite-svelte';
 
@@ -10,6 +11,14 @@
 	// export let position: string = ''; // "Front-end developer",
 	// export let country: string = ''; // "United States",
 	// export let status: string = ''; // "Active"
+	function removeCookie(name) {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  }
+	const logout= ()=>{
+		removeCookie("token")
+		removeCookie("refreshToken")
+		goto("/authentication/sign-in")
+	}
 </script>
 
 <button class="ms-3 rounded-full ring-gray-400 focus:ring-4 dark:ring-gray-600">
@@ -24,7 +33,7 @@
 	<DropdownItem>Settings</DropdownItem>
 	<DropdownItem>Earnings</DropdownItem>
 	<DropdownDivider /> -->
-	<DropdownItem>Sign out</DropdownItem>
+	<DropdownItem on:click={logout}>Sign out</DropdownItem>
 </Dropdown>
 
 <!--
