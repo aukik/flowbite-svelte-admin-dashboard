@@ -22,6 +22,7 @@
 	import { imagesPath } from '$lib/variables';
 
 	import User from './User.svelte';
+	import Adduser from './Adduser.svelte';
 	import Delete from './Delete.svelte';
 	import MetaTag from '../../../utils/MetaTag.svelte';
 	import { onMount } from 'svelte';
@@ -162,6 +163,7 @@ onMount(async () => {
 });
 
 	let openUser: boolean = false; // modal control
+	let addUser: boolean = false; // modal control
 	let openDelete: boolean = false; // modal control
 
 	let current_user: any = {};
@@ -217,7 +219,7 @@ onMount(async () => {
 				<Button
 					size="sm"
 					class="gap-2 whitespace-nowrap px-3"
-					on:click={() => ((current_user = {}), (openUser = true))}
+					on:click={() => ((current_user = {}), (addUser = true))}
 				>
 					<PlusOutline size="sm" />Add user
 				</Button>
@@ -282,4 +284,5 @@ onMount(async () => {
 <!-- Modals -->
 
 <User bind:open={openUser} data={current_user} />
-<Delete bind:open={openDelete} />
+<Adduser bind:open={addUser} data={current_user}/>
+<Delete bind:open={openDelete}  data={current_user} />

@@ -1,20 +1,66 @@
 <script lang="ts">
-	import { Button, CloseButton, Heading } from 'flowbite-svelte';
+	import { Button, CloseButton, Heading, Modal } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
-	export let hidden: boolean = true; // modal control
+	import axios from 'axios';
+	import { onMount } from 'svelte';
+	export let open: boolean = false; // modal control
+	export let data: Record<string, string> = {};
+	let token;
+
+
+	function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith(name + '=')) {
+        return cookie.substring(name.length + 1);
+      }
+    }
+    return null;
+  }
+	async function handleSubmit() {
+    // Assuming `token` is defined somewhere accessible
+    
+
+    // Assuming `data` contains the payload you want to send in the request
+    console.log("Inside submit");
+    console.log(data);
+    console.log(data.id);
+	console.log(token);
+
+    try {
+        const response = await axios.post('http://localhost:3000/admin/postDelete/', data, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        console.log(response.data); // Handle response data as needed
+    } catch (error) {
+        console.error('Error:');
+    }
+}
+
+
+onMount(async () => {
+  // Retrieve the token from session storage
+  //const token = sessionStorage.getItem('token');
+
+  token = getCookie('token');
+  console.log("token",token);
+
+
+});
 </script>
 
-<Heading tag="h5" class="mb-6 text-sm font-semibold uppercase">Delete item</Heading>
-<CloseButton
-	on:click={() => (hidden = true)}
-	class="absolute right-2.5 top-2.5 text-gray-400 hover:text-black dark:text-white"
-/>
+<Modal bind:open size="sm">
+	<ExclamationCircleOutline class="mx-auto mb-4 mt-8 h-10 w-10 text-red-600" />
 
-<ExclamationCircleOutline class="mb-4 mt-8 h-10 w-10 text-red-600" />
+	<h3 class="mb-6 text-center text-lg text-gray-500 dark:text-gray-400">
+		Are you sure you want to delete this post?
+	</h3>
 
-<h3 class="mb-6 text-lg text-gray-500 dark:text-gray-400">
-	Are you sure you want to delete this product?
-</h3>
-
-<Button href="/" color="red" class="mr-2">Yes, I'm sure</Button>
-<Button color="alternative" on:click={() => (hidden = true)}>No, cancel</Button>
+	<div class="flex items-center justify-center">
+		<Button on:click = {handleSubmit} href="/" color="red" class="mr-2">Yes, I'm sure</Button>
+		<Button color="alternative" on:click={() => (open = false)}>No, cancel</Button>
+	</div>
+</Modal>

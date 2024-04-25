@@ -25,11 +25,12 @@
     // Assuming `data` contains the payload you want to send in the request
     console.log("Inside submit");
     console.log(data);
-    console.log(data.id);
+    //console.log(data.id);
 	console.log(token);
+	
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/userUpdate/', data, {
+        const response = await axios.post('http://localhost:3000/admin/userRegistration/', data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -152,6 +153,15 @@
 					<span>Is Admin</span>
 					<Input bind:value={data.is_admin}
 						name="is_admin"
+						class="border outline-none"
+						placeholder="e.g. React Developer"
+						required
+					/>
+				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Password</span>
+					<Input bind:value={data.password}
+						name="password"
 						class="border outline-none"
 						placeholder="e.g. React Developer"
 						required
