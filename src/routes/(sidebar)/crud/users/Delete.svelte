@@ -20,7 +20,7 @@
   }
 	async function handleSubmit() {
     // Assuming `token` is defined somewhere accessible
-    
+
 
     // Assuming `data` contains the payload you want to send in the request
     console.log("Inside submit");
@@ -34,6 +34,7 @@
                 Authorization: `Bearer ${token}`
             }
         });
+        window.location.reload();
         console.log(response.data); // Handle response data as needed
     } catch (error) {
         console.error('Error:');
@@ -60,7 +61,7 @@ onMount(async () => {
 	</h3>
 
 	<div class="flex items-center justify-center">
-		<Button on:click = {handleSubmit} href="/" color="red" class="mr-2">Yes, I'm sure</Button>
+		<Button on:click = {handleSubmit}  color="red" class="mr-2">Yes, I'm sure</Button>
 		<Button color="alternative" on:click={() => (open = false)}>No, cancel</Button>
 	</div>
 </Modal>

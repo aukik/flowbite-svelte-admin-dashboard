@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Button, Input, Label, Modal, Textarea } from 'flowbite-svelte';
+	import { Button, Input, Label, Modal, Textarea, Dropdown, DropdownItem, DropdownDivider, DropdownHeader} from 'flowbite-svelte';
+	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import axios from 'axios';
 	import { onMount } from 'svelte';
 	export let open: boolean = false; // modal control
@@ -8,6 +9,32 @@
 
 	let inputValue;
 	let token;
+	let account_type_label="Account Type";
+	let is_admin_label="Is Admin";
+
+function handleAccountTypeChange(event) {
+	// console.log(event)
+    data.account_type = event;
+		// console.log(data)
+		if(event==="teacher"){
+			account_type_label="Teacher";
+		}else{
+			account_type_label="Student";
+		}
+  }
+
+
+	function handleIsAdminChange(event) {
+	// console.log(event)
+    data.is_admin = event;
+		// console.log(data)
+		if(event==="true"){
+			is_admin_label="True";
+		}else{
+			is_admin_label="False";
+		}
+  }
+
 	function getCookie(name) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
@@ -20,14 +47,14 @@
   }
   async function handleSubmit() {
     // Assuming `token` is defined somewhere accessible
-    
+
 
     // Assuming `data` contains the payload you want to send in the request
     console.log("Inside submit");
     console.log(data);
     //console.log(data.id);
 	console.log(token);
-	
+
 
     try {
         const response = await axios.post('http://localhost:3000/admin/userRegistration/', data, {
@@ -35,13 +62,13 @@
                 Authorization: `Bearer ${token}`
             }
         });
+				open=false
+				window.location.reload();
         console.log(response.data); // Handle response data as needed
     } catch (error) {
         console.error('Error:');
     }
 }
-
-
 
 	function init(form: HTMLFormElement) {
 		if (data?.name) [data.first_name, data.last_name] = data.name.split(' ');
@@ -79,8 +106,15 @@
 					<Input bind:value={data.name} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
 				</Label>
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Account Type</span>
-					<Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required />
+					<span></span>
+					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
+					<div class="pt-5">
+						<Button >{account_type_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							<DropdownItem  on:click={() => handleAccountTypeChange('teacher')}>Teacher</DropdownItem>
+							<DropdownItem  on:click={() => handleAccountTypeChange('student')}>Student</DropdownItem>
+						</Dropdown>
+					</div>
 				</Label>
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Email</span>
@@ -104,7 +138,7 @@
 				</Label>
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Institution Address</span>
-					<Input 
+					<Input
 					bind:value={data.institution_address}
 						name="institution_address"
 						class="border outline-none"
@@ -150,13 +184,15 @@
 					/>
 				</Label>
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Is Admin</span>
-					<Input bind:value={data.is_admin}
-						name="is_admin"
-						class="border outline-none"
-						placeholder="e.g. React Developer"
-						required
-					/>
+					<span></span>
+
+					<div class="pt-5">
+						<Button >{is_admin_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							<DropdownItem  on:click={() => handleIsAdminChange('true')}>True</DropdownItem>
+							<DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem>
+						</Dropdown>
+					</div>
 				</Label>
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Password</span>

@@ -3,11 +3,16 @@
 	import axios from 'axios';
 	import { onMount } from 'svelte';
 	export let open: boolean = false; // modal control
-
+	import { Dropdown, DropdownItem, DropdownDivider, DropdownHeader} from 'flowbite-svelte';
+	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	export let data: Record<string, string> = {};
-
+let user_label="Select User";
 	let inputValue;
 	let token;
+	const handleUserSelect = (id,name) => {
+	user_label=name
+	data.userId=id
+}
 	function getCookie(name) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
@@ -20,14 +25,14 @@
   }
   async function handleSubmit() {
     // Assuming `token` is defined somewhere accessible
-    
+
 
     // Assuming `data` contains the payload you want to send in the request
     console.log("Inside submit");
     console.log(data);
     //console.log(data.id);
 	console.log(token);
-	
+
 
     try {
         const response = await axios.post('http://localhost:3000/admin/addPost/', data, {
@@ -35,6 +40,8 @@
                 Authorization: `Bearer ${token}`
             }
         });
+				open=false
+				window.location.reload();
         console.log(response.data); // Handle response data as needed
     } catch (error) {
         console.error('Error:');
@@ -52,12 +59,19 @@
 		}
 	}
 	1;
-
+	let  userData=[];
 	onMount(async () => {
   // Retrieve the token from session storage
-  //const token = sessionStorage.getItem('token');
+  // const token = sessionStorage.getItem('token');
 
   token = getCookie('token');
+	const response= await axios.get('http://localhost:3000/admin/alluserData/', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+				userData=response.data
+				console.log(userData)
   console.log("token",token);
 
 
@@ -80,7 +94,18 @@
 				</Label>
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>UserId</span>
-					<Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required />
+					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
+					<span></span>
+
+					<div class="pt-5">
+						<Button >{user_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							{#each userData as user}
+								<DropdownItem  on:click={() => handleUserSelect(user?.id,user?.name)}>{user?.name}, {user?.email}</DropdownItem>
+							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
+							{/each}
+						</Dropdown>
+					</div>
 				</Label>
                 <Label class="col-span-6 space-y-2">
 					<span>Post Content</span>
