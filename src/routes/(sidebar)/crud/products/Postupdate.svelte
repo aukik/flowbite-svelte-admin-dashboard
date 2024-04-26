@@ -20,7 +20,7 @@
   }
   async function handleSubmit() {
     // Assuming `token` is defined somewhere accessible
-    
+
 
     // Assuming `data` contains the payload you want to send in the request
     console.log("Inside submit");
@@ -79,7 +79,7 @@
 				</Label>
 
                 <Label class="col-span-6 space-y-2">
-					<span>Biography</span>
+					<span>Post Content</span>
 					<Textarea bind:value={data.text_content}
 						id="biography"
 						rows="4"

@@ -248,14 +248,14 @@ onMount(async () => {
 						</div>
 					</TableBodyCell>
 
-					<TableBodyCell class="p-4">{user.account_type}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.institution_name}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.institution_address}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.teacher_institution_accreditation}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.teacher_designation}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.student_id}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.student_medium_of_education}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.is_admin}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.account_type||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.institution_name||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.institution_address||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.teacher_institution_accreditation||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.teacher_designation||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.student_id||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.student_medium_of_education||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.is_admin||"N/A"}</TableBodyCell>
 
 
 					<TableBodyCell class="space-x-2 p-4">
