@@ -86,6 +86,7 @@ function handleAccountTypeChange(event) {
 
   token = getCookie('token');
   console.log("token",token);
+  
 
 
 });

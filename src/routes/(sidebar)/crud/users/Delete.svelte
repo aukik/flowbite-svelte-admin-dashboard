@@ -34,6 +34,7 @@
                 Authorization: `Bearer ${token}`
             }
         });
+        open=false
         window.location.reload();
         console.log(response.data); // Handle response data as needed
     } catch (error) {

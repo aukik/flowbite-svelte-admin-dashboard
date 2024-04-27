@@ -60,7 +60,7 @@ const fetchAllUserData = async (token) => {
 	});
 
 	// Update postData with response data
-	postData = response.data;
+	postData = response.data.result;
   } catch (error) {
 	// Log and handle errors
 	console.error('Error fetching user data:');

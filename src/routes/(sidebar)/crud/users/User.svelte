@@ -1,11 +1,14 @@
 <script lang="ts">
-	import { Button, Input, Label, Modal, Textarea } from 'flowbite-svelte';
+	import { Button, Input, Label, Modal, Textarea,Dropdown, DropdownItem, DropdownDivider, DropdownHeader } from 'flowbite-svelte';
+	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import axios from 'axios';
-	import { onMount } from 'svelte';
+	import { onMount, afterUpdate} from 'svelte';
 	export let open: boolean = false; // modal control
 
 	export let data: Record<string, string> = {};
-
+	
+	let account_type_label="Account Type";
+	let is_admin_label="Is Admin";
 	let inputValue;
 	let token;
 	function getCookie(name) {
@@ -18,6 +21,33 @@
     }
     return null;
   }
+
+
+  function handleAccountTypeChange(event) {
+	console.log("________event:::::")
+	console.log(event)
+    data.account_type = event;
+		// console.log(data)
+		if(event==="teacher"){
+			account_type_label="Teacher";
+		}else{
+			account_type_label="Student";
+		}
+  }
+
+
+	function handleIsAdminChange(event) {
+	// console.log(event)
+    data.is_admin = event;
+		// console.log(data)
+		if(event==="true"){
+			is_admin_label="True";
+		}else{
+			is_admin_label="False";
+		}
+  }
+
+
   async function handleSubmit() {
     // Assuming `token` is defined somewhere accessible
     
@@ -34,6 +64,8 @@
                 Authorization: `Bearer ${token}`
             }
         });
+		open=false
+		window.location.reload();
         console.log(response.data); // Handle response data as needed
     } catch (error) {
         console.error('Error:');
@@ -58,14 +90,43 @@
 
   token = getCookie('token');
   console.log("token",token);
+  
 
 
 });
+
+afterUpdate(() => {
+		if (open && data.account_type) {
+			if(data.account_type === "teacher"){
+				account_type_label = "Teacher";
+			} else {
+				account_type_label = "Student";
+			}
+		}
+
+		if (open) {
+			console.log("-----------------------{}")
+			console.log(data.is_admin);
+			if(data.is_admin){
+				is_admin_label = "True";
+			} else {
+				is_admin_label = "False";
+			}
+		}
+	}
+
+
+
+);
+
+
 </script>
 
 <Modal
 	bind:open
+
 	title={Object.keys(data).length ? 'Edit user' : 'Add new user'}
+	
 	size="md"
 	class="m-4"
 >
@@ -78,8 +139,15 @@
 					<Input bind:value={data.name} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
 				</Label>
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Account Type</span>
-					<Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required />
+					<span></span>
+					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
+					<div class="pt-5">
+						<Button >{account_type_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							<DropdownItem  on:click={() => handleAccountTypeChange('teacher')}>Teacher</DropdownItem>
+							<DropdownItem  on:click={() => handleAccountTypeChange('student')}>Student</DropdownItem>
+						</Dropdown>
+					</div>
 				</Label>
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Email</span>
@@ -149,13 +217,15 @@
 					/>
 				</Label>
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Is Admin</span>
-					<Input bind:value={data.is_admin}
-						name="is_admin"
-						class="border outline-none"
-						placeholder="e.g. React Developer"
-						required
-					/>
+					<span></span>
+
+					<div class="pt-5">
+						<Button >{is_admin_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							<DropdownItem  on:click={() => handleIsAdminChange('true')}>True</DropdownItem>
+							<DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem>
+						</Dropdown>
+					</div>
 				</Label>
 
 

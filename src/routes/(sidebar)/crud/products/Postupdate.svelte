@@ -35,6 +35,8 @@
             }
         });
         console.log(response.data); // Handle response data as needed
+		open=false
+		window.location.reload();
     } catch (error) {
         console.error('Error:');
     }
