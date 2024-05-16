@@ -9,17 +9,17 @@
 
 	let inputValue;
 	let token;
-	let account_type_label="Account Type";
+	let student_medium_label="Student Medium";
 	let is_admin_label="Is Admin";
 
-function handleAccountTypeChange(event) {
+function handleStudentMediumChange(event) {
 	// console.log(event)
-    data.account_type = event;
+    data.student_medium_of_education = event;
 		// console.log(data)
-		if(event==="teacher"){
-			account_type_label="Teacher";
+		if(event==="English"){
+			student_medium_label="English";
 		}else{
-			account_type_label="Student";
+			student_medium_label="Bangla";
 		}
   }
 
@@ -72,7 +72,7 @@ function handleAccountTypeChange(event) {
 		data.created_by_account_type = "admin";
 
 
-        const response = await axios.post('http://localhost:3000/admin/userRegistration/', data, {
+        const response = await axios.post('http://localhost:3000/admin/studentRegistration/', data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -133,6 +133,27 @@ function handleAccountTypeChange(event) {
 					/>
 				</Label>
 
+                <Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Student ID</span>
+					<Input
+					bind:value={data.student_id}
+						name="student_id"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+                <Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span></span>
+					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
+					<div class="pt-5">
+						<Button >{student_medium_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							<DropdownItem  on:click={() => handleStudentMediumChange('Bangla')}>Bangla</DropdownItem>
+							<DropdownItem  on:click={() => handleStudentMediumChange('English')}>English</DropdownItem>
+						</Dropdown>
+					</div>
+				</Label>
 
 
 

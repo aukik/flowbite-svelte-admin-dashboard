@@ -138,17 +138,7 @@ afterUpdate(() => {
 					<span>Name</span>
 					<Input bind:value={data.name} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
 				</Label>
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span></span>
-					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
-					<div class="pt-5">
-						<Button >{account_type_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
-							<DropdownItem  on:click={() => handleAccountTypeChange('teacher')}>Teacher</DropdownItem>
-							<DropdownItem  on:click={() => handleAccountTypeChange('student')}>Student</DropdownItem>
-						</Dropdown>
-					</div>
-				</Label>
+
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Email</span>
 					<Input
@@ -159,74 +149,7 @@ afterUpdate(() => {
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Institution Name</span>
-					<Input
-					bind:value={data.institution_name}
-						name="institution_name"
-						class="border outline-none"
-						placeholder="e.g. React Developer"
-						required
-					/>
-				</Label>
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Institution Address</span>
-					<Input 
-					bind:value={data.institution_address}
-						name="institution_address"
-						class="border outline-none"
-						placeholder="e.g. React Developer"
-						required
-					/>
-				</Label>
-
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Teacher Accreditation</span>
-					<Input bind:value={data.teacher_institution_accreditation}
-						name="teacher_institution_accreditation"
-						class="border outline-none"
-						placeholder="e.g. React Developer"
-						required
-					/>
-				</Label>
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Teacher Designation</span>
-					<Input bind:value={data.teacher_designation}
-						name="teacher_designation"
-						class="border outline-none"
-						placeholder="e.g. React Developer"
-						required
-					/>
-				</Label>
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Student ID</span>
-					<Input bind:value={data.student_id}
-						name="student_id"
-						class="border outline-none"
-						placeholder="e.g. React Developer"
-						required
-					/>
-				</Label>
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Medium</span>
-					<Input bind:value={data.student_medium_of_education}
-						name="student_medium_of_education"
-						class="border outline-none"
-						placeholder="English"
-						required
-					/>
-				</Label>
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span></span>
-
-					<div class="pt-5">
-						<Button >{is_admin_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
-							<DropdownItem  on:click={() => handleIsAdminChange('true')}>True</DropdownItem>
-							<DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem>
-						</Dropdown>
-					</div>
-				</Label>
+				
 
 
 

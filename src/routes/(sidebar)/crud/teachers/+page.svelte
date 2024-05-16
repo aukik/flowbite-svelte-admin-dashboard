@@ -21,8 +21,8 @@
 	import Users from '../../../data/users.json';
 	import { imagesPath } from '$lib/variables';
 
-	import User from './User.svelte';
-	import Adduser from './Adduser.svelte';
+	import User from './EditTeacher.svelte';
+	import Adduser from './Addnewteacher.svelte';
 	import Delete from './Delete.svelte';
 	import MetaTag from '../../../utils/MetaTag.svelte';
 	import { onMount } from 'svelte';
@@ -60,7 +60,7 @@ let userData = [];
 const fetchAllUserData = async (token) => {
   try {
 	// Make a GET request to the endpoint with the Authorization header
-	const response = await axios.get(`${BASE_URL}/admin/alluserData`, {
+	const response = await axios.get(`${BASE_URL}/admin/allteacherData`, {
 	  headers: {
 		Authorization: `Bearer ${token}`
 	  }
@@ -232,7 +232,7 @@ onMount(async () => {
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
-			{#each ['Name', 'Email', 'Actions'] as title}
+			{#each ['Name', 'Accreditation','Designation', 'Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -248,7 +248,8 @@ onMount(async () => {
 						</div>
 					</TableBodyCell>
 
-					<TableBodyCell class="p-4">{user.email||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.teacher_institution_accreditation||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.teacher_designation||"N/A"}</TableBodyCell>
 					<!-- <TableBodyCell class="p-4">{user.created_by_account_type||"N/A"}</TableBodyCell> -->
 
 
