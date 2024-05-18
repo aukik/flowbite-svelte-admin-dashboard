@@ -9,8 +9,13 @@
 
 	let inputValue;
 	let token;
+	let user_label="Select School";
 	let student_medium_label="Student Medium";
 	let is_admin_label="Is Admin";
+	const handleSchoolSelect = (id,name) => {
+	user_label=name
+	data.schoolId=id
+}
 
 function handleStudentMediumChange(event) {
 	// console.log(event)
@@ -94,13 +99,20 @@ function handleStudentMediumChange(event) {
 		}
 	}
 	1;
-
+	let  schoolData=[];
 	onMount(async () => {
   // Retrieve the token from session storage
   //const token = sessionStorage.getItem('token');
 
   token = getCookie('token');
   console.log("token",token);
+  const response= await axios.get('http://localhost:3000/admin/allschoolData/', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+				schoolData=response.data.result
+				console.log(schoolData)
   
 
 
@@ -109,7 +121,7 @@ function handleStudentMediumChange(event) {
 
 <Modal
 	bind:open
-	title={Object.keys(data).length ? 'Edit user' : 'Add new user'}
+	title={Object.keys(data).length ? 'Add new user' : 'Add new user'}
 	size="md"
 	class="m-4"
 >
@@ -121,6 +133,22 @@ function handleStudentMediumChange(event) {
 					<span>Name</span>
 					<Input bind:value={data.name} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
 				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>School</span>
+					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
+					<span></span>
+
+					<div class="pt-5">
+						<Button >{user_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							{#each schoolData as user}
+								<DropdownItem  on:click={() => handleSchoolSelect(user?.id,user?.name)}>{user?.name}, {user?.location}</DropdownItem>
+							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
+							{/each}
+						</Dropdown>
+					</div>
+				</Label>
+
 
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Email</span>
@@ -143,6 +171,9 @@ function handleStudentMediumChange(event) {
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
+
+
+
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Designation</span>
 					<Input
@@ -153,6 +184,8 @@ function handleStudentMediumChange(event) {
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
+
+
 
 
 

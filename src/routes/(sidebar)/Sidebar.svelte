@@ -62,7 +62,7 @@
 			name: 'CRUD',
 			icon: RectangleListSolid,
 			children: {
-				Posts: '/crud/products',
+
 				Admins: '/crud/users',
 				Students: '/crud/students',
 				Teachers: '/crud/teachers'
