@@ -57,6 +57,7 @@
 		"svelte": "^4.0.0"
 	},
 	"dependencies": {
+		"apexcharts": "^3.49.1",
 		"axios": "^1.6.8",
 		"flowbite-svelte": "^0.44.24",
 		"flowbite-svelte-icons": "^1.5.0",

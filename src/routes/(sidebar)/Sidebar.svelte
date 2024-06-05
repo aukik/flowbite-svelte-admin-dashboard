@@ -49,15 +49,15 @@
 	});
 
 	let posts = [
-		// { name: 'Dashboard', icon: ChartPieOutline, href: '/dashboard' },
-		// {
-		// 	name: 'Layouts',
-		// 	icon: TableColumnSolid,
-		// 	children: {
-		// 		Stacked: '/layouts/stacked',
-		// 		Sidebar: '/layouts/sidebar'
-		// 	}
-		// },
+		{ name: 'Dashboard', icon: ChartPieOutline, href: '/dashboard' },
+		{
+			name: 'Layouts',
+			icon: TableColumnSolid,
+			children: {
+				Stacked: '/layouts/stacked',
+				Sidebar: '/layouts/sidebar'
+			}
+		},
 		{
 			name: 'CRUD',
 			icon: RectangleListSolid,

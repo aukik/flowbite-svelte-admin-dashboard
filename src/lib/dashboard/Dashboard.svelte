@@ -1,5 +1,6 @@
 <script lang="ts">
 	import thickbars from '$lib/graphs/thickbars';
+	import thickbars_teacher from '$lib/graphs/thickbars_teachers';
 	import thinfillbars from '$lib/graphs/thinfillbars';
 	import ChartWidget from '$lib/widgets/ChartWidget.svelte';
 	import { Card, Chart } from 'flowbite-svelte';
@@ -22,6 +23,10 @@
 	chartOptions.series = data.series;
 
 	let dark = false;
+	let studentCount = 2340;
+	let percentageGain = 12.5;
+	let teacherCount = 23;
+	let percentageGainTeacher = 10;
 
 	function handler(ev: Event) {
 		if ('detail' in ev) {
@@ -31,8 +36,26 @@
 		}
 	}
 
-	onMount(() => {
+	onMount(async () => {
 		document.addEventListener('dark', handler);
+		try {
+			const response = await fetch('http://localhost:3000/admin/dashboardStudent');
+			const json = await response.json();
+			studentCount = json.result.currentWeekStudentCount;
+			percentageGain = json.result.percentageGain;
+		} catch (error) {
+			console.error('Failed to fetch data:', error);
+
+
+		}
+
+		try {
+			const response = await fetch('http://localhost:3000/admin/dashboardTeacher');
+			const json = await response.json();
+			teacherCount = json.result.currentWeekTeacherCount;
+			percentageGainTeacher = json.result.percentageGain;
+		} catch (error) {
+			console.error('Failed to fetch data:', error);}
 		return () => document.removeEventListener('dark', handler);
 	});
 </script>
@@ -46,13 +69,23 @@
 	<div class="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
 		<Card horizontal class="items-center justify-between" size="xl">
 			<div class="w-full">
-				<p>New products</p>
+				<p>New students</p>
 				<p class="text-2xl font-bold leading-none text-gray-900 dark:text-white sm:text-3xl">
-					2,340
+					{studentCount}
 				</p>
-				<Change size="sm" value={12.5} since="Since last month" />
+				<Change size="sm" value={percentageGain} since="Since last week" />
 			</div>
 			<Chart options={thickbars} class="w-full" />
+		</Card>
+		<Card horizontal class="items-center justify-between" size="xl">
+			<div class="w-full">
+				<p>New teachers</p>
+				<p class="text-2xl font-bold leading-none text-gray-900 dark:text-white sm:text-3xl">
+					{teacherCount}
+				</p>
+				<Change size="sm" value={percentageGainTeacher} since="Since last week" />
+			</div>
+			<Chart options={thickbars_teacher} class="w-full" />
 		</Card>
 		<Card horizontal class="items-center justify-between" size="xl">
 			<div class="w-full">
