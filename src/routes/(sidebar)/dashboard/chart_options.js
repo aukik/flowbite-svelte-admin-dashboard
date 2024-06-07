@@ -1,7 +1,7 @@
 
 export default function (dark) {
     let mainChartColors;
-    
+
 	if (dark) {
 		mainChartColors = {
 			borderColor: '#374151',

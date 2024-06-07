@@ -62,71 +62,111 @@
 
 <div class="mt-px space-y-4">
 	<div class="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
-		<ChartWidget {chartOptions} title="$45,385" subtitle="Sales this week" />
+		<ChartWidget {chartOptions} title="22 Students" subtitle="Total Number of Students" />
+		<Traffic {dark} />
+		<!-- <Stats /> -->
+	</div>
+	<div class="grid grid-cols-2 gap-4">
+		<div class="grid grid-cols-1 grid-rows-3 gap-4 xl:grid-cols-2 xl:grid-rows-3 2xl:grid-cols-2 2xl:grid-rows-3">
+			<Card horizontal class="items-center justify-between" size="xl">
+				<div class="w-full">
+					<p>New students</p>
+					<p class="text-2xl font-bold leading-none text-gray-900 dark:text-white sm:text-3xl">
+						{studentCount}
+					</p>
+					<p>Since Last week</p>
+					<!-- <Change size="sm" value={percentageGain} since="Since last week" /> -->
+				</div>
+				<Chart options={thickbars} class="w-full" />
+			</Card>
+			<Card horizontal class="items-center justify-between" size="xl">
+				<div class="w-full">
+					<p>New teachers</p>
+					<p class="text-2xl font-bold leading-none text-gray-900 dark:text-white sm:text-3xl">
+						{teacherCount}
+					</p>
+					<!-- <Change size="sm" value={percentageGainTeacher} since="Since last week" /> -->
+					<p>Since Last week</p>
+				</div>
+				<Chart options={thickbars_teacher} class="w-full" />
+			</Card>
 
-		<Stats />
-	</div>
-	<div class="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3">
-		<Card horizontal class="items-center justify-between" size="xl">
-			<div class="w-full">
-				<p>New students</p>
-				<p class="text-2xl font-bold leading-none text-gray-900 dark:text-white sm:text-3xl">
-					{studentCount}
-				</p>
-				<Change size="sm" value={percentageGain} since="Since last week" />
-			</div>
-			<Chart options={thickbars} class="w-full" />
-		</Card>
-		<Card horizontal class="items-center justify-between" size="xl">
-			<div class="w-full">
-				<p>New teachers</p>
-				<p class="text-2xl font-bold leading-none text-gray-900 dark:text-white sm:text-3xl">
-					{teacherCount}
-				</p>
-				<Change size="sm" value={percentageGainTeacher} since="Since last week" />
-			</div>
-			<Chart options={thickbars_teacher} class="w-full" />
-		</Card>
-		<Card horizontal class="items-center justify-between" size="xl">
-			<div class="w-full">
-				<p>Users</p>
-				<p class="text-2xl font-bold leading-none text-gray-900 dark:text-white sm:text-3xl">
-					4,420
-				</p>
-				<Change size="sm" value={-3.4} since="Since last month" />
-			</div>
-			<Chart options={thinfillbars} class="w-full" />
-		</Card>
-		<Card horizontal class="items-center justify-between" size="xl">
-			<div class="w-full">
-				<p>Users</p>
-				<p class="text-2xl font-bold leading-none text-gray-900 dark:text-white sm:text-3xl">
-					4,420
-				</p>
-				<Change size="sm" value={-3.4} since="Since last month" class="w-full" />
-			</div>
-			<Chart
-				options={{
-					...thinfillbars,
-					plotOptions: {
-						...thinfillbars.plotOptions,
-						bar: { ...thinfillbars.plotOptions?.bar, horizontal: true }
-					}
-				}}
-			/>
-		</Card>
-	</div>
-	<div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
-		<Chat />
-		<div class="flex flex-col gap-4">
-			<DesktopPc />
-			<Traffic {dark} />
+			<Card horizontal class="items-center justify-between" size="xl">
+				<div class="w-full">
+					<p>New Students</p>
+					<p class="text-2xl font-bold leading-none text-gray-900 dark:text-white sm:text-3xl">
+						18
+					</p>
+					<!-- <Change size="sm" value={-3.4} since="Since last month" /> -->
+					<p>Since Last Month</p>
+				</div>
+				<Chart options={thinfillbars} class="w-full" />
+			</Card>
+			<Card horizontal class="items-center justify-between" size="xl">
+				<div class="w-full">
+					<p>New Teachers</p>
+					<p class="text-2xl font-bold leading-none text-gray-900 dark:text-white sm:text-3xl">
+						12
+					</p>
+					<p>Since Last Month</p>
+					<!-- <Change size="sm" value={-3.4} since="Since last month" class="w-full" /> -->
+				</div>
+				<Chart options={thinfillbars} class="w-full" />
+			</Card>
+			<Card horizontal class="items-center justify-between" size="xl">
+				<div class="w-full">
+					<p>New Clubs</p>
+					<p class="text-2xl font-bold leading-none text-gray-900 dark:text-white sm:text-3xl">
+						5
+					</p>
+					<p>Since Last Month</p>
+					<!-- <Change size="sm" value={-3.4} since="Since last month" class="w-full" /> -->
+				</div>
+				<Chart
+					options={{
+						...thinfillbars,
+						plotOptions: {
+							...thinfillbars.plotOptions,
+							bar: { ...thinfillbars.plotOptions?.bar, horizontal: true }
+						}
+					}}
+				/>
+				/>
+			</Card>
+			<Card horizontal class="items-center justify-between" size="xl">
+				<div class="w-full">
+					<p>New Workshop</p>
+					<p class="text-2xl font-bold leading-none text-gray-900 dark:text-white sm:text-3xl">
+						6
+					</p>
+					<p>Since Last Month</p>
+					<!-- <Change size="sm" value={-3.4} since="Since last month" class="w-full" /> -->
+				</div>
+				<Chart
+					options={{
+						...thinfillbars,
+						plotOptions: {
+							...thinfillbars.plotOptions,
+							bar: { ...thinfillbars.plotOptions?.bar, horizontal: true }
+						}
+					}}
+				/>
+			</Card>
 		</div>
+		<DesktopPc />
 	</div>
-	<div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+
+	<!-- <div class="grid grid-cols-1 gap-4 xl:grid-cols-2"> -->
+		<!-- <Chat /> -->
+		<!-- <div class="flex flex-col gap-4">
+			<DesktopPc />
+
+		</div>
+	</div> -->
+	<!-- <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
 		<ActivityList />
 		<Insights />
-	</div>
+	</div> -->
 
-	<Transactions {dark} />
+	<!-- <Transactions {dark} /> -->
 </div>

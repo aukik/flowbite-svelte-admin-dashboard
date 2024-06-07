@@ -24,13 +24,13 @@
 	}
 	const menu = [
 		// { name: 'Sales', href: '/sales', icon: ShoppingBagSolid },
-		{ name: 'Users', href: '/crud/users', icon: UsersGroupSolid,onClick:()=>{ return} },
+		{ name: 'Admin', href: '/crud/users', icon: UsersGroupSolid,onClick:()=>{ return} },
 		// { name: 'Inbox', href: '/inbox', icon: InboxOutline },
 		// { name: 'Profile', href: '/profile', icon: ProfileCardOutline },
 		// { name: 'Settings', href: '/settings', icon: CogOutline },
-		{ name: 'Prouducts', href: '/crud/products', icon: ArchiveSolid ,onClick:()=>{ return}},
+		{ name: 'Student', href: '/crud/students', icon: ArchiveSolid ,onClick:()=>{ return}},
 
-		{ name: 'Repository', href: 'https://github.com/aukik/flowbite-svelte-admin-dashboard', icon: GithubSolid , onClick:()=>{ return}},
+		{ name: 'Teacher', href: 'https://github.com/aukik/flowbite-svelte-admin-dashboard', icon: GithubSolid , onClick:()=>{ return}},
 		// { name: 'Pricing', href: '/pricing', icon: DollarOutline },
 		// { name: 'Billing', href: '/billing', icon: SalePercentOutline },
 	// 	{ name: 'Logout', href: '/authentication/sign-in', icon: ArrowRightToBracketOutline ,onClick:()=>{
