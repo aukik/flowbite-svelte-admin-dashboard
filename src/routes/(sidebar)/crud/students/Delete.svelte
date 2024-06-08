@@ -27,9 +27,10 @@
     console.log(data);
     console.log(data.id);
 	console.log(token);
+  data.user_type = "student"
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/studentDelete/', data, {
+        const response = await axios.post('http://localhost:3000/admin/userTeacherStudentDelete/', data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

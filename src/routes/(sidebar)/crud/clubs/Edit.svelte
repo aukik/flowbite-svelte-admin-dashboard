@@ -6,9 +6,31 @@
 	export let open: boolean = false; // modal control
 
 	export let data: Record<string, string> = {};
+
+
 	
-	let student_medium_label="Account Type";
+	let user_label="Select School";
+	let club_type_label="Club Type";
 	let is_admin_label="Is Admin";
+	const handleSchoolSelect = (id,name) => {
+	user_label=name
+	data.schoolId=id
+}
+	let teacher_label = "Select Teacher";
+	let sponsor_label = "Select Sponsor";
+
+	const handleTeacherSelect = (id,name) =>{
+		teacher_label = name,
+		data.teacherId = id
+	}
+
+	const handleSponsorSelect = (id, name) => {
+		sponsor_label = name,
+		data.sponsorId = id
+	}
+
+
+
 	let inputValue;
 	let token;
 	function getCookie(name) {
@@ -57,9 +79,10 @@
     console.log(data);
     console.log(data.id);
 	console.log(token);
+	data.user_type = "teacher"
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/studentUpdate/', data, {
+        const response = await axios.post('http://localhost:3000/admin/clubUpdate/', data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -90,6 +113,41 @@
 
   token = getCookie('token');
   console.log("token",token);
+
+  let  schoolData=[];
+	let teacherData = [];
+	let sponsorData = [];
+
+	onMount(async () => {
+  // Retrieve the token from session storage
+  //const token = sessionStorage.getItem('token');
+
+  token = getCookie('token');
+  console.log("token",token);
+  const response= await axios.get('http://localhost:3000/admin/allschoolData/', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+				schoolData=response.data.result
+				console.log(schoolData)
+	const responseteacher= await axios.get('http://localhost:3000/admin/allteacherData/', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+				teacherData=responseteacher.data.result
+				console.log(teacherData)
+	const responsesponsor= await axios.get('http://localhost:3000/admin/allsponsorData/', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+				sponsorData=responsesponsor.data.result
+				console.log(sponsorData)
+
+
+});
   
 
 
@@ -136,13 +194,13 @@ afterUpdate(() => {
 			<div class="grid grid-cols-6 gap-6">
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Name</span>
-					<Input bind:value={data.name} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
+					<Input bind:value={data.club_name} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
 				</Label>
 
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Email</span>
+					<span>Motto</span>
 					<Input
-					bind:value={data.email}
+					bind:value={data.motto}
 						name="email"
 						type="email"
 						class="border outline-none"
@@ -150,9 +208,9 @@ afterUpdate(() => {
 					/>
 				</Label>
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Student ID</span>
+					<span>Description</span>
 					<Input
-					bind:value={data.student_id}
+					bind:value={data.description}
 						name="student id"
 						type="text"
 						class="border outline-none"
@@ -160,15 +218,14 @@ afterUpdate(() => {
 					/>
 				</Label>
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span></span>
-					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
-					<div class="pt-5">
-						<Button >{student_medium_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
-							<DropdownItem  on:click={() => handleStudentMediumChange('Bangla')}>Bangla</DropdownItem>
-							<DropdownItem  on:click={() => handleStudentMediumChange('English')}>English</DropdownItem>
-						</Dropdown>
-					</div>
+					<span>Total Students</span>
+					<Input
+					bind:value={data.total_students}
+						name="student id"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
 				</Label>
 				
 

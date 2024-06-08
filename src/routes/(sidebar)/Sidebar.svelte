@@ -14,10 +14,12 @@
 		AngleUpOutline,
 		ClipboardListSolid,
 		CogOutline,
+		UserSolid,
 		FileChartBarSolid,
 		GithubSolid,
 		LayersSolid,
 		LifeSaverSolid,
+		BrainSolid,
 		LockSolid,
 		WandMagicSparklesOutline,
 		ChartPieOutline,
@@ -50,22 +52,33 @@
 
 	let posts = [
 		{ name: 'Dashboard', icon: ChartPieOutline, href: '/dashboard' },
+		// {
+		// 	name: 'Layouts',
+		// 	icon: TableColumnSolid,
+		// 	children: {
+		// 		Stacked: '/layouts/stacked',
+		// 		Sidebar: '/layouts/sidebar'
+		// 	}
+		// },
 		{
-			name: 'Layouts',
-			icon: TableColumnSolid,
-			children: {
-				Stacked: '/layouts/stacked',
-				Sidebar: '/layouts/sidebar'
-			}
-		},
-		{
-			name: 'CRUD',
-			icon: RectangleListSolid,
+			name: 'Users',
+			icon: UserSolid,
 			children: {
 
-				Admins: '/crud/users',
-				Students: '/crud/students',
-				Teachers: '/crud/teachers'
+				Admin: '/crud/users',
+				Student: '/crud/students',
+				Teacher: '/crud/teachers'
+			}
+		},
+
+		{
+			name: 'Activities',
+			icon: BrainSolid,
+			children: {
+
+				Workshop: '/crud/users',
+				Club: '/crud/clubs',
+				Event: '/crud/event'
 			}
 		},
 		// { name: 'Settings', icon: CogOutline, href: '/settings' },

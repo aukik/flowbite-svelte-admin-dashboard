@@ -60,7 +60,7 @@ let userData = [];
 const fetchAllUserData = async (token) => {
   try {
 	// Make a GET request to the endpoint with the Authorization header
-	const response = await axios.get(`${BASE_URL}/admin/allstudentData`, {
+	const response = await axios.get(`${BASE_URL}/admin/alleventData`, {
 	  headers: {
 		Authorization: `Bearer ${token}`
 	  }
@@ -179,11 +179,11 @@ onMount(async () => {
 	<div class="p-4">
 		<Breadcrumb class="mb-5">
 			<BreadcrumbItem home>Home</BreadcrumbItem>
-			<BreadcrumbItem href="/crud/users">Users</BreadcrumbItem>
+			<BreadcrumbItem href="/crud/users">Activitis</BreadcrumbItem>
 			<BreadcrumbItem>List</BreadcrumbItem>
 		</Breadcrumb>
 		<Heading tag="h1" class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
-			All users
+			All Clubs
 		</Heading>
 
 		<Toolbar embedded class="w-full py-4 text-gray-500  dark:text-gray-400">
@@ -221,7 +221,7 @@ onMount(async () => {
 					class="gap-2 whitespace-nowrap px-3"
 					on:click={() => ((current_user = {}), (addUser = true))}
 				>
-					<PlusOutline size="sm" />Add user
+					<PlusOutline size="sm" />Add a Club
 				</Button>
 				<!-- <Button size="sm" color="alternative" class="gap-2 px-3">
 					<DownloadSolid size="md" class="-ml-1" />Export
@@ -232,7 +232,7 @@ onMount(async () => {
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
-			{#each ['Name', 'Student ID','Student Medium of Education', 'Actions'] as title}
+			{#each ['Name', 'Motto','Description', 'Fee', 'People joined','Event Type','Location','Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -240,16 +240,17 @@ onMount(async () => {
 			{#each userData as user}
 				<TableBodyRow class="text-base">
 					<!-- <TableBodyCell class="w-4 p-4"><Checkbox /></TableBodyCell> -->
-					<TableBodyCell class="mr-12 flex items-center space-x-6 whitespace-nowrap p-4">
+					<TableBodyCell class="p-4">{user.event_name||"N/A"}</TableBodyCell>
 
-						<div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-							<div class="text-base font-semibold text-gray-900 dark:text-white">{user.name}</div>
-							<div class="text-sm font-normal text-gray-500 dark:text-gray-400">{user.email}</div>
-						</div>
-					</TableBodyCell>
-
-					<TableBodyCell class="p-4">{user.student_id||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.student_medium_of_education||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.motto||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.description||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.event_fee||"N/A"}</TableBodyCell>
+					
+					<TableBodyCell class="p-4">{user.people_joined||"N/A"}</TableBodyCell>
+					
+					<TableBodyCell class="p-4">{user.event_type||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.host_location||"N/A"}</TableBodyCell>
+					
 					<!-- <TableBodyCell class="p-4">{user.created_by_account_type||"N/A"}</TableBodyCell> -->
 
 
@@ -260,7 +261,7 @@ onMount(async () => {
 							class="gap-2 px-3"
 							on:click={() => ((current_user = user), (openUser = true))}
 						>
-							<EditOutline size="sm" /> Edit user
+							<EditOutline size="sm" /> Edit
 						</Button>
 						<Button
 							color="red"
@@ -268,7 +269,7 @@ onMount(async () => {
 							class="gap-2 px-3"
 							on:click={() => ((current_user = user), (openDelete = true))}
 						>
-							<TrashBinSolid size="sm" /> Delete user
+							<TrashBinSolid size="sm" /> Delete
 						</Button>
 					</TableBodyCell>
 				</TableBodyRow>

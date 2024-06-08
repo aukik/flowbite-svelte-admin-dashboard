@@ -57,9 +57,10 @@
     console.log(data);
     console.log(data.id);
 	console.log(token);
+	data.user_type = "teacher"
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/teacherUpdate/', data, {
+        const response = await axios.post('http://localhost:3000/admin/userTeacherStudentUpdate/', data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

@@ -10,21 +10,34 @@
 	let inputValue;
 	let token;
 	let user_label="Select School";
-	let student_medium_label="Student Medium";
+	let club_type_label="Club Type";
 	let is_admin_label="Is Admin";
 	const handleSchoolSelect = (id,name) => {
 	user_label=name
 	data.schoolId=id
 }
+	let teacher_label = "Select Teacher";
+	let sponsor_label = "Select Sponsor";
 
-function handleStudentMediumChange(event) {
+	const handleTeacherSelect = (id,name) =>{
+		teacher_label = name,
+		data.teacherId = id
+	}
+
+	const handleSponsorSelect = (id, name) => {
+		sponsor_label = name,
+		data.sponsorId = id
+	}
+
+
+function handleClubTypeChange(event) {
 	// console.log(event)
-    data.student_medium_of_education = event;
+    data.club_type = event;
 		// console.log(data)
-		if(event==="English"){
-			student_medium_label="English";
+		if(event==="school"){
+			club_type_label="School";
 		}else{
-			student_medium_label="Bangla";
+			club_type_label="Sponsor";
 		}
   }
 
@@ -75,14 +88,22 @@ function handleStudentMediumChange(event) {
         // Assigning the created_by_id to data
         data.created_by_id = createdById;
 		data.created_by_account_type = "admin";
-		data.user_type = "teacher"
+		
 
+		
+		let endpoint;
+    if (data.club_type === 'school') {
+        endpoint = 'http://localhost:3000/admin/clubRegistrationSchool/';
+    } else {
+        endpoint = 'http://localhost:3000/admin/clubRegistrationSponsor/';
+    }
 
-        const response = await axios.post('http://localhost:3000/admin/userTeacherStudentRegistration/', data, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+    // Making the POST request to the appropriate endpoint
+    const response = await axios.post(endpoint, data, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
 				open=false
 				window.location.reload();
         console.log(response.data); // Handle response data as needed
@@ -101,6 +122,9 @@ function handleStudentMediumChange(event) {
 	}
 	1;
 	let  schoolData=[];
+	let teacherData = [];
+	let sponsorData = [];
+
 	onMount(async () => {
   // Retrieve the token from session storage
   //const token = sessionStorage.getItem('token');
@@ -114,7 +138,20 @@ function handleStudentMediumChange(event) {
         });
 				schoolData=response.data.result
 				console.log(schoolData)
-  
+	const responseteacher= await axios.get('http://localhost:3000/admin/allteacherData/', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+				teacherData=responseteacher.data.result
+				console.log(teacherData)
+	const responsesponsor= await axios.get('http://localhost:3000/admin/allsponsorData/', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+				sponsorData=responsesponsor.data.result
+				console.log(sponsorData)
 
 
 });
@@ -122,7 +159,7 @@ function handleStudentMediumChange(event) {
 
 <Modal
 	bind:open
-	title={Object.keys(data).length ? 'Add new user' : 'Add new user'}
+	title={Object.keys(data).length ? 'Add new user' : 'Add new Club'}
 	size="md"
 	class="m-4"
 >
@@ -132,7 +169,7 @@ function handleStudentMediumChange(event) {
 			<div class="grid grid-cols-6 gap-6">
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Name</span>
-					<Input bind:value={data.name} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
+					<Input bind:value={data.club_name} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
 				</Label>
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>School</span>
@@ -152,9 +189,9 @@ function handleStudentMediumChange(event) {
 
 
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Email</span>
+					<span>Motto</span>
 					<Input
-					bind:value={data.email}
+					bind:value={data.motto}
 						name="email"
 						type="email"
 						class="border outline-none"
@@ -163,9 +200,9 @@ function handleStudentMediumChange(event) {
 				</Label>
 
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Accreditation</span>
+					<span>Description</span>
 					<Input
-					bind:value={data.teacher_institution_accreditation}
+					bind:value={data.description}
 						name="student_id"
 						type="text"
 						class="border outline-none"
@@ -176,9 +213,9 @@ function handleStudentMediumChange(event) {
 
 
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Designation</span>
+					<span>Total Students</span>
 					<Input
-					bind:value={data.teacher_designation}
+					bind:value={data.total_students}
 						name="student_id"
 						type="text"
 						class="border outline-none"
@@ -191,15 +228,50 @@ function handleStudentMediumChange(event) {
 
 
 
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Password</span>
-					<Input bind:value={data.password}
-						name="password"
-						class="border outline-none"
-						placeholder="e.g. React Developer"
-						required
-					/>
+                <Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span></span>
+					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
+					<div class="pt-5">
+						<Button >{club_type_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							<DropdownItem  on:click={() => handleClubTypeChange('school')}>School</DropdownItem>
+							<DropdownItem  on:click={() => handleClubTypeChange('sponsor')}>Sponsor</DropdownItem>
+						</Dropdown>
+					</div>
 				</Label>
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Teacher</span>
+					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
+					<span></span>
+
+					<div class="pt-5">
+						<Button >{teacher_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							{#each teacherData as user}
+								<DropdownItem  on:click={() => handleTeacherSelect(user?.id,user?.name)}>{user?.name}, {user?.teacher_institution_accreditation}</DropdownItem>
+							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
+							{/each}
+						</Dropdown>
+					</div>
+				</Label>
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Teacher</span>
+					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
+					<span></span>
+
+					<div class="pt-5">
+						<Button >{sponsor_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							{#each sponsorData as user}
+								<DropdownItem  on:click={() => handleSponsorSelect(user?.id,user?.name)}>{user?.name}, {user?.email}</DropdownItem>
+							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
+							{/each}
+						</Dropdown>
+					</div>
+				</Label>
+
 
 
 
@@ -210,6 +282,6 @@ function handleStudentMediumChange(event) {
 
 	<!-- Modal footer -->
 	<div slot="footer">
-		<Button on:click = {handleSubmit}>{Object.keys(data).length ? 'Save all' : 'Add user'}</Button>
+		<Button on:click = {handleSubmit}>{Object.keys(data).length ? 'Save all' : 'Add teacher'}</Button>
 	</div>
 </Modal>

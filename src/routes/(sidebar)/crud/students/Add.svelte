@@ -9,8 +9,8 @@
 
 	let inputValue;
 	let token;
-	let user_label="Select School";
 	let student_medium_label="Student Medium";
+	let user_label="Select School";
 	let is_admin_label="Is Admin";
 	const handleSchoolSelect = (id,name) => {
 	user_label=name
@@ -59,6 +59,7 @@ function handleStudentMediumChange(event) {
     console.log(data);
     //console.log(data.id);
 	console.log(token);
+	data.user_type = "student"
 
 
     try {
@@ -75,7 +76,6 @@ function handleStudentMediumChange(event) {
         // Assigning the created_by_id to data
         data.created_by_id = createdById;
 		data.created_by_account_type = "admin";
-		data.user_type = "teacher"
 
 
         const response = await axios.post('http://localhost:3000/admin/userTeacherStudentRegistration/', data, {
@@ -99,8 +99,9 @@ function handleStudentMediumChange(event) {
 			if (el) el.value = data[key];
 		}
 	}
-	1;
-	let  schoolData=[];
+	;
+	let schoolData = [];
+
 	onMount(async () => {
   // Retrieve the token from session storage
   //const token = sessionStorage.getItem('token');
@@ -117,12 +118,13 @@ function handleStudentMediumChange(event) {
   
 
 
+
 });
 </script>
 
 <Modal
 	bind:open
-	title={Object.keys(data).length ? 'Add new user' : 'Add new user'}
+	title={Object.keys(data).length ? 'Edit user' : 'Add new user'}
 	size="md"
 	class="m-4"
 >
@@ -134,6 +136,7 @@ function handleStudentMediumChange(event) {
 					<span>Name</span>
 					<Input bind:value={data.name} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
 				</Label>
+
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>School</span>
 					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
@@ -150,7 +153,6 @@ function handleStudentMediumChange(event) {
 					</div>
 				</Label>
 
-
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Email</span>
 					<Input
@@ -163,30 +165,26 @@ function handleStudentMediumChange(event) {
 				</Label>
 
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Accreditation</span>
+					<span>Student ID</span>
 					<Input
-					bind:value={data.teacher_institution_accreditation}
+					bind:value={data.student_id}
 						name="student_id"
 						type="text"
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
-
-
-
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Designation</span>
-					<Input
-					bind:value={data.teacher_designation}
-						name="student_id"
-						type="text"
-						class="border outline-none"
-						placeholder="e.g. bonnie@flowbite.com"
-					/>
+					<span></span>
+					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
+					<div class="pt-5">
+						<Button >{student_medium_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							<DropdownItem  on:click={() => handleStudentMediumChange('Bangla')}>Bangla</DropdownItem>
+							<DropdownItem  on:click={() => handleStudentMediumChange('English')}>English</DropdownItem>
+						</Dropdown>
+					</div>
 				</Label>
-
-
 
 
 
