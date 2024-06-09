@@ -24,7 +24,7 @@
 		class="mt-4 flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6"
 	>
 		<LastRange />
-		<More title="Sales Report" href="#top" />
+		<!-- <More title="Sales Report" href="#top" /> -->
 	</div>
 </Card>
 

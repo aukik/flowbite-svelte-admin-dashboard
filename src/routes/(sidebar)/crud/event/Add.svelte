@@ -11,7 +11,7 @@
 	let inputValue;
 	let token;
 	let user_label="Select Club";
-	let event_type_label="Club Type";
+	let event_type_label="Event Type";
 	let is_admin_label="Is Admin";
 	const handleClubSelect = (id,name) => {
 	user_label=name
@@ -296,6 +296,6 @@ function handleEventTypeChange(event) {
 
 	<!-- Modal footer -->
 	<div slot="footer">
-		<Button on:click = {handleSubmit}>{Object.keys(data).length ? 'Save all' : 'Add teacher'}</Button>
+		<Button on:click = {handleSubmit}>{Object.keys(data).length ? 'Save all' : 'Add Event'}</Button>
 	</div>
 </Modal>

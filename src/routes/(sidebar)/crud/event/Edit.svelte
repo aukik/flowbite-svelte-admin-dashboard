@@ -7,15 +7,18 @@
 
 	export let data: Record<string, string> = {};
 
-
+	let  clubData=[];
 	
-	let user_label="Select Club";
-	let club_type_label="Select Type";
+	let user_label= data?.club?.club_name;
+	console.log(user_label);
+	
 	let is_admin_label="Is Admin";
 	const handleClubSelect = (id,name) => {
 	user_label=name
 	data.clubId=id
+	data.club.club_name = name
 }
+
 	let teacher_label = "Select Teacher";
 	let sponsor_label = "Select Sponsor";
 	let student_medium_label = "Select Type"
@@ -78,10 +81,10 @@ let event_type_label = data?.event_type;
     console.log(data);
     console.log(data.id);
 	console.log(token);
-	data.user_type = "teacher"
+	
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/clubUpdate/', data, {
+        const response = await axios.post('http://localhost:3000/admin/eventUpdate/', data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -113,17 +116,17 @@ let event_type_label = data?.event_type;
   token = getCookie('token');
   console.log("token",token);
 
-  let  clubData=[];
+	user_label = data?.club?.club_name;
+	
 	let teacherData = [];
 	let sponsorData = [];
 
-	onMount(async () => {
+
   // Retrieve the token from session storage
   //const token = sessionStorage.getItem('token');
   event_type_label = data?.event_type
+	
 
-  token = getCookie('token');
-  console.log("token",token);
   const response= await axios.get('http://localhost:3000/admin/allclubData/', {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -133,7 +136,7 @@ let event_type_label = data?.event_type;
 				console.log(clubData)
 
 
-});
+
   
 
 
@@ -147,7 +150,7 @@ afterUpdate(() => {
 				student_medium_label = "Private";
 			}
 		}
-
+		
 		if (open) {
 			console.log("-----------------------{}")
 			console.log(data.is_admin);
@@ -188,7 +191,7 @@ afterUpdate(() => {
 					<span></span>
 
 					<div class="pt-5">
-						<Button >{user_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Button >{data.club.club_name}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
 						<Dropdown>
 							{#each clubData as user}
 								<DropdownItem  on:click={() => handleClubSelect(user?.id,user?.club_name)}>{user?.club_name}, {user?.motto}</DropdownItem>
@@ -261,7 +264,7 @@ afterUpdate(() => {
 					<span></span>
 					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
 					<div class="pt-5">
-						<Button >{event_type_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Button >{data.event_type}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
 						<Dropdown>
 							<DropdownItem  on:click={() => handleEventTypeChange('public')}>public</DropdownItem>
 							<DropdownItem  on:click={() => handleEventTypeChange('private')}>private</DropdownItem>

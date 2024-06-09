@@ -101,7 +101,7 @@ function handleAccountTypeChange(event) {
 
   token = getCookie('token');
   console.log("token",token);
-  
+
 
 
 });
@@ -109,7 +109,7 @@ function handleAccountTypeChange(event) {
 
 <Modal
 	bind:open
-	title={Object.keys(data).length ? 'Edit user' : 'Add new user'}
+	title={Object.keys(data).length ? 'Edit user' : 'Add new admin'}
 	size="md"
 	class="m-4"
 >
@@ -156,6 +156,6 @@ function handleAccountTypeChange(event) {
 
 	<!-- Modal footer -->
 	<div slot="footer">
-		<Button on:click = {handleSubmit}>{Object.keys(data).length ? 'Save all' : 'Add user'}</Button>
+		<Button on:click = {handleSubmit}>{Object.keys(data).length ? 'Save all' : 'Add Admin'}</Button>
 	</div>
 </Modal>

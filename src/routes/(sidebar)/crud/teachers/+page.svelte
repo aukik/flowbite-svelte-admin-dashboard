@@ -183,7 +183,7 @@ onMount(async () => {
 			<BreadcrumbItem>List</BreadcrumbItem>
 		</Breadcrumb>
 		<Heading tag="h1" class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
-			All users
+			All teachers
 		</Heading>
 
 		<Toolbar embedded class="w-full py-4 text-gray-500  dark:text-gray-400">
@@ -221,7 +221,7 @@ onMount(async () => {
 					class="gap-2 whitespace-nowrap px-3"
 					on:click={() => ((current_user = {}), (addUser = true))}
 				>
-					<PlusOutline size="sm" />Add user
+					<PlusOutline size="sm" />Add teacher
 				</Button>
 				<!-- <Button size="sm" color="alternative" class="gap-2 px-3">
 					<DownloadSolid size="md" class="-ml-1" />Export
@@ -260,7 +260,7 @@ onMount(async () => {
 							class="gap-2 px-3"
 							on:click={() => ((current_user = user), (openUser = true))}
 						>
-							<EditOutline size="sm" /> Edit user
+							<EditOutline size="sm" /> Edit
 						</Button>
 						<Button
 							color="red"
@@ -268,7 +268,7 @@ onMount(async () => {
 							class="gap-2 px-3"
 							on:click={() => ((current_user = user), (openDelete = true))}
 						>
-							<TrashBinSolid size="sm" /> Delete user
+							<TrashBinSolid size="sm" /> Delete
 						</Button>
 					</TableBodyCell>
 				</TableBodyRow>

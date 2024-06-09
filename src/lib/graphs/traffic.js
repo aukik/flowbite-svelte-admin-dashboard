@@ -13,7 +13,7 @@ export default (dark) => {
 
 	return {
 		series: [70, 5, 25],
-		labels: ['Desktop', 'Tablet', 'Phone'],
+		labels: ['Student', 'Sponsors', 'Teacher'],
 		colors: ['#16BDCA', '#FDBA8C', '#1A56DB'],
 		chart: {
 			type: 'donut',

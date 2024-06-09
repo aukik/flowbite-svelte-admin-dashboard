@@ -114,7 +114,7 @@ function handleStudentMediumChange(event) {
         });
 				schoolData=response.data.result
 				console.log(schoolData)
-  
+
 
 
 });
@@ -122,7 +122,7 @@ function handleStudentMediumChange(event) {
 
 <Modal
 	bind:open
-	title={Object.keys(data).length ? 'Add new user' : 'Add new user'}
+	title={Object.keys(data).length ? 'Add new user' : 'Add new teacher'}
 	size="md"
 	class="m-4"
 >
@@ -210,6 +210,6 @@ function handleStudentMediumChange(event) {
 
 	<!-- Modal footer -->
 	<div slot="footer">
-		<Button on:click = {handleSubmit}>{Object.keys(data).length ? 'Save all' : 'Add user'}</Button>
+		<Button on:click = {handleSubmit}>{Object.keys(data).length ? 'Save all' : 'Add teacher'}</Button>
 	</div>
 </Modal>

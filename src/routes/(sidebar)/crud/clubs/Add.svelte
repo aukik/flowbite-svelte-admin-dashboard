@@ -240,24 +240,9 @@ function handleClubTypeChange(event) {
 					</div>
 				</Label>
 
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Teacher</span>
-					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
-					<span></span>
-
-					<div class="pt-5">
-						<Button >{teacher_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
-							{#each teacherData as user}
-								<DropdownItem  on:click={() => handleTeacherSelect(user?.id,user?.name)}>{user?.name}, {user?.teacher_institution_accreditation}</DropdownItem>
-							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
-							{/each}
-						</Dropdown>
-					</div>
-				</Label>
 
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Teacher</span>
+					<span>Sponsor</span>
 					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
 					<span></span>
 

@@ -7,7 +7,9 @@
 
 	export let data: Record<string, string> = {};
 
-
+	let  schoolData=[];
+	let teacherData = [];
+	let sponsorData = [];
 	
 	let user_label="Select School";
 	let club_type_label="Club Type";
@@ -15,13 +17,15 @@
 	const handleSchoolSelect = (id,name) => {
 	user_label=name
 	data.schoolId=id
+
 }
 	let teacher_label = "Select Teacher";
 	let sponsor_label = "Select Sponsor";
 
 	const handleTeacherSelect = (id,name) =>{
 		teacher_label = name,
-		data.teacherId = id
+		data.teacherId = id,
+		data.teacherName = name
 	}
 
 	const handleSponsorSelect = (id, name) => {
@@ -44,7 +48,16 @@
     return null;
   }
 
-
+  function handleClubTypeChange(event) {
+	// console.log(event)
+    data.club_type = event;
+		// console.log(data)
+		if(event==="school"){
+			club_type_label="School";
+		}else{
+			club_type_label="Sponsor";
+		}
+  }
   function handleStudentMediumChange(event) {
 	console.log("________event:::::")
 	console.log(event)
@@ -114,16 +127,12 @@
   token = getCookie('token');
   console.log("token",token);
 
-  let  schoolData=[];
-	let teacherData = [];
-	let sponsorData = [];
 
-	onMount(async () => {
+
+	
   // Retrieve the token from session storage
   //const token = sessionStorage.getItem('token');
 
-  token = getCookie('token');
-  console.log("token",token);
   const response= await axios.get('http://localhost:3000/admin/allschoolData/', {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -147,8 +156,7 @@
 				console.log(sponsorData)
 
 
-});
-  
+
 
 
 });
@@ -217,6 +225,21 @@ afterUpdate(() => {
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
+
+
+                <Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Club Type</span>
+					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
+					<div class="pt-5">
+						<Button >{data.club_type}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							<DropdownItem  on:click={() => handleClubTypeChange('school')}>School</DropdownItem>
+							<DropdownItem  on:click={() => handleClubTypeChange('sponsor')}>Sponsor</DropdownItem>
+						</Dropdown>
+					</div>
+				</Label>
+
+
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Total Students</span>
 					<Input
@@ -228,6 +251,36 @@ afterUpdate(() => {
 					/>
 				</Label>
 				
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Teacher</span>
+					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
+					<span></span>
+
+					<div class="pt-5">
+						<Button >{teacher_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							{#each data.school.teacher as user}
+								<DropdownItem  on:click={() => handleTeacherSelect(user?.id,user?.name)}>{user?.name}, {user?.teacher_designation}</DropdownItem>
+							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
+							{/each}
+						</Dropdown>
+					</div>
+				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Sponsor</span>
+					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
+					<span></span>
+
+					<div class="pt-5">
+						<Button >{sponsor_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							{#each sponsorData as user}
+								<DropdownItem  on:click={() => handleSponsorSelect(user?.id,user?.name)}>{user?.name}, {user?.email}</DropdownItem>
+							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
+							{/each}
+						</Dropdown>
+					</div>
+				</Label>
 
 
 

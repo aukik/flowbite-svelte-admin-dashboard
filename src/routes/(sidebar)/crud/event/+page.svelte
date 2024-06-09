@@ -183,7 +183,7 @@ onMount(async () => {
 			<BreadcrumbItem>List</BreadcrumbItem>
 		</Breadcrumb>
 		<Heading tag="h1" class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
-			All Clubs
+			All Events
 		</Heading>
 
 		<Toolbar embedded class="w-full py-4 text-gray-500  dark:text-gray-400">
@@ -221,7 +221,7 @@ onMount(async () => {
 					class="gap-2 whitespace-nowrap px-3"
 					on:click={() => ((current_user = {}), (addUser = true))}
 				>
-					<PlusOutline size="sm" />Add a Club
+					<PlusOutline size="sm" />Add a Event
 				</Button>
 				<!-- <Button size="sm" color="alternative" class="gap-2 px-3">
 					<DownloadSolid size="md" class="-ml-1" />Export
@@ -232,7 +232,7 @@ onMount(async () => {
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
-			{#each ['Name', 'Motto','Description', 'Fee', 'People joined','Event Type','Location','Actions'] as title}
+			{#each ['Name', 'Motto','Club', 'Fee', 'People joined','Event Type','Location','Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -243,7 +243,7 @@ onMount(async () => {
 					<TableBodyCell class="p-4">{user.event_name||"N/A"}</TableBodyCell>
 
 					<TableBodyCell class="p-4">{user.motto||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.description||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.club.club_name||"N/A"}</TableBodyCell>
 					<TableBodyCell class="p-4">{user.event_fee||"N/A"}</TableBodyCell>
 					
 					<TableBodyCell class="p-4">{user.people_joined||"N/A"}</TableBodyCell>
