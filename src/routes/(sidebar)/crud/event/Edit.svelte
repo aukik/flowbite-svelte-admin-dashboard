@@ -172,7 +172,7 @@ afterUpdate(() => {
 <Modal
 	bind:open
 
-	title={Object.keys(data).length ? 'Edit user' : 'Add new user'}
+	title={Object.keys(data).length ? 'Edit Event' : 'Add new user'}
 	
 	size="md"
 	class="m-4"
@@ -281,7 +281,7 @@ afterUpdate(() => {
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
+				<!-- <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Start Date</span>
 					<Input
 					bind:value={data.host_start_date}
@@ -300,7 +300,7 @@ afterUpdate(() => {
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
-				</Label>
+				</Label> -->
 
 
 

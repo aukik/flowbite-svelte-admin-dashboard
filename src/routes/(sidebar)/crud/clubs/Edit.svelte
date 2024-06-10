@@ -191,7 +191,7 @@ afterUpdate(() => {
 <Modal
 	bind:open
 
-	title={Object.keys(data).length ? 'Edit user' : 'Add new user'}
+	title={Object.keys(data).length ? 'Edit Club' : 'Add new user'}
 	
 	size="md"
 	class="m-4"

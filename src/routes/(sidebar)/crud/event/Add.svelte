@@ -142,7 +142,7 @@ function handleEventTypeChange(event) {
 
 <Modal
 	bind:open
-	title={Object.keys(data).length ? 'Add new user' : 'Add new Club'}
+	title={Object.keys(data).length ? 'Add new user' : 'Add New Event'}
 	size="md"
 	class="m-4"
 >
@@ -263,7 +263,7 @@ function handleEventTypeChange(event) {
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
+				<!-- <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Start Date</span>
 					<Input
 					bind:value={data.host_start_date}
@@ -282,7 +282,7 @@ function handleEventTypeChange(event) {
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
-				</Label>
+				</Label> -->
 
 
 
