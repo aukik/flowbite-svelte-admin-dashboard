@@ -70,6 +70,7 @@ function handleClubTypeChange(event) {
     // Assuming `data` contains the payload you want to send in the request
     console.log("Inside submit");
     console.log(data);
+	console.log(data.schoolId);
     //console.log(data.id);
 	console.log(token);
 
