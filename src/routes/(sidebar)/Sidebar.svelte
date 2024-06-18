@@ -76,7 +76,7 @@
 			icon: BrainSolid,
 			children: {
 
-				Workshop: '/crud/users',
+				Workshop: '/crud/workshops',
 				Club: '/crud/clubs',
 				Event: '/crud/event'
 			}
