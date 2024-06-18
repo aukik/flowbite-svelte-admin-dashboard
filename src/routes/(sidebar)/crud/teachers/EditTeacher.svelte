@@ -6,11 +6,19 @@
 	export let open: boolean = false; // modal control
 
 	export let data: Record<string, string> = {};
-	
+
+
+	let schoolData = [];
 	let student_medium_label="Account Type";
 	let is_admin_label="Is Admin";
 	let inputValue;
 	let token;
+	let user_label = "Select School";
+	const handleSchoolSelect = (id,name) => {
+	user_label=name
+	data.schoolId=id
+	data.schoolName = name
+}
 	function getCookie(name) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
@@ -91,6 +99,13 @@
 
   token = getCookie('token');
   console.log("token",token);
+  const response= await axios.get('http://localhost:3000/admin/allschoolData/', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+				schoolData=response.data.result
+				console.log(schoolData)
   
 
 
@@ -126,7 +141,7 @@ afterUpdate(() => {
 <Modal
 	bind:open
 
-	title={Object.keys(data).length ? 'Edit user' : 'Add new user'}
+	title={Object.keys(data).length ? 'Edit Teacher' : 'Add new user'}
 	
 	size="md"
 	class="m-4"
@@ -159,6 +174,22 @@ afterUpdate(() => {
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
+				</Label>
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>School</span>
+					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
+					<span></span>
+
+					<div class="pt-5">
+						<Button >{data.schoolName}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							{#each schoolData as user}
+								<DropdownItem  on:click={() => handleSchoolSelect(user?.id,user?.name)}>{user?.name}, {user?.location}</DropdownItem>
+							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
+							{/each}
+						</Dropdown>
+					</div>
 				</Label>
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Designation</span>
