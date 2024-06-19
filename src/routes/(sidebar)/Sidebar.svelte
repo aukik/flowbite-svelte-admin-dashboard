@@ -81,6 +81,15 @@
 				Event: '/crud/event'
 			}
 		},
+		{
+			name: 'Institution',
+			icon: WandMagicSparklesOutline,
+			children: {
+
+				School: '/crud/schools',
+				Sponsor: '/crud/sponsors'
+			}
+		},
 		// { name: 'Settings', icon: CogOutline, href: '/settings' },
 		// {
 		// 	name: 'Pages',
