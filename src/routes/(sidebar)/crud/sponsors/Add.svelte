@@ -88,7 +88,7 @@
 
 <Modal
 	bind:open
-	title={Object.keys(data).length ? 'Edit user' : 'Add new student'}
+	title={Object.keys(data).length ? 'Edit user' : 'Add new Sponsor'}
 	size="md"
 	class="m-4"
 >
