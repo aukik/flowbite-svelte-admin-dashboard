@@ -160,7 +160,7 @@ function handleClubTypeChange(event) {
 
 <Modal
 	bind:open
-	title={Object.keys(data).length ? 'Add new user' : 'Add Club'}
+	title={Object.keys(data).length ? 'Add new user' : 'Add  new Club'}
 	size="md"
 	class="m-4"
 >
