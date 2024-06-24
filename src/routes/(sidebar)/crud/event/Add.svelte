@@ -30,7 +30,8 @@
 		data.sponsorId = id
 	}
 
-
+	const apiUrl = process.env.VITE_API_URL;
+	
 function handleEventTypeChange(event) {
 	// console.log(event)
     data.event_type = event;
@@ -73,10 +74,10 @@ function handleEventTypeChange(event) {
     console.log(data);
     //console.log(data.id);
 	console.log(token);
-
+	let adminUserData = apiUrl + '/admin/userData';
 
     try {
-        const userDataResponse = await axios.get('http://localhost:3000/admin/userData', {
+        const userDataResponse = await axios.get(adminUserData, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -92,7 +93,7 @@ function handleEventTypeChange(event) {
 		
 
 		
-		let  endpoint = 'http://localhost:3000/admin/eventRegistration/';
+		let  endpoint = apiUrl +  '/admin/eventRegistration/';
 
 
     // Making the POST request to the appropriate endpoint
@@ -128,7 +129,8 @@ function handleEventTypeChange(event) {
 
   token = getCookie('token');
   console.log("token",token);
-  const response= await axios.get('http://localhost:3000/admin/allclubData/', {
+  let allClubData_api = apiUrl + '/admin/allclubData/' ;
+  const response= await axios.get(allClubData_api, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

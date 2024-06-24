@@ -12,6 +12,7 @@
 	let inputValue;
 	let token;
 	let schoolData = [];
+	const apiUrl = process.env.VITE_API_URL;
 	function getCookie(name) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
@@ -65,7 +66,7 @@
 	data.user_type = "student"
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/userTeacherStudentUpdate/', data, {
+        const response = await axios.post(`${apiUrl}/admin/userTeacherStudentUpdate/`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -96,7 +97,7 @@
 
   token = getCookie('token');
   console.log("token",token);
-  const response= await axios.get('http://localhost:3000/admin/allschoolData/', {
+  const response= await axios.get(`${apiUrl}/admin/allschoolData/`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

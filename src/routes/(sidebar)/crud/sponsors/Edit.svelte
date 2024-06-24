@@ -11,6 +11,7 @@
 	let is_admin_label="Is Admin";
 	let inputValue;
 	let token;
+	const apiUrl = process.env.VITE_API_URL;
 
 	function getCookie(name) {
     const cookies = document.cookie.split(';');
@@ -37,7 +38,7 @@
 	data.user_type = "student"
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/sponsorUpdate/', data, {
+        const response = await axios.post(`${apiUrl}/admin/sponsorUpdate/`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

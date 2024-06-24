@@ -7,7 +7,7 @@
 	export let data: Record<string, string> = {};
 	let token;
 
-
+  const apiUrl = process.env.VITE_API_URL;
 	function getCookie(name) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
@@ -28,9 +28,9 @@
     console.log(data.id);
 	console.log(token);
   data.user_type = "student"
-
+  let eventDelete_api = apiUrl + '/admin/eventDelete/' ; 
     try {
-        const response = await axios.post('http://localhost:3000/admin/eventDelete/', data, {
+        const response = await axios.post(eventDelete_api, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

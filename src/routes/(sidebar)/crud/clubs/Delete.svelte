@@ -7,6 +7,9 @@
 	export let data: Record<string, string> = {};
 	let token;
 
+  const apiUrl = process.env.VITE_API_URL;
+  console.log('API URL:', apiUrl);
+  let clubDelete_api = apiUrl +'/admin/clubDelete/'
 
 	function getCookie(name) {
     const cookies = document.cookie.split(';');
@@ -30,7 +33,7 @@
   data.user_type = "student"
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/clubDelete/', data, {
+        const response = await axios.post(clubDelete_api, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

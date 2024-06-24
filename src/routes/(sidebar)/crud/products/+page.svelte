@@ -13,7 +13,7 @@
 	import MetaTag from '../../../utils/MetaTag.svelte';
 	import { onMount } from 'svelte';
 	import axios from 'axios';
-
+	const apiUrl = process.env.VITE_API_URL;
 	let hidden: boolean = true; // modal control
 	let drawerComponent: ComponentType = Product; // drawer component
 	let current_user: any = {};

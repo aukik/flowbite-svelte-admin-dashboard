@@ -7,7 +7,7 @@
 
 	export let data: Record<string, string> = {};
 
-
+	const apiUrl = process.env.VITE_API_URL;
 	let schoolData = [];
 	let student_medium_label="Account Type";
 	let is_admin_label="Is Admin";
@@ -68,7 +68,7 @@
 	data.user_type = "teacher"
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/userTeacherStudentUpdate/', data, {
+        const response = await axios.post(`${apiUrl}/admin/userTeacherStudentUpdate/`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -99,7 +99,7 @@
 
   token = getCookie('token');
   console.log("token",token);
-  const response= await axios.get('http://localhost:3000/admin/allschoolData/', {
+  const response= await axios.get(`${apiUrl}/admin/allschoolData/`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

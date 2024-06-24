@@ -27,7 +27,7 @@
 	import MetaTag from '../../../utils/MetaTag.svelte';
 	import { onMount } from 'svelte';
 	import axios from 'axios';
-
+	const apiUrl = process.env.VITE_API_URL;
 
 	function setCookie(name, value, days) {
     let expires = "";
@@ -51,7 +51,7 @@
   }
 
  // Define the base URL for the API
- const BASE_URL = 'http://localhost:3000';
+ const BASE_URL = apiUrl;
 
 // Define userData variable
 let userData = [];
@@ -75,7 +75,7 @@ const fetchAllUserData = async (token) => {
 };
 
 
-const BASE_URL_refreshtoken = 'http://localhost:3000';
+const BASE_URL_refreshtoken = apiUrl;
 
 // Function to get refresh token
 const getRefreshToken = async () => {

@@ -5,7 +5,7 @@
 	export let open: boolean = false; // modal control
 
 	export let data: Record<string, string> = {};
-
+	const apiUrl = process.env.VITE_API_URL;
 	let inputValue;
 	let token;
 	function getCookie(name) {

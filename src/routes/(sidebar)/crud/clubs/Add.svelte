@@ -28,6 +28,8 @@
 		sponsor_label = name,
 		data.sponsorId = id
 	}
+	const apiUrl = process.env.VITE_API_URL;
+	console.log('API URL:', apiUrl);
 
 
 function handleClubTypeChange(event) {
@@ -74,9 +76,9 @@ function handleClubTypeChange(event) {
     //console.log(data.id);
 	console.log(token);
 
-
+	let userdata_api = apiUrl + '/admin/userData';
     try {
-        const userDataResponse = await axios.get('http://localhost:3000/admin/userData', {
+        const userDataResponse = await axios.get(userdata_api, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -94,9 +96,9 @@ function handleClubTypeChange(event) {
 		
 		let endpoint;
     if (data.club_type === 'school') {
-        endpoint = 'http://localhost:3000/admin/clubRegistrationSchool/';
+        endpoint = apiUrl + '/admin/clubRegistrationSchool/';
     } else {
-        endpoint = 'http://localhost:3000/admin/clubRegistrationSponsor/';
+        endpoint = apiUrl + '/admin/clubRegistrationSponsor/';
     }
 
     // Making the POST request to the appropriate endpoint
@@ -132,21 +134,25 @@ function handleClubTypeChange(event) {
 
   token = getCookie('token');
   console.log("token",token);
-  const response= await axios.get('http://localhost:3000/admin/allschoolData/', {
+  let allschool_api = apiUrl + '/admin/allschoolData/';
+  let allteacher_api = apiUrl + '/admin/allteacherData/';
+  let allsponsor_api = apiUrl + '/admin/allsponsorData/';
+
+  const response= await axios.get(allschool_api, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
 				schoolData=response.data.result
 				console.log(schoolData)
-	const responseteacher= await axios.get('http://localhost:3000/admin/allteacherData/', {
+	const responseteacher= await axios.get(allteacher_api, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
 				teacherData=responseteacher.data.result
 				console.log(teacherData)
-	const responsesponsor= await axios.get('http://localhost:3000/admin/allsponsorData/', {
+	const responsesponsor= await axios.get(allsponsor_api, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

@@ -6,6 +6,7 @@
 	import { Dropdown, DropdownItem, DropdownDivider, DropdownHeader} from 'flowbite-svelte';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	export let data: Record<string, string> = {};
+	const apiUrl = process.env.VITE_API_URL;
 let user_label="Select User";
 	let inputValue;
 	let token;

@@ -38,6 +38,7 @@
     }
     document.cookie = name + "=" + (value || "") + expires + "; path=/";
   }
+ 
 
   function getCookie(name) {
     const cookies = document.cookie.split(';');
@@ -49,9 +50,11 @@
     }
     return null;
   }
+  const apiUrl = process.env.VITE_API_URL;
+//   console.log('API URL:', apiUrl);
 
  // Define the base URL for the API
- const BASE_URL = 'http://localhost:3000';
+ const BASE_URL = apiUrl;
 
 // Define userData variable
 let userData = [];
@@ -75,7 +78,7 @@ const fetchAllUserData = async (token) => {
 };
 
 
-const BASE_URL_refreshtoken = 'http://localhost:3000';
+const BASE_URL_refreshtoken = apiUrl;
 
 // Function to get refresh token
 const getRefreshToken = async () => {

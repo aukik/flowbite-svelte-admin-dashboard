@@ -6,6 +6,7 @@
 	export let open: boolean = false; // modal control
 	export let data: Record<string, string> = {};
 	let token;
+  const apiUrl = process.env.VITE_API_URL;
 
 
 	function getCookie(name) {
@@ -30,7 +31,7 @@
   data.user_type = "student"
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/userTeacherStudentDelete/', data, {
+        const response = await axios.post(`${apiUrl}/admin/userTeacherStudentDelete/`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

@@ -19,6 +19,8 @@
 	data.schoolId=id
 
 }
+const apiUrl = process.env.VITE_API_URL;
+console.log('API URL:', apiUrl);
 	let teacher_label = "Select Teacher";
 	let sponsor_label = "Select Sponsor";
 
@@ -93,9 +95,9 @@
     console.log(data.id);
 	console.log(token);
 	data.user_type = "teacher"
-
+	let clubUpdate_api = apiUrl + '/admin/clubUpdate/';
     try {
-        const response = await axios.post('http://localhost:3000/admin/clubUpdate/', data, {
+        const response = await axios.post(clubUpdate_api, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -126,28 +128,30 @@
 
   token = getCookie('token');
   console.log("token",token);
-
+  let allschool_api = apiUrl + '/admin/allschoolData/';
+  let allteacher_api = apiUrl + '/admin/allteacherData/';
+  let allsponsor_api = apiUrl + '/admin/allsponsorData/';
 
 
 	
   // Retrieve the token from session storage
   //const token = sessionStorage.getItem('token');
 
-  const response= await axios.get('http://localhost:3000/admin/allschoolData/', {
+  const response= await axios.get(allschool_api, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
 				schoolData=response.data.result
 				console.log(schoolData)
-	const responseteacher= await axios.get('http://localhost:3000/admin/allteacherData/', {
+	const responseteacher= await axios.get(allteacher_api, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
 				teacherData=responseteacher.data.result
 				console.log(teacherData)
-	const responsesponsor= await axios.get('http://localhost:3000/admin/allsponsorData/', {
+	const responsesponsor= await axios.get(allsponsor_api, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

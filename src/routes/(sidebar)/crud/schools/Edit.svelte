@@ -6,6 +6,7 @@
 	export let open: boolean = false; // modal control
 
 	export let data: Record<string, string> = {};
+	const apiUrl = process.env.VITE_API_URL;
 	let user_label = "Select School";
 	let student_medium_label="Account Type";
 	let is_admin_label="Is Admin";
@@ -37,7 +38,7 @@
 	data.user_type = "student"
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/schoolUpdate/', data, {
+        const response = await axios.post(`${apiUrl}/admin/schoolUpdate/`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

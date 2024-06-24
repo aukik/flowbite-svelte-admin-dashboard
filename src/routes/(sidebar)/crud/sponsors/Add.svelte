@@ -6,7 +6,7 @@
 	export let open: boolean = false; // modal control
 
 	export let data: Record<string, string> = {};
-
+	const apiUrl = process.env.VITE_API_URL;
 
 	let token;
 
@@ -33,7 +33,7 @@
 
 
     try {
-        const userDataResponse = await axios.get('http://localhost:3000/admin/userData', {
+        const userDataResponse = await axios.get(`${apiUrl}/admin/userData`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -48,7 +48,7 @@
 		data.created_by_account_type = "admin";
 
 
-        const response = await axios.post('http://localhost:3000/admin/sponsorRegistration/', data, {
+        const response = await axios.post(`${apiUrl}/admin/sponsorRegistration/`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

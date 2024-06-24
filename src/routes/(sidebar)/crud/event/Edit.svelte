@@ -8,7 +8,7 @@
 	export let data: Record<string, string> = {};
 
 	let  clubData=[];
-	
+	const apiUrl = process.env.VITE_API_URL;
 	let user_label= data?.club?.club_name;
 	console.log(user_label);
 	
@@ -81,10 +81,10 @@ let event_type_label = data?.event_type;
     console.log(data);
     console.log(data.id);
 	console.log(token);
-	
+	let eventUpdate_api = apiUrl + '/admin/eventUpdate/';
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/eventUpdate/', data, {
+        const response = await axios.post(eventUpdate_api, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -126,8 +126,8 @@ let event_type_label = data?.event_type;
   //const token = sessionStorage.getItem('token');
   event_type_label = data?.event_type
 	
-
-  const response= await axios.get('http://localhost:3000/admin/allclubData/', {
+  let allClubData_api = apiUrl + '/admin/allclubData/' ;
+  const response= await axios.get(allClubData_api, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

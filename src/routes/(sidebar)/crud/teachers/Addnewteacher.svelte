@@ -9,6 +9,7 @@
 
 	let inputValue;
 	let token;
+	const apiUrl = process.env.VITE_API_URL;
 	let user_label="Select School";
 	let student_medium_label="Student Medium";
 	let is_admin_label="Is Admin";
@@ -62,7 +63,7 @@ function handleStudentMediumChange(event) {
 
 
     try {
-        const userDataResponse = await axios.get('http://localhost:3000/admin/userData', {
+        const userDataResponse = await axios.get(`${apiUrl}/admin/userData`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -78,7 +79,7 @@ function handleStudentMediumChange(event) {
 		data.user_type = "teacher"
 
 
-        const response = await axios.post('http://localhost:3000/admin/userTeacherStudentRegistration/', data, {
+        const response = await axios.post(`${apiUrl}/admin/userTeacherStudentRegistration/`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -107,7 +108,7 @@ function handleStudentMediumChange(event) {
 
   token = getCookie('token');
   console.log("token",token);
-  const response= await axios.get('http://localhost:3000/admin/allschoolData/', {
+  const response= await axios.get(`${apiUrl}/admin/allschoolData/`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

@@ -8,6 +8,7 @@
 	export let data: Record<string, string> = {};
 
 	let inputValue;
+	const apiUrl = process.env.VITE_API_URL;
 	let token;
 	let account_type_label="Account Type";
 	let is_admin_label="Is Admin";
@@ -57,7 +58,7 @@ function handleAccountTypeChange(event) {
 
 
     try {
-        const userDataResponse = await axios.get('http://localhost:3000/admin/userData', {
+        const userDataResponse = await axios.get(`${apiUrl}/admin/userData`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -72,7 +73,7 @@ function handleAccountTypeChange(event) {
 		data.created_by_account_type = "admin";
 
 
-        const response = await axios.post('http://localhost:3000/admin/userRegistration/', data, {
+        const response = await axios.post(`${apiUrl}/admin/userRegistration/`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

@@ -8,6 +8,7 @@
 	export let data: Record<string, string> = {};
 
 	let inputValue;
+	const apiUrl = process.env.VITE_API_URL;
 	let token;
 	let user_label="Select Club";
 	let workshop_type_label="Workshop Type";
@@ -75,7 +76,7 @@ function handleWorkshopTypeChange(event) {
 
 
     try {
-        const userDataResponse = await axios.get('http://localhost:3000/admin/userData', {
+        const userDataResponse = await axios.get(`${apiUrl}/admin/userData`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -91,7 +92,7 @@ function handleWorkshopTypeChange(event) {
 		
 
 		
-		let  endpoint = 'http://localhost:3000/admin/workshopRegistration/';
+		let  endpoint = `${apiUrl}/admin/workshopRegistration/`;
     // if (data.club_type === 'school') {
     //     endpoint = 'http://localhost:3000/admin/clubRegistrationSchool/';
     // } else {
@@ -131,7 +132,7 @@ function handleWorkshopTypeChange(event) {
 
   token = getCookie('token');
   console.log("token",token);
-  const response= await axios.get('http://localhost:3000/admin/allclubData/', {
+  const response= await axios.get(`${apiUrl}/admin/allclubData/`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

@@ -8,6 +8,7 @@
 	export let data: Record<string, string> = {};
 
 	let  clubData=[];
+	const apiUrl = process.env.VITE_API_URL;
 	let teacherData = [];
 	let sponsorData = [];
 	let is_certificate_label="Certificate";
@@ -92,7 +93,7 @@
 	data.user_type = "teacher"
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/workshopUpdate/', data, {
+        const response = await axios.post(`${apiUrl}/admin/workshopUpdate/`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -132,7 +133,7 @@
 
   token = getCookie('token');
   console.log("token",token);
-  const response= await axios.get('http://localhost:3000/admin/allclubData/', {
+  const response= await axios.get(`${apiUrl}/admin/allclubData/`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

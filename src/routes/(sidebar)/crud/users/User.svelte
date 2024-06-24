@@ -4,9 +4,10 @@
 	import axios from 'axios';
 	import { onMount, afterUpdate} from 'svelte';
 	export let open: boolean = false; // modal control
-
+	
 	export let data: Record<string, string> = {};
 	
+	const apiUrl = process.env.VITE_API_URL;
 	let account_type_label="Account Type";
 	let is_admin_label="Is Admin";
 	let inputValue;
@@ -59,7 +60,7 @@
 	console.log(token);
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/userUpdate/', data, {
+        const response = await axios.post(`${apiUrl}/admin/userUpdate/`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
