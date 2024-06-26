@@ -76,7 +76,7 @@ let chartOptions = {
 console.log("GG");
 
 // Fetch data from the server
-fetch('process.env.VITE_API_URL/admin/weeklyStudentGain')
+fetch('http://localhost:3000/admin/weeklyStudentGain')
     .then(response => response.json())
     .then(data => {
         // Extracting result from the response
