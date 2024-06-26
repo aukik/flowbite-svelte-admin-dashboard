@@ -36,7 +36,7 @@ let user_label="Select User";
 
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/addPost/', data, {
+        const response = await axios.post(process.env.VITE_API_URL+'/admin/addPost/', data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -66,7 +66,7 @@ let user_label="Select User";
   // const token = sessionStorage.getItem('token');
 
   token = getCookie('token');
-	const response= await axios.get('http://localhost:3000/admin/alluserData/', {
+	const response= await axios.get(process.env.VITE_API_URL+'/admin/alluserData/', {
             headers: {
                 Authorization: `Bearer ${token}`
             }

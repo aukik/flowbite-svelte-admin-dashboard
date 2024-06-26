@@ -39,7 +39,7 @@
 	onMount(async () => {
 		document.addEventListener('dark', handler);
 		try {
-			const response = await fetch('http://localhost:3000/admin/dashboardStudent');
+			const response = await fetch(process.env.VITE_API_URL+'/admin/dashboardStudent');
 			const json = await response.json();
 			studentCount = json.result.currentWeekStudentCount;
 			percentageGain = json.result.percentageGain;
@@ -50,7 +50,7 @@
 		}
 
 		try {
-			const response = await fetch('http://localhost:3000/admin/dashboardTeacher');
+			const response = await fetch(process.env.VITE_API_URL+'/admin/dashboardTeacher');
 			const json = await response.json();
 			teacherCount = json.result.currentWeekTeacherCount;
 			percentageGainTeacher = json.result.percentageGain;

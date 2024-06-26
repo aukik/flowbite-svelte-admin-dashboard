@@ -29,7 +29,7 @@
 	console.log(token);
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/postUpdate/', data, {
+        const response = await axios.post(process.env.VITE_API_URL+'/admin/postUpdate/', data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
