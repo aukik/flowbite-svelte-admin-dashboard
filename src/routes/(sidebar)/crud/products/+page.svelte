@@ -44,7 +44,7 @@
     }
     document.cookie = name + "=" + (value || "") + expires + "; path=/";
   }
-  const BASE_URL = 'http://localhost:3000';
+  const BASE_URL = 'process.env.VITE_API_URL';
 
 // Define userData variable
 let userData = [];
@@ -68,7 +68,7 @@ const fetchAllUserData = async (token) => {
 };
 
 
-const BASE_URL_refreshtoken = 'http://localhost:3000';
+const BASE_URL_refreshtoken = 'process.env.VITE_API_URL';
 
 // Function to get refresh token
 const getRefreshToken = async () => {
@@ -227,7 +227,7 @@ onMount(async () => {
 
 						</div>
 					</TableBodyCell>
-					
+
 					<TableBodyCell
 						class="max-w-sm overflow-hidden truncate p-4 text-base font-normal text-gray-500 dark:text-gray-400 xl:max-w-xs"
 						>{post.text_content}</TableBodyCell

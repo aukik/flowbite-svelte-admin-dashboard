@@ -30,7 +30,7 @@
 	console.log(token);
 
     try {
-        const response = await axios.post('http://localhost:3000/admin/postDelete/', data, {
+        const response = await axios.post('process.env.VITE_API_URL/admin/postDelete/', data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

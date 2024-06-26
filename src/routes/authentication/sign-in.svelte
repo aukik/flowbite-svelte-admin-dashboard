@@ -43,7 +43,7 @@
     }
 
     try {
-        const response = await fetch('http://localhost:3000/admin/login', {
+        const response = await fetch('process.env.VITE_API_URL/admin/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -60,8 +60,8 @@
         // Store token and refresh token in session storage
        // sessionStorage.setItem('token', responseData.result.token);
        // sessionStorage.setItem('refreshToken', responseData.result.refreshToken);
-		setCookie('token', responseData.result.token, 7); 
-		setCookie('refreshToken', responseData.result.refreshToken, 7); 
+		setCookie('token', responseData.result.token, 7);
+		setCookie('refreshToken', responseData.result.refreshToken, 7);
 
         // Redirect or perform other actions upon successful login
         console.log('Login successful');

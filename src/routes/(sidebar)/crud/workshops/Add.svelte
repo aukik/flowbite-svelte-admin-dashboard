@@ -45,7 +45,7 @@ function handleWorkshopTypeChange(event) {
 
   function handleIsCertificateChange(event) {
     data.certificate = event === "true";
-    
+
     if (data.certificate) {
         is_certificate_label = "True";
     } else {
@@ -89,14 +89,14 @@ function handleWorkshopTypeChange(event) {
         // Assigning the created_by_id to data
         data.created_by_id = createdById;
 		data.created_by_account_type = "admin";
-		
 
-		
+
+
 		let  endpoint = `${apiUrl}/admin/workshopRegistration/`;
     // if (data.club_type === 'school') {
-    //     endpoint = 'http://localhost:3000/admin/clubRegistrationSchool/';
+    //     endpoint = 'process.env.VITE_API_URL/admin/clubRegistrationSchool/';
     // } else {
-    //     endpoint = 'http://localhost:3000/admin/clubRegistrationSponsor/';
+    //     endpoint = 'process.env.VITE_API_URL/admin/clubRegistrationSponsor/';
     // }
 
     // Making the POST request to the appropriate endpoint
