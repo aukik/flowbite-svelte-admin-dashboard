@@ -90,6 +90,15 @@
 				Sponsor: '/crud/sponsors'
 			}
 		},
+		{
+			name: 'Timeline',
+			icon: FileChartBarSolid,
+			children: {
+
+				Testimonial: '/crud/testimonials',
+				Sponsor: '/crud/sponsors'
+			}
+		},
 		// { name: 'Settings', icon: CogOutline, href: '/settings' },
 		// {
 		// 	name: 'Pages',
