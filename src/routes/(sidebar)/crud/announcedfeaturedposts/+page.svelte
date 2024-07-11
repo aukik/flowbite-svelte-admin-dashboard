@@ -27,7 +27,6 @@
 	import MetaTag from '../../../utils/MetaTag.svelte';
 	import { onMount } from 'svelte';
 	import axios from 'axios';
-	import { writable } from 'svelte/store';  // Add this import
 
 
 	function setCookie(name, value, days) {
@@ -40,8 +39,6 @@
     document.cookie = name + "=" + (value || "") + expires + "; path=/";
   }
 
-  const apiUrl = process.env.VITE_API_URL;
-
   function getCookie(name) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
@@ -53,6 +50,9 @@
     return null;
   }
 
+  const apiUrl = process.env.VITE_API_URL;
+  console.log('API URL:', apiUrl);
+
  // Define the base URL for the API
  const BASE_URL = apiUrl;
 
@@ -63,7 +63,7 @@ let userData = [];
 const fetchAllUserData = async (token) => {
   try {
 	// Make a GET request to the endpoint with the Authorization header
-	const response = await axios.get(`${BASE_URL}/admin/allworkshopData`, {
+	const response = await axios.get(`${BASE_URL}/admin/allfeaturedAnnouncedPosts`, {
 	  headers: {
 		Authorization: `Bearer ${token}`
 	  }
@@ -78,7 +78,7 @@ const fetchAllUserData = async (token) => {
 };
 
 
-const BASE_URL_refreshtoken = apiUrl;
+const BASE_URL_refreshtoken = apiUrl ;
 
 // Function to get refresh token
 const getRefreshToken = async () => {
@@ -182,11 +182,11 @@ onMount(async () => {
 	<div class="p-4">
 		<Breadcrumb class="mb-5">
 			<BreadcrumbItem home>Home</BreadcrumbItem>
-			<BreadcrumbItem href="/crud/users">Activitis</BreadcrumbItem>
+			<BreadcrumbItem href="/crud/users">Timeline</BreadcrumbItem>
 			<BreadcrumbItem>List</BreadcrumbItem>
 		</Breadcrumb>
 		<Heading tag="h1" class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
-			All Workshops
+			All AnnouncedFeaturedPosts
 		</Heading>
 
 		<Toolbar embedded class="w-full py-4 text-gray-500  dark:text-gray-400">
@@ -224,7 +224,7 @@ onMount(async () => {
 					class="gap-2 whitespace-nowrap px-3"
 					on:click={() => ((current_user = {}), (addUser = true))}
 				>
-					<PlusOutline size="sm" />Add a Workshop
+					<PlusOutline size="sm" />Add a Featured Post
 				</Button>
 				<!-- <Button size="sm" color="alternative" class="gap-2 px-3">
 					<DownloadSolid size="md" class="-ml-1" />Export
@@ -235,7 +235,7 @@ onMount(async () => {
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
-			{#each ['Name', 'Motto','Description', 'People Joined', 'Workshop Type','Actions'] as title}
+			{#each ['Title', 'Type','Color Code','Data', 'Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -243,13 +243,18 @@ onMount(async () => {
 			{#each userData as user}
 				<TableBodyRow class="text-base">
 					<!-- <TableBodyCell class="w-4 p-4"><Checkbox /></TableBodyCell> -->
-					<TableBodyCell class="p-4">{user.name||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.title||"N/A"}</TableBodyCell>
 
-					<TableBodyCell class="p-4">{user.motto||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.description||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.people_joined||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.workshop_type||"N/A"}</TableBodyCell>
-					<!-- <TableBodyCell class="p-4">{user.created_by_account_type||"N/A"}</TableBodyCell> -->
+					<TableBodyCell class="p-4">{user.type||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.colorcode||"N/A"}</TableBodyCell>
+
+
+					<TableBodyCell
+					class="max-w-sm overflow-hidden truncate p-4 text-base font-normal text-gray-500 dark:text-gray-400 xl:max-w-xs"
+				>
+				{user.data ? JSON.stringify(user.data, null, 2) : "N/A"}
+				</TableBodyCell>
+
 
 
 

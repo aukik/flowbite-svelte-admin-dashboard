@@ -6,6 +6,7 @@
 	export let open: boolean = false; // modal control
 
 	export let data: Record<string, string> = {};
+	import { writable } from 'svelte/store';  // Add this import
 
 	let inputValue;
 	const apiUrl = process.env.VITE_API_URL;
@@ -17,6 +18,7 @@
 	user_label=name
 	data.clubId=id
 }
+	const selectedFile = writable<File | null>(null);
 	let teacher_label = "Select Teacher";
 	let sponsor_label = "Select Sponsor";
 
@@ -63,65 +65,89 @@ function handleWorkshopTypeChange(event) {
     }
     return null;
   }
-  async function handleSubmit() {
-    // Assuming `token` is defined somewhere accessible
-
-
-    // Assuming `data` contains the payload you want to send in the request
-    console.log("Inside submit");
-    console.log(data);
-	console.log(data.schoolId);
-    //console.log(data.id);
-	console.log(token);
-
-
-    try {
-        const userDataResponse = await axios.get(`${apiUrl}/admin/userData`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-
-        // Extracting the created_by_id from the response
-        const createdById = userDataResponse.data.user.id;
-        console.log('Created By ID:', createdById);
-
-        // Assigning the created_by_id to data
-        data.created_by_id = createdById;
-		data.created_by_account_type = "admin";
-
-
-
-		let  endpoint = `${apiUrl}/admin/workshopRegistration/`;
-    // if (data.club_type === 'school') {
-    //     endpoint = process.env.VITE_API_URL+'/admin/clubRegistrationSchool/';
-    // } else {
-    //     endpoint = process.env.VITE_API_URL+'/admin/clubRegistrationSponsor/';
-    // }
-
-    // Making the POST request to the appropriate endpoint
-    const response = await axios.post(endpoint, data, {
-        headers: {
-            Authorization: `Bearer ${token}`
+ 
+  function handleFileChange(event: Event) {
+        const target = event.target as HTMLInputElement;
+        if (target.files) {
+            selectedFile.set(target.files[0]);
         }
-    });
-				open=false
-				window.location.reload();
-        console.log(response.data); // Handle response data as needed
-    } catch (error) {
-        console.error('Error:');
     }
-}
 
-	function init(form: HTMLFormElement) {
-		if (data?.name) [data.first_name, data.last_name] = data.name.split(' ');
-		for (const key in data) {
-			console.log(key, data[key]);
-			const el = form.elements.namedItem(key);
-			if (el) el.value = data[key];
-		}
-	}
-	1;
+    async function uploadImage() {
+        let file;
+        selectedFile.subscribe(value => {
+            file = value;
+        })();
+
+        if (!file) {
+            console.error('No file selected');
+            return null;
+        }
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+            const response = await axios.post(`${apiUrl}/admin/uploadImage`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            return null;
+        }
+    }
+
+    async function handleSubmit() {
+        console.log("Inside submit");
+        console.log(data);
+        console.log(token);
+  
+
+        try {
+            // First, upload the image
+            const imageData = await uploadImage();
+            if (imageData) {
+                data.imageUrl = imageData.imageUrl;
+                data.imagename = imageData.localImageName;
+            }
+
+            const userDataResponse = await axios.get(`${apiUrl}/admin/userData`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            const createdById = userDataResponse.data.user.id;
+            console.log('Created By ID:', createdById);
+
+            data.created_by_id = createdById;
+            data.created_by_account_type = "admin";
+
+            const response = await axios.post(`${apiUrl}/admin/workshopRegistration/`, data, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            open=false;
+            window.location.reload();
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    function init(form: HTMLFormElement) {
+        if (data?.name) [data.first_name, data.last_name] = data.name.split(' ');
+        for (const key in data) {
+            console.log(key, data[key]);
+            const el = form.elements.namedItem(key);
+            if (el) el.value = data[key];
+        }
+    }
 	let  clubData=[];
 	let teacherData = [];
 	let sponsorData = [];
@@ -319,6 +345,17 @@ function handleWorkshopTypeChange(event) {
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
+				
+				<Label class="col-span-6 space-y-2">
+                    <span>Photo</span>
+                    <Input
+                        type="file"
+                        name="photo"
+                        accept="image/*"
+                        on:change={handleFileChange}
+                        class="border outline-none"
+                    />
+                </Label>
 
 
 

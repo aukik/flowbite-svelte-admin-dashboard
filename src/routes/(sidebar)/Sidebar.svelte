@@ -96,7 +96,7 @@
 			children: {
 
 				Testimonial: '/crud/testimonials',
-				Sponsor: '/crud/sponsors'
+				FeaturedPosts: '/crud/announcedfeaturedposts'
 			}
 		},
 		// { name: 'Settings', icon: CogOutline, href: '/settings' },
