@@ -58,17 +58,13 @@
 
   async function handleSubmit() {
     // Assuming `token` is defined somewhere accessible
-    
+
 
     // Assuming `data` contains the payload you want to send in the request
-    console.log("Inside submit");
-    console.log(data);
-    console.log(data.id);
-	console.log(token);
-	data.user_type = "teacher"
+
 
     try {
-        const response = await axios.post(`${apiUrl}/admin/userTeacherStudentUpdate/`, data, {
+        const response = await axios.patch(`${apiUrl}/admin/avatarUpdate/`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -98,42 +94,20 @@
   //const token = sessionStorage.getItem('token');
 
   token = getCookie('token');
-  console.log("token",token);
-  const response= await axios.get(`${apiUrl}/admin/allschoolData/`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-				schoolData=response.data.result
-				console.log(schoolData)
-  
+  // console.log("token",token);
+  // const response= await axios.get(`${apiUrl}/admin/allschoolData/`, {
+  //           headers: {
+  //               Authorization: `Bearer ${token}`
+  //           }
+  //       });
+	// 			schoolData=response.data.result
+	// 			console.log(schoolData)
+
 
 
 });
 
-afterUpdate(() => {
-		if (open && data.student_medium_of_education) {
-			if(data.student_medium_of_education === "Bangla"){
-				student_medium_label = "Bangla";
-			} else {
-				student_medium_label = "English";
-			}
-		}
 
-		if (open) {
-			console.log("-----------------------{}")
-			console.log(data.is_admin);
-			if(data.is_admin){
-				is_admin_label = "True";
-			} else {
-				is_admin_label = "False";
-			}
-		}
-	}
-
-
-
-);
 
 
 </script>
@@ -141,8 +115,8 @@ afterUpdate(() => {
 <Modal
 	bind:open
 
-	title={Object.keys(data).length ? 'Edit Teacher' : 'Add new user'}
-	
+	title={Object.keys(data).length ? 'Edit Avatar' : 'Add new Avatar'}
+
 	size="md"
 	class="m-4"
 >
@@ -155,53 +129,7 @@ afterUpdate(() => {
 					<Input bind:value={data.name} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
 				</Label>
 
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Email</span>
-					<Input
-					bind:value={data.email}
-						name="email"
-						type="email"
-						class="border outline-none"
-						placeholder="e.g. bonnie@flowbite.com"
-					/>
-				</Label>
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Accreditation</span>
-					<Input
-					bind:value={data.teacher_institution_accreditation}
-						name="student id"
-						type="text"
-						class="border outline-none"
-						placeholder="e.g. bonnie@flowbite.com"
-					/>
-				</Label>
 
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>School</span>
-					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
-					<span></span>
-
-					<div class="pt-5">
-						<Button >{data.schoolName}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
-							{#each schoolData as user}
-								<DropdownItem  on:click={() => handleSchoolSelect(user?.id,user?.name)}>{user?.name}, {user?.location}</DropdownItem>
-							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
-							{/each}
-						</Dropdown>
-					</div>
-				</Label>
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Designation</span>
-					<Input
-					bind:value={data.teacher_designation}
-						name="student id"
-						type="text"
-						class="border outline-none"
-						placeholder="e.g. bonnie@flowbite.com"
-					/>
-				</Label>
-				
 
 
 
