@@ -24,14 +24,10 @@
 
 
     // Assuming `data` contains the payload you want to send in the request
-    console.log("Inside submit");
-    console.log(data);
-    console.log(data.id);
-	console.log(token);
-  data.user_type = "teacher";
+
 
     try {
-        const response = await axios.post(`${apiUrl}/admin/userTeacherStudentDelete/`, data, {
+        const response = await axios.delete(`${apiUrl}/admin/deleteAvatarById?id=`+data?.id,  {
             headers: {
                 Authorization: `Bearer ${token}`
             }
