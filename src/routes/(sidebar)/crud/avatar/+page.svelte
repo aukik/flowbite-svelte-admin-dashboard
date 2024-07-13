@@ -60,7 +60,7 @@ let userData = [];
 const fetchAllUserData = async (token) => {
   try {
 	// Make a GET request to the endpoint with the Authorization header
-	const response = await axios.get(`${BASE_URL}/admin/allteacherData`, {
+	const response = await axios.get(`${BASE_URL}/admin/avatarList`, {
 	  headers: {
 		Authorization: `Bearer ${token}`
 	  }
@@ -218,11 +218,13 @@ onMount(async () => {
 
 						<div class="text-sm font-normal text-gray-500 dark:text-gray-400">
 							<div class="text-base font-semibold text-gray-900 dark:text-white">{user?.name}</div>
-							<div class="text-sm font-normal text-gray-500 dark:text-gray-400">{user?.email}</div>
+
 						</div>
 					</TableBodyCell>
 
-					<TableBodyCell class="p-4">{user.teacher_institution_accreditation||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">
+						<img width="40px" src={user?.imageUrl} alt={"avatar-"+user?.imagename} class="text-sm font-normal text-gray-500 dark:text-gray-400"/>
+					</TableBodyCell>
 					<!-- <TableBodyCell class="p-4">{user.teacher_designation||"N/A"}</TableBodyCell> -->
 					<!-- <TableBodyCell class="p-4">{user.created_by_account_type||"N/A"}</TableBodyCell> -->
 
