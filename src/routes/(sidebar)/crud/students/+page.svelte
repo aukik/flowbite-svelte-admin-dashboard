@@ -232,7 +232,7 @@ onMount(async () => {
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
-			{#each ['Name', 'Student ID','Student Medium of Education', 'Actions'] as title}
+			{#each ['Name', 'Student ID','Email Verification','Verfication Badge','Student Medium of Education', 'Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -243,13 +243,15 @@ onMount(async () => {
 					<TableBodyCell class="mr-12 flex items-center space-x-6 whitespace-nowrap p-4">
 
 						<div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-							<div class="text-base font-semibold text-gray-900 dark:text-white">{user.name}</div>
-							<div class="text-sm font-normal text-gray-500 dark:text-gray-400">{user.email}</div>
+							<div class="text-base font-semibold text-gray-900 dark:text-white">{user?.name}</div>
+							<div class="text-sm font-normal text-gray-500 dark:text-gray-400">{user?.email}</div>
 						</div>
 					</TableBodyCell>
 
-					<TableBodyCell class="p-4">{user.student_id||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.student_medium_of_education||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user?.student_id||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user?.emailVerification||"False"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user?.verificationBadge||"False"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user?.student_medium_of_education||"N/A"}</TableBodyCell>
 					<!-- <TableBodyCell class="p-4">{user.created_by_account_type||"N/A"}</TableBodyCell> -->
 
 

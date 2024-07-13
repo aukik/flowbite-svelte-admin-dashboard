@@ -29,6 +29,11 @@
 	data.schoolName = name
 }
 
+const handleVerfiedBadgeSelect = (value) => {
+	data.verificationBadge=value
+}
+
+
   function handleStudentMediumChange(event) {
 	console.log("________event:::::")
 	console.log(event)
@@ -42,27 +47,24 @@
   }
 
 
-	function handleIsAdminChange(event) {
-	// console.log(event)
-    data.is_admin = event;
-		// console.log(data)
-		if(event==="true"){
-			is_admin_label="True";
-		}else{
-			is_admin_label="False";
-		}
-  }
+	// function handleIsAdminChange(event) {
+	// // console.log(event)
+  //   data.is_admin = event;
+	// 	// console.log(data)
+	// 	if(event==="true"){
+	// 		is_admin_label="True";
+	// 	}else{
+	// 		is_admin_label="False";
+	// 	}
+  // }
 
 
   async function handleSubmit() {
     // Assuming `token` is defined somewhere accessible
-    
+
 
     // Assuming `data` contains the payload you want to send in the request
-    console.log("Inside submit");
-    console.log(data);
-    console.log(data.id);
-	console.log(token);
+
 	data.user_type = "student"
 
     try {
@@ -94,7 +96,7 @@
 	onMount(async () => {
   // Retrieve the token from session storage
   //const token = sessionStorage.getItem('token');
-
+		// console.log(data)
   token = getCookie('token');
   console.log("token",token);
   const response= await axios.get(`${apiUrl}/admin/allschoolData/`, {
@@ -104,7 +106,7 @@
         });
 				schoolData=response.data.result
 				console.log(schoolData)
-  
+
 
 
 });
@@ -140,7 +142,7 @@ afterUpdate(() => {
 	bind:open
 
 	title={Object.keys(data).length ? 'Edit Student' : 'Add new user'}
-	
+
 	size="md"
 	class="m-4"
 >
@@ -199,7 +201,23 @@ afterUpdate(() => {
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
-				</Label>				
+				</Label>
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Verification Badge</span>
+					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
+					<span></span>
+
+					<div class="pt-5">
+						<Button >{data.verificationBadge }<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+
+								<DropdownItem  on:click={() => handleVerfiedBadgeSelect(true)}>True</DropdownItem>
+								<DropdownItem  on:click={() => handleVerfiedBadgeSelect(false)}>False</DropdownItem>
+
+						</Dropdown>
+					</div>
+				</Label>
 
 
 
