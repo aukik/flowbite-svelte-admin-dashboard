@@ -30,7 +30,7 @@
 		/>
 		<NavBrand href="/" class={list ? 'w-40' : 'lg:w-60'}>
 			<img
-				src="https://octobrain.org/images/7942340828b8e19f31bfc4817f72bd27.png"
+				src="https://cvanalyzersmartgrad.blob.core.windows.net/tempphotos/9.png"
 				class="me-2.5 h-6 sm:h-8"
 				alt="Flowbite Logo"
 			/>

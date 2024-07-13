@@ -21,9 +21,11 @@
 		LifeSaverSolid,
 		BrainSolid,
 		LockSolid,
+		BuildingOutline,
 		WandMagicSparklesOutline,
 		ChartPieOutline,
 		RectangleListSolid,
+		HomeOutline,
 		TableColumnSolid
 	} from 'flowbite-svelte-icons';
 
@@ -83,7 +85,7 @@
 		},
 		{
 			name: 'Institution',
-			icon: WandMagicSparklesOutline,
+			icon: BuildingOutline,
 			children: {
 
 				School: '/crud/schools',
@@ -91,12 +93,25 @@
 			}
 		},
 		{
+			name: 'Homepage',
+			icon: HomeOutline,
+			children: {
+
+				Testimonial: '/crud/testimonials',
+				Blog: '#',
+			}
+		},
+
+		{
 			name: 'Timeline',
 			icon: FileChartBarSolid,
 			children: {
 
-				Testimonial: '/crud/testimonials',
-				FeaturedPosts: '/crud/announcedfeaturedposts'
+
+				'Featured Posts': '/crud/announcedfeaturedposts',
+				'Tags': '#',
+				'Avatar': '#'
+
 			}
 		},
 		// { name: 'Settings', icon: CogOutline, href: '/settings' },
