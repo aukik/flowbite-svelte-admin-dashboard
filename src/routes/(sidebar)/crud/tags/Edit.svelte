@@ -1,45 +1,21 @@
 <script lang="ts">
-	import { Button, Input, Label, Modal, Textarea,Dropdown, DropdownItem, DropdownDivider, DropdownHeader } from 'flowbite-svelte';
-	import { ChevronDownOutline } from 'flowbite-svelte-icons';
+	import { Button, Input, Label, Modal,  } from 'flowbite-svelte';
+
 	import axios from 'axios';
-	import { onMount, afterUpdate} from 'svelte';
+	import { onMount} from 'svelte';
 	export let open: boolean = false; // modal control
 
 	export let data: Record<string, string> = {};
 
-	let  schoolData=[];
-	let teacherData = [];
-	let sponsorData = [];
-	
-	let user_label="Select School";
-	let club_type_label="Club Type";
-	let is_admin_label="Is Admin";
-	const handleSchoolSelect = (id,name) => {
-	user_label=name
-	data.schoolId=id
 
-}
+
 const apiUrl = process.env.VITE_API_URL;
 console.log('API URL:', apiUrl);
-	let teacher_label = "Select Teacher";
-	let sponsor_label = "Select Sponsor";
-
-	const handleTeacherSelect = (id,name) =>{
-		teacher_label = name,
-		data.teacherId = id,
-		data.teacherName = name
-	}
-
-	const handleSponsorSelect = (id, name) => {
-		sponsor_label = name,
-		data.sponsorId = id
-	}
 
 
 
-	let inputValue;
-	let token;
-	function getCookie(name) {
+	let token:any;
+	function getCookie(name:any) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].trim();
@@ -50,54 +26,17 @@ console.log('API URL:', apiUrl);
     return null;
   }
 
-  function handleClubTypeChange(event) {
-	// console.log(event)
-    data.club_type = event;
-		// console.log(data)
-		if(event==="school"){
-			club_type_label="School";
-		}else{
-			club_type_label="Sponsor";
-		}
-  }
-  function handleStudentMediumChange(event) {
-	console.log("________event:::::")
-	console.log(event)
-    data.student_medium_of_education = event;
-		// console.log(data)
-		if(event==="Bangla"){
-			student_medium_label="Bangla";
-		}else{
-			student_medium_label="English";
-		}
-  }
-
-
-	function handleIsAdminChange(event) {
-	// console.log(event)
-    data.is_admin = event;
-		// console.log(data)
-		if(event==="true"){
-			is_admin_label="True";
-		}else{
-			is_admin_label="False";
-		}
-  }
-
 
   async function handleSubmit() {
-    // Assuming `token` is defined somewhere accessible
-    
 
-    // Assuming `data` contains the payload you want to send in the request
-    console.log("Inside submit");
-    console.log(data);
-    console.log(data.id);
-	console.log(token);
-	data.user_type = "teacher"
-	let clubUpdate_api = apiUrl + '/admin/featuredannouncedpostsUpdate/';
+	let tagupdate_api = apiUrl + '/admin/tag';
     try {
-        const response = await axios.post(clubUpdate_api, data, {
+        const response = await axios.patch(tagupdate_api,
+				{
+					name:data?.name,
+					id:data?.id
+				}
+				, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -121,74 +60,17 @@ console.log('API URL:', apiUrl);
 		}
 	}
 	1;
-	
+
 
 	onMount(async () => {
   // Retrieve the token from session storage
   //const token = sessionStorage.getItem('token');
 
   token = getCookie('token');
-  console.log("token",token);
-  let allschool_api = apiUrl + '/admin/allschoolData/';
-  let allteacher_api = apiUrl + '/admin/allteacherData/';
-  let allsponsor_api = apiUrl + '/admin/allsponsorData/';
-
-
-	
-  // Retrieve the token from session storage
-  //const token = sessionStorage.getItem('token');
-
-  const response= await axios.get(allschool_api, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-				schoolData=response.data.result
-				console.log(schoolData)
-	const responseteacher= await axios.get(allteacher_api, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-				teacherData=responseteacher.data.result
-				console.log(teacherData)
-	const responsesponsor= await axios.get(allsponsor_api, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-				sponsorData=responsesponsor.data.result
-				console.log(sponsorData)
-
-
-
-
 
 });
 
-afterUpdate(() => {
-		if (open && data.student_medium_of_education) {
-			if(data.student_medium_of_education === "Bangla"){
-				student_medium_label = "Bangla";
-			} else {
-				student_medium_label = "English";
-			}
-		}
 
-		if (open) {
-			console.log("-----------------------{}")
-			console.log(data.is_admin);
-			if(data.is_admin){
-				is_admin_label = "True";
-			} else {
-				is_admin_label = "False";
-			}
-		}
-	}
-
-
-
-);
 
 
 </script>
@@ -196,8 +78,8 @@ afterUpdate(() => {
 <Modal
 	bind:open
 
-	title={Object.keys(data).length ? 'Edit Featured Announced Post' : 'Add new user'}
-	
+	title={'Edit Tag'}
+
 	size="md"
 	class="m-4"
 >
@@ -205,48 +87,17 @@ afterUpdate(() => {
 	<div class="space-y-6 p-0">
 		<form on:submit={handleSubmit} use:init>
 			<div class="grid grid-cols-6 gap-6">
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Type</span>
-					<Input bind:value={data.type} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
-				</Label>
-
-
 
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Title</span>
+					<span>Tag Name</span>
 					<Input
-					bind:value={data.title}
-						name="email"
-						type="email"
-						class="border outline-none"
-						placeholder="e.g. bonnie@flowbite.com"
-					/>
-				</Label>
-
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Color Code</span>
-					<Input
-					bind:value={data.colorcode}
-						name="student_id"
+					bind:value={data.name}
+						name="name"
 						type="text"
 						class="border outline-none"
-						placeholder="e.g. bonnie@flowbite.com"
+						placeholder="e.g. Technology, Sports"
 					/>
 				</Label>
-
-
-
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Data</span>
-					<Input
-					bind:value={data.data}
-						name="student_id"
-						type="text"
-						class="border outline-none"
-						placeholder="e.g. bonnie@flowbite.com"
-					/>
-				</Label>
-
 
 
 			</div>
@@ -255,6 +106,6 @@ afterUpdate(() => {
 
 	<!-- Modal footer -->
 	<div slot="footer">
-		<Button on:click = {handleSubmit}>{Object.keys(data).length ? 'Save all' : 'Add user'}</Button>
+		<Button on:click = {handleSubmit}>{"Update"}</Button>
 	</div>
 </Modal>
