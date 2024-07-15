@@ -5,13 +5,13 @@
 	import { onMount } from 'svelte';
 	export let open: boolean = false; // modal control
 	export let data: Record<string, string> = {};
-	let token;
+	let token:any;
 
   const apiUrl = process.env.VITE_API_URL;
   console.log('API URL:', apiUrl);
-  let clubDelete_api = apiUrl +'/admin/featuredannouncedpostsDelete/'
+  let tagDelete_api = apiUrl +'/admin/tag/'
 
-	function getCookie(name) {
+	function getCookie(name:any) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].trim();
@@ -21,19 +21,11 @@
     }
     return null;
   }
+
 	async function handleSubmit() {
-    // Assuming `token` is defined somewhere accessible
-
-
-    // Assuming `data` contains the payload you want to send in the request
-    console.log("Inside submit");
-    console.log(data);
-    console.log(data.id);
-	console.log(token);
-  data.user_type = "student"
 
     try {
-        const response = await axios.post(clubDelete_api, data, {
+        const response = await axios.delete(tagDelete_api+"?id="+data?.id,  {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -48,12 +40,8 @@
 
 
 onMount(async () => {
-  // Retrieve the token from session storage
-  //const token = sessionStorage.getItem('token');
 
   token = getCookie('token');
-  console.log("token",token);
-
 
 });
 </script>
