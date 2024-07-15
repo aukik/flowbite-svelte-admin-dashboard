@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Input, Label, Modal, Textarea,Dropdown, DropdownItem, DropdownDivider, DropdownHeader } from 'flowbite-svelte';
+	import { Button, Input, Label, Modal, Textarea,Dropdown, DropdownItem, DropdownDivider, DropdownHeader, Checkbox } from 'flowbite-svelte';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import axios from 'axios';
 	import { onMount, afterUpdate} from 'svelte';
@@ -9,8 +9,11 @@
 
 	let  schoolData=[];
 	let teacherData = [];
-	let sponsorData = [];
-	
+	let sponsorData :any= [];
+	let tagData:any = [];
+  let tagArray: { tagId: any }[] = [];
+  let tag_label = 'Select Tags';
+
 	let user_label="Select School";
 	let club_type_label="Club Type";
 	let is_admin_label="Is Admin";
@@ -24,21 +27,50 @@ console.log('API URL:', apiUrl);
 	let teacher_label = "Select Teacher";
 	let sponsor_label = "Select Sponsor";
 
-	const handleTeacherSelect = (id,name) =>{
+
+	const handleTeacherSelect = (id:any,name:any) =>{
 		teacher_label = name,
 		data.teacherId = id,
 		data.teacherName = name
 	}
 
-	const handleSponsorSelect = (id, name) => {
+	const handleSponsorSelect = (id:any, name:any) => {
 		sponsor_label = name,
 		data.sponsorId = id
 	}
 
 
+  const handleTagSelect = (id: any, name: any) => {
+    const index = tagArray.findIndex(tag => tag.tagId === id);
+
+    if (index !== -1) {
+      // Tag is already selected, remove it
+      tagArray = tagArray.filter(tag => tag.tagId !== id);
+    } else {
+      // Tag is not selected, add it
+      tagArray = [...tagArray, { tagId: id }];
+    }
+
+    // Update the tag label
+    updateTagLabel();
+  }
+
+  const updateTagLabel = () => {
+    if (tagArray.length === 0) {
+      tag_label = 'Select Tags';
+    } else if (tagArray.length === 1) {
+      tag_label = tagData.find(tag => tag.id === tagArray[0].tagId)?.name || 'Select Tags';
+    } else {
+      tag_label = `${tagArray.length} tags selected`;
+    }
+  }
+
+  $: console.log(tagArray);
+
+
 
 	let inputValue;
-	let token;
+	let token:any;
 	function getCookie(name) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
@@ -86,18 +118,12 @@ console.log('API URL:', apiUrl);
 
 
   async function handleSubmit() {
-    // Assuming `token` is defined somewhere accessible
-    
 
-    // Assuming `data` contains the payload you want to send in the request
-    console.log("Inside submit");
-    console.log(data);
-    console.log(data.id);
-	console.log(token);
 	data.user_type = "teacher"
+
 	let clubUpdate_api = apiUrl + '/admin/clubUpdate/';
     try {
-        const response = await axios.post(clubUpdate_api, data, {
+        const response = await axios.post(clubUpdate_api, {...data,tags:tagArray}, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -131,9 +157,9 @@ console.log('API URL:', apiUrl);
   let allschool_api = apiUrl + '/admin/allschoolData/';
   let allteacher_api = apiUrl + '/admin/allteacherData/';
   let allsponsor_api = apiUrl + '/admin/allsponsorData/';
+	let alltag_api = apiUrl + '/admin/tags/';
 
 
-	
   // Retrieve the token from session storage
   //const token = sessionStorage.getItem('token');
 
@@ -159,7 +185,13 @@ console.log('API URL:', apiUrl);
 				sponsorData=responsesponsor.data.result
 				console.log(sponsorData)
 
-
+		const responsetags= await axios.get(alltag_api, {
+				headers: {
+						Authorization: `Bearer ${token}`
+				}
+		});
+		tagData=responsetags.data.result
+		console.log(tagData)
 
 
 
@@ -196,7 +228,7 @@ afterUpdate(() => {
 	bind:open
 
 	title={Object.keys(data).length ? 'Edit Club' : 'Add new user'}
-	
+
 	size="md"
 	class="m-4"
 >
@@ -254,7 +286,7 @@ afterUpdate(() => {
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
-				
+
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Teacher</span>
 					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
@@ -281,6 +313,28 @@ afterUpdate(() => {
 							{#each sponsorData as user}
 								<DropdownItem  on:click={() => handleSponsorSelect(user?.id,user?.name)}>{user?.name}, {user?.email}</DropdownItem>
 							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
+							{/each}
+						</Dropdown>
+					</div>
+				</Label>
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Tags</span>
+					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
+					<span></span>
+
+					<div class="pt-5">
+						<Button>{tag_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+							{#each tagData as tag}
+								<li>
+									<Checkbox
+										checked={tagArray.some(t => t.tagId === tag.id)}
+										on:change={() => handleTagSelect(tag.id, tag.name)}
+									>
+										{tag.name}
+									</Checkbox>
+								</li>
 							{/each}
 						</Dropdown>
 					</div>
