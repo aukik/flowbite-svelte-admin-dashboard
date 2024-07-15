@@ -63,7 +63,7 @@ let userData = [];
 const fetchAllUserData = async (token) => {
   try {
 	// Make a GET request to the endpoint with the Authorization header
-	const response = await axios.get(`${BASE_URL}/admin/allfeaturedAnnouncedPosts`, {
+	const response = await axios.get(`${BASE_URL}/admin/tags`, {
 	  headers: {
 		Authorization: `Bearer ${token}`
 	  }
@@ -235,15 +235,16 @@ onMount(async () => {
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
-			{#each ['Tag Name', 'Actions'] as title}
+			{#each ['No.','Tag Name', 'Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
 		<TableBody>
-			{#each userData as user}
+			{#each userData as user,index}
 				<TableBodyRow class="text-base">
 					<!-- <TableBodyCell class="w-4 p-4"><Checkbox /></TableBodyCell> -->
-					<TableBodyCell class="p-4">{user.title||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{index+1||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user?.name||"N/A"}</TableBodyCell>
 
 
 
