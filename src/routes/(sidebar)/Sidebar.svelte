@@ -109,7 +109,7 @@
 
 
 				'Featured Posts': '/crud/announcedfeaturedposts',
-				'Tags': '#',
+				'Tags': '/crud/tags',
 				'Avatar': '/crud/avatar'
 
 			}

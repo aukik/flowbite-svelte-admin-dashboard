@@ -27,8 +27,8 @@
 <main class={mainClass}>
 	<div class={mainDivClass}>
 		<a href={site.link} class={siteLinkClass}>
-			<img src={site.img} class={siteImgClass} alt={site.imgAlt} />
-			<span>{site.name}</span>
+			<img src={"https://cvanalyzersmartgrad.blob.core.windows.net/tempphotos/9.png"} class={siteImgClass} alt={"octobrain-logo"} />
+			<span>Octobrain Admin Panel</span>
 		</a>
 		<!-- Card -->
 		<Card class="w-full" size="md" border={false}>
@@ -37,7 +37,7 @@
 			</h1>
 			<form class="mt-8 space-y-6" on:submit|preventDefault>
 				<slot />
-				{#if rememberMe || lostPassword}
+				<!-- {#if rememberMe || lostPassword}
 					<div class="flex items-start">
 						{#if rememberMe}
 							<Checkbox class="accent-primary-600" name="remember">Remember me</Checkbox>
@@ -46,13 +46,13 @@
 							<A href={lostPasswordLink} aClass="ml-auto text-sm">Lost Password?</A>
 						{/if}
 					</div>
-				{/if}
+				{/if} -->
 				<Button type="submit" size="lg">{loginTitle}</Button>
-				{#if createAccount}
+				<!-- {#if createAccount}
 					<div class="text-sm font-medium text-gray-500 dark:text-gray-400">
 						Not registered? <A href={registerLink}>{createAccountTitle}</A>
 					</div>
-				{/if}
+				{/if} -->
 			</form>
 		</Card>
 	</div>
@@ -65,7 +65,7 @@
 @prop export let title = 'Sign in to platform';
 @prop export let site = {
 		name: 'Flowbite',
-		img: '/images/flowbite-svelte-icon-logo.svg',
+		img: 'https://cvanalyzersmartgrad.blob.core.windows.net/tempphotos/9.png',
 		link: '/',
 		imgAlt: 'FlowBite Logo'
 	};
