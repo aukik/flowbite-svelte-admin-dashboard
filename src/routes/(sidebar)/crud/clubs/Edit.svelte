@@ -170,13 +170,16 @@ console.log('API URL:', apiUrl);
         });
 				schoolData=response.data.result
 				console.log(schoolData)
-	const responseteacher= await axios.get(allteacher_api, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-				teacherData=responseteacher.data.result
-				console.log(teacherData)
+
+	const responsetags= await axios.get(alltag_api, {
+			headers: {
+					Authorization: `Bearer ${token}`
+			}
+	});
+	tagData=responsetags.data.result
+	console.log("This is tag data")
+	console.log(tagData)
+
 	const responsesponsor= await axios.get(allsponsor_api, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -185,13 +188,16 @@ console.log('API URL:', apiUrl);
 				sponsorData=responsesponsor.data.result
 				console.log(sponsorData)
 
-		const responsetags= await axios.get(alltag_api, {
-				headers: {
-						Authorization: `Bearer ${token}`
-				}
-		});
-		tagData=responsetags.data.result
-		console.log(tagData)
+	const responseteacher= await axios.get(allteacher_api, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+				teacherData=responseteacher.data.result
+				console.log(teacherData)
+
+
+
 
 
 
