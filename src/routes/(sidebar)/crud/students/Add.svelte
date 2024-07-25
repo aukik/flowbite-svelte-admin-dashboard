@@ -216,6 +216,7 @@
                     <Input 
                         bind:value={data.password}
                         name="password"
+                        type = "password"
                         class="border outline-none"
                         placeholder="e.g. React Developer"
                         required

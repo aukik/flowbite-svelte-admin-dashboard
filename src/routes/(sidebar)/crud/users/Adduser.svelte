@@ -143,6 +143,7 @@ function handleAccountTypeChange(event) {
 					<Input bind:value={data.password}
 						name="password"
 						class="border outline-none"
+						type = "password"
 						placeholder="e.g. React Developer"
 						required
 					/>
