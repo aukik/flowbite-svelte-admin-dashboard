@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Input, Label, Modal, Textarea, Dropdown, DropdownItem, DropdownDivider, DropdownHeader} from 'flowbite-svelte';
+	import { Button, Input, Label, Modal, Textarea, Dropdown, DropdownItem, DropdownDivider, DropdownHeader,Checkbox} from 'flowbite-svelte';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import axios from 'axios';
 	import { onMount } from 'svelte';
@@ -9,6 +9,9 @@
 
 	let inputValue;
 	let token;
+	let tagArray: { tagId: any }[] = [];
+	let tag_label = 'Select Tags';
+	let tagData: any = [];
 	let user_label="Select School";
 	let club_type_label="Club Type";
 	let is_admin_label="Is Admin";
@@ -42,6 +45,30 @@ function handleClubTypeChange(event) {
 			club_type_label="Sponsor";
 		}
   }
+  const handleTagSelect = (id: any, name: any) => {
+		const index = tagArray.findIndex(tag => tag.tagId === id);
+
+		if (index !== -1) {
+			// Tag is already selected, remove it
+			tagArray = tagArray.filter(tag => tag.tagId !== id);
+		} else {
+			// Tag is not selected, add it
+			tagArray = [...tagArray, { tagId: id }];
+		}
+
+		// Update the tag label
+		updateTagLabel();
+	}
+
+  const updateTagLabel = () => {
+		if (tagArray.length === 0) {
+			tag_label = 'Select Tags';
+		} else if (tagArray.length === 1) {
+			tag_label = tagData.find(tag => tag.id === tagArray[0].tagId)?.name || 'Select Tags';
+		} else {
+			tag_label = `${tagArray.length} tags selected`;
+		}
+	}
 
 
 	function handleIsAdminChange(event) {
@@ -113,7 +140,7 @@ function handleClubTypeChange(event) {
                 data.imageUrl = imageData.imageUrl;
                 data.imagename = imageData.localImageName;
             }
-
+			
             const userDataResponse = await axios.get(`${apiUrl}/admin/userData`, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -135,7 +162,7 @@ function handleClubTypeChange(event) {
 
 
 
-            const response = await axios.post(endpoint, data, {
+            const response = await axios.post(endpoint, { ...data, tags: tagArray }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -161,39 +188,45 @@ function handleClubTypeChange(event) {
 	let sponsorData = [];
 
 	onMount(async () => {
-  // Retrieve the token from session storage
-  //const token = sessionStorage.getItem('token');
+		token = getCookie('token');
+		console.log("token", token);
+		let allschool_api = apiUrl + '/admin/allschoolData/';
+		let allteacher_api = apiUrl + '/admin/allteacherData/';
+		let allsponsor_api = apiUrl + '/admin/allsponsorData/';
+		let alltag_api = apiUrl + '/admin/tags/';
 
-  token = getCookie('token');
-  console.log("token",token);
-  let allschool_api = apiUrl + '/admin/allschoolData/';
-  let allteacher_api = apiUrl + '/admin/allteacherData/';
-  let allsponsor_api = apiUrl + '/admin/allsponsorData/';
+		const response = await axios.get(allschool_api, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+		schoolData = response.data.result;
+		console.log(schoolData);
 
-  const response= await axios.get(allschool_api, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-				schoolData=response.data.result
-				console.log(schoolData)
-	const responseteacher= await axios.get(allteacher_api, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-				teacherData=responseteacher.data.result
-				console.log(teacherData)
-	const responsesponsor= await axios.get(allsponsor_api, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-				sponsorData=responsesponsor.data.result
-				console.log(sponsorData)
+		const responsetags = await axios.get(alltag_api, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+		tagData = responsetags.data.result;
+		console.log("This is tag data", tagData);
 
+		const responsesponsor = await axios.get(allsponsor_api, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+		sponsorData = responsesponsor.data.result;
+		console.log(sponsorData);
 
-});
+		const responseteacher = await axios.get(allteacher_api, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+		teacherData = responseteacher.data.result;
+		console.log(teacherData);
+	});
 </script>
 
 <Modal
@@ -279,7 +312,7 @@ function handleClubTypeChange(event) {
 					</div>
 				</Label>
 
-
+				{#if data.club_type === 'sponsor'}
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Sponsor</span>
 					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
@@ -291,6 +324,22 @@ function handleClubTypeChange(event) {
 							{#each sponsorData as user}
 								<DropdownItem  on:click={() => handleSponsorSelect(user?.id,user?.name)}>{user?.name}, {user?.email}</DropdownItem>
 							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
+							{/each}
+						</Dropdown>
+					</div>
+				</Label>
+				{/if}
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Tags</span>
+					<div class="pt-5">
+						<Button>{tag_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+							{#each tagData as tag}
+								<li>
+									<Checkbox checked={tagArray.some(t => t.tagId === tag.id)} on:change={() => handleTagSelect(tag.id, tag.name)}>
+										{tag.name}
+									</Checkbox>
+								</li>
 							{/each}
 						</Dropdown>
 					</div>
@@ -316,6 +365,6 @@ function handleClubTypeChange(event) {
 
 	<!-- Modal footer -->
 	<div slot="footer">
-		<Button on:click = {handleSubmit}>{Object.keys(data).length ? 'Save all' : 'Add teacher'}</Button>
+		<Button on:click = {handleSubmit}>{Object.keys(data).length ? 'Save all' : 'Add Club'}</Button>
 	</div>
 </Modal>

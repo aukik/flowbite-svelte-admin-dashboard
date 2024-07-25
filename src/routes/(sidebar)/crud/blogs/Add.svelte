@@ -1,0 +1,353 @@
+<script lang="ts">
+	import { Button, Input, Label, Modal, Textarea, Dropdown, DropdownItem, DropdownDivider, DropdownHeader} from 'flowbite-svelte';
+	import { ChevronDownOutline } from 'flowbite-svelte-icons';
+	import axios from 'axios';
+	import { onMount } from 'svelte';
+	export let open: boolean = false; // modal control
+	import { writable } from 'svelte/store';  // Add this import
+	export let data: Record<string, string> = {};
+
+	let inputValue;
+	let token;
+	let user_label="Select Students";
+	let post_type_label="Club Type";
+	let visibility_label = "Public"
+	let is_admin_label="Is Admin";
+	const handleStudentSelect = (id,name) => {
+	user_label=name
+	data.studentId=id
+}
+	let workshop_label = "Select Workshop";
+	let competition_label = "Select Competition";
+	const selectedFile = writable<File | null>(null);
+	const handleWorkshopSelect = (id,name) =>{
+		workshop_label = name,
+		data.workshopId = id
+	}
+
+	const handleCompetitionSelect = (id, name) => {
+		competition_label = name,
+		data.competitionId = id
+	}
+	const apiUrl = process.env.VITE_API_URL;
+	console.log('API URL:', apiUrl);
+
+
+function handlePostTypeChange(event) {
+	// console.log(event)
+    data.post_type = event;
+		// console.log(data)
+		if(event==="student post"){
+			post_type_label="Student Post";
+		} else if(event==="activity post"){
+			post_type_label="Activity Post";
+		}else if(event==="student activity post"){
+			post_type_label="Student Activity Post";
+		}else if(event==="join now post"){
+			post_type_label="Join Now Post";
+		}
+		else{
+			post_type_label="Advertisement Post";
+		}
+  }
+
+
+	function handleVisibilityChange(event) {
+	// console.log(event)
+    data.visibility = event;
+		// console.log(data)
+		if(event==="public"){
+			visibility_label="Public";
+		}else{
+			visibility_label="Private";
+		}
+  }
+
+	function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith(name + '=')) {
+        return cookie.substring(name.length + 1);
+      }
+    }
+    return null;
+  }
+  function handleFileChange(event: Event) {
+        const target = event.target as HTMLInputElement;
+        if (target.files) {
+            selectedFile.set(target.files[0]);
+        }
+    }
+
+    async function uploadImage() {
+        let file;
+        selectedFile.subscribe(value => {
+            file = value;
+        })();
+
+        if (!file) {
+            console.error('No file selected');
+            return null;
+        }
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+            const response = await axios.post(`${apiUrl}/admin/uploadImage`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            return null;
+        }
+    }
+
+    async function handleSubmit() {
+        console.log("Inside submit");
+        console.log(data);
+        console.log(token);
+  
+
+        try {
+            // First, upload the image
+            const imageData = await uploadImage();
+            if (imageData) {
+                data.imageUrl = imageData.imageUrl;
+                data.imagename = imageData.localImageName;
+            }
+
+            const userDataResponse = await axios.get(`${apiUrl}/admin/userData`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            const createdById = userDataResponse.data.user.id;
+            console.log('Created By ID:', createdById);
+
+            data.created_by_id = createdById;
+            data.created_by_account_type = "admin";
+
+			let endpoint = apiUrl + '/admin/postRegistration/'
+
+
+            const response = await axios.post(endpoint, data, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            open=false;
+            window.location.reload();
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    function init(form: HTMLFormElement) {
+        if (data?.name) [data.first_name, data.last_name] = data.name.split(' ');
+        for (const key in data) {
+            console.log(key, data[key]);
+            const el = form.elements.namedItem(key);
+            if (el) el.value = data[key];
+        }
+    }
+	let  studentData=[];
+	let workshopData = [];
+	let competitionData = [];
+
+	onMount(async () => {
+  // Retrieve the token from session storage
+  //const token = sessionStorage.getItem('token');
+
+  token = getCookie('token');
+  console.log("token",token);
+  let allschool_api = apiUrl + '/admin/allstudentData/';
+  let allworkshop_api = apiUrl + '/admin/allworkshopData/';
+  let allcompetition_api = apiUrl + '/admin/allcompetitionData/';
+
+  const response= await axios.get(allschool_api, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+				studentData=response.data.result
+				console.log(studentData)
+	const responseteacher= await axios.get(allworkshop_api, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+				workshopData=responseteacher.data.result
+				console.log(workshopData)
+	const responsesponsor= await axios.get(allcompetition_api, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+				competitionData=responsesponsor.data.result
+				console.log(competitionData)
+
+
+});
+</script>
+
+<Modal
+	bind:open
+	title={Object.keys(data).length ? 'Add new user' : 'Add  new Club'}
+	size="md"
+	class="m-4"
+>
+	<!-- Modal body -->
+	<div class="space-y-6 p-0">
+		<form on:submit={handleSubmit} use:init>
+			<div class="grid grid-cols-6 gap-6">
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Title</span>
+					<Input bind:value={data.title} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
+				</Label>
+
+
+
+
+
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Text Content</span>
+					<Input
+					bind:value={data.text_content}
+						name="email"
+						type="email"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+
+
+
+
+
+
+
+
+                <Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span></span>
+					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
+					<div class="pt-5">
+						<Button >{post_type_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							<DropdownItem  on:click={() => handlePostTypeChange('student post')}>Student Post</DropdownItem>
+							<DropdownItem  on:click={() => handlePostTypeChange('activity post')}>Activity Post</DropdownItem>
+							<DropdownItem  on:click={() => handlePostTypeChange('student activity post')}>Student Activity Post</DropdownItem>
+							<DropdownItem  on:click={() => handlePostTypeChange('join now post')}>Join Now Post</DropdownItem>
+							<DropdownItem  on:click={() => handlePostTypeChange('advertisement post')}>Advertisement Post</DropdownItem>
+						</Dropdown>
+					</div>
+				</Label>
+
+
+
+
+                <Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span></span>
+					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
+					<div class="pt-5">
+						<Button >{visibility_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							<DropdownItem  on:click={() => handleVisibilityChange('public')}>Public</DropdownItem>
+							<DropdownItem  on:click={() => handleVisibilityChange('private')}>Private</DropdownItem>
+
+						</Dropdown>
+					</div>
+				</Label>
+
+
+
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Students</span>
+					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
+					<span></span>
+
+					<div class="pt-5">
+						<Button >{user_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							{#each studentData as user}
+								<DropdownItem  on:click={() => handleStudentSelect(user?.id,user?.name)}>{user?.name}, {user?.location}</DropdownItem>
+							<!-- <DropdownItem  on:click={() => handleVisibilityChange('false')}>False</DropdownItem> -->
+							{/each}
+						</Dropdown>
+					</div>
+				</Label>
+
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Workshop</span>
+					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
+					<span></span>
+
+					<div class="pt-5">
+						<Button >{workshop_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							{#each workshopData as user}
+								<DropdownItem  on:click={() => handleWorkshopSelect(user?.id,user?.name)}>{user?.name}, {user?.motto}</DropdownItem>
+							<!-- <DropdownItem  on:click={() => handleVisibilityChange('false')}>False</DropdownItem> -->
+							{/each}
+						</Dropdown>
+					</div>
+				</Label>
+
+
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Competition</span>
+					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
+					<span></span>
+
+					<div class="pt-5">
+						<Button >{competition_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							{#each competitionData as user}
+								<DropdownItem  on:click={() => handleCompetitionSelect(user?.id,user?.name)}>{user?.name}, {user?.motto}</DropdownItem>
+							<!-- <DropdownItem  on:click={() => handleVisibilityChange('false')}>False</DropdownItem> -->
+							{/each}
+						</Dropdown>
+					</div>
+				</Label>
+
+
+
+
+
+
+
+				<Label class="col-span-6 space-y-2">
+                    <span>Photo</span>
+                    <Input
+                        type="file"
+                        name="photo"
+                        accept="image/*"
+                        on:change={handleFileChange}
+                        class="border outline-none"
+                    />
+                </Label>
+
+
+
+
+
+			</div>
+		</form>
+	</div>
+
+	<!-- Modal footer -->
+	<div slot="footer">
+		<Button on:click = {handleSubmit}>{Object.keys(data).length ? 'Save all' : 'Add teacher'}</Button>
+	</div>
+</Modal>

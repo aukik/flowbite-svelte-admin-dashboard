@@ -98,7 +98,7 @@
 			children: {
 
 				Testimonial: '/crud/testimonials',
-				Blog: '#',
+				Blog: '/crud/blogs',
 			}
 		},
 
