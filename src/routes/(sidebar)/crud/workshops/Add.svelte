@@ -73,33 +73,33 @@ function handleWorkshopTypeChange(event) {
         }
     }
 
-    async function uploadImage() {
-        let file;
-        selectedFile.subscribe(value => {
-            file = value;
-        })();
+    // async function uploadImage() {
+    //     let file;
+    //     selectedFile.subscribe(value => {
+    //         file = value;
+    //     })();
 
-        if (!file) {
-            console.error('No file selected');
-            return null;
-        }
+    //     if (!file) {
+    //         console.error('No file selected');
+    //         return null;
+    //     }
 
-        const formData = new FormData();
-        formData.append('image', file);
+    //     const formData = new FormData();
+    //     formData.append('image', file);
 
-        try {
-            const response = await axios.post(`${apiUrl}/admin/uploadImage`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            return response.data;
-        } catch (error) {
-            console.error('Error uploading image:', error);
-            return null;
-        }
-    }
+    //     try {
+    //         const response = await axios.post(`${apiUrl}/admin/uploadImage`, formData, {
+    //             headers: {
+    //                 'Content-Type': 'multipart/form-data',
+    //                 Authorization: `Bearer ${token}`
+    //             }
+    //         });
+    //         return response.data;
+    //     } catch (error) {
+    //         console.error('Error uploading image:', error);
+    //         return null;
+    //     }
+    // }
 
     async function handleSubmit() {
         console.log("Inside submit");
@@ -109,27 +109,41 @@ function handleWorkshopTypeChange(event) {
 
         try {
             // First, upload the image
-            const imageData = await uploadImage();
-            if (imageData) {
-                data.imageUrl = imageData.imageUrl;
-                data.imagename = imageData.localImageName;
-            }
+            // const imageData = await uploadImage();
+            // if (imageData) {
+            //     data.imageUrl = imageData.imageUrl;
+            //     data.imagename = imageData.localImageName;
+            // }
 
-            const userDataResponse = await axios.get(`${apiUrl}/admin/userData`, {
+            // const userDataResponse = await axios.get(`${apiUrl}/admin/userData`, {
+            //     headers: {
+            //         Authorization: `Bearer ${token}`
+            //     }
+            // });
+
+            // const createdById = userDataResponse.data.user.id;
+            // console.log('Created By ID:', createdById);
+
+            // data.created_by_id = createdById;
+            // data.created_by_account_type = "admin";
+			let file;
+			selectedFile.subscribe(value => {
+				file = value;
+			})();
+
+			if (!file) {
+				console.error('No file selected');
+				return null;
+			}
+
+			const formData = new FormData();
+			formData.append('images', file);
+			formData.append('data', JSON.stringify(data));
+
+            const response = await axios.post(`${apiUrl}/admin/workshopRegistration/`, formData, {
                 headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-
-            const createdById = userDataResponse.data.user.id;
-            console.log('Created By ID:', createdById);
-
-            data.created_by_id = createdById;
-            data.created_by_account_type = "admin";
-
-            const response = await axios.post(`${apiUrl}/admin/workshopRegistration/`, data, {
-                headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+					 'Content-Type': 'multipart/form-data'
                 }
             });
             open=false;

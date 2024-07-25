@@ -99,8 +99,39 @@ function handleClubTypeChange(event) {
         }
     }
 
-    async function uploadImage() {
-        let file;
+    // async function uploadImage() {
+    //     let file;
+    //     selectedFile.subscribe(value => {
+    //         file = value;
+    //     })();
+
+    //     if (!file) {
+    //         console.error('No file selected');
+    //         return null;
+    //     }
+
+    //     const formData = new FormData();
+    //     formData.append('image', file);
+
+    //     try {
+    //         const response = await axios.post(`${apiUrl}/admin/uploadImage`, formData, {
+    //             headers: {
+    //                 'Content-Type': 'multipart/form-data',
+    //                 Authorization: `Bearer ${token}`
+    //             }
+    //         });
+    //         return response.data;
+    //     } catch (error) {
+    //         console.error('Error uploading image:', error);
+    //         return null;
+    //     }
+    // }
+
+    async function handleSubmit() {
+        console.log("Inside submit");
+        console.log(data);
+        console.log(token);
+		let file;
         selectedFile.subscribe(value => {
             file = value;
         })();
@@ -110,48 +141,30 @@ function handleClubTypeChange(event) {
             return null;
         }
 
-        const formData = new FormData();
-        formData.append('image', file);
-
-        try {
-            const response = await axios.post(`${apiUrl}/admin/uploadImage`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            return response.data;
-        } catch (error) {
-            console.error('Error uploading image:', error);
-            return null;
-        }
-    }
-
-    async function handleSubmit() {
-        console.log("Inside submit");
-        console.log(data);
-        console.log(token);
+		const formData = new FormData();
+		formData.append('images', file);
+		formData.append('data', JSON.stringify({ ...data, tags: tagArray }));
   
 
         try {
             // First, upload the image
-            const imageData = await uploadImage();
-            if (imageData) {
-                data.imageUrl = imageData.imageUrl;
-                data.imagename = imageData.localImageName;
-            }
+            // const imageData = await uploadImage();
+            // if (imageData) {
+            //     data.imageUrl = imageData.imageUrl;
+            //     data.imagename = imageData.localImageName;
+            // }
 			
-            const userDataResponse = await axios.get(`${apiUrl}/admin/userData`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            // const userDataResponse = await axios.get(`${apiUrl}/admin/userData`, {
+            //     headers: {
+            //         Authorization: `Bearer ${token}`
+            //     }
+            // });
 
-            const createdById = userDataResponse.data.user.id;
-            console.log('Created By ID:', createdById);
+            // const createdById = userDataResponse.data.user.id;
+            // console.log('Created By ID:', createdById);
 
-            data.created_by_id = createdById;
-            data.created_by_account_type = "admin";
+            // data.created_by_id = createdById;
+            // data.created_by_account_type = "admin";
 
 			let endpoint;
 			if (data.club_type === 'school') {
@@ -162,7 +175,7 @@ function handleClubTypeChange(event) {
 
 
 
-            const response = await axios.post(endpoint, { ...data, tags: tagArray }, {
+            const response = await axios.post(endpoint,formData, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
