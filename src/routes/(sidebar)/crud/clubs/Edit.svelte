@@ -4,13 +4,12 @@
 	import axios from 'axios';
 	import { onMount, afterUpdate } from 'svelte';
 	export let open: boolean = false; // modal control
-	export let data: Record<string, string> = {};
+	export let data: Record<string, any> = {};
 
 	let schoolData = [];
 	let teacherData = [];
 	let sponsorData: any = [];
 	let tagData: any = [];
-	let tagArray: { tagId: any }[] = [];
 	let tag_label = 'Select Tags';
 
 	let user_label = "Select School";
@@ -36,15 +35,23 @@
 		data.sponsorId = id;
 	}
 
-	const handleTagSelect = (id: any, name: any) => {
-		const index = tagArray.findIndex(tag => tag.tagId === id);
+	function isTagSelected(tagId: string) {
+		return data.tags && data.tags.some(tag => tag.tag.id === tagId);
+	}
+
+	const handleTagSelect = (id: string, name: string) => {
+		if (!data.tags) {
+			data.tags = [];
+		}
+
+		const index = data.tags.findIndex(tag => tag.tag.id === id);
 
 		if (index !== -1) {
 			// Tag is already selected, remove it
-			tagArray = tagArray.filter(tag => tag.tagId !== id);
+			data.tags = data.tags.filter(tag => tag.tag.id !== id);
 		} else {
 			// Tag is not selected, add it
-			tagArray = [...tagArray, { tagId: id }];
+			data.tags = [...data.tags, { tag: { id, name } }];
 		}
 
 		// Update the tag label
@@ -52,16 +59,14 @@
 	}
 
 	const updateTagLabel = () => {
-		if (tagArray.length === 0) {
+		if (!data.tags || data.tags.length === 0) {
 			tag_label = 'Select Tags';
-		} else if (tagArray.length === 1) {
-			tag_label = tagData.find(tag => tag.id === tagArray[0].tagId)?.name || 'Select Tags';
+		} else if (data.tags.length === 1) {
+			tag_label = data.tags[0].tag.name;
 		} else {
-			tag_label = `${tagArray.length} tags selected`;
+			tag_label = `${data.tags.length} tags selected`;
 		}
 	}
-
-	$: console.log(tagArray);
 
 	let inputValue;
 	let token: any;
@@ -85,15 +90,6 @@
 		}
 	}
 
-	function handleStudentMediumChange(event) {
-		data.student_medium_of_education = event;
-		if (event === "Bangla") {
-			student_medium_label = "Bangla";
-		} else {
-			student_medium_label = "English";
-		}
-	}
-
 	function handleIsAdminChange(event) {
 		data.is_admin = event;
 		if (event === "true") {
@@ -106,8 +102,9 @@
 	async function handleSubmit() {
 		data.user_type = "teacher";
 		let clubUpdate_api = apiUrl + '/admin/clubUpdate/';
+		const tagsToSend = data.tags ? data.tags.map(tag => ({ tagId: tag.tag.id })) : [];
 		try {
-			const response = await axios.patch(clubUpdate_api, { ...data, tags: tagArray }, {
+			const response = await axios.patch(clubUpdate_api, { ...data, tags: tagsToSend }, {
 				headers: {
 					Authorization: `Bearer ${token}`
 				}
@@ -126,6 +123,7 @@
 			const el = form.elements.namedItem(key);
 			if (el) el.value = data[key];
 		}
+		updateTagLabel();
 	}
 
 	onMount(async () => {
@@ -167,17 +165,11 @@
 		});
 		teacherData = responseteacher.data.result;
 		console.log(teacherData);
+
+		updateTagLabel();
 	});
 
 	afterUpdate(() => {
-		if (open && data.student_medium_of_education) {
-			if (data.student_medium_of_education === "Bangla") {
-				student_medium_label = "Bangla";
-			} else {
-				student_medium_label = "English";
-			}
-		}
-
 		if (open) {
 			if (data.is_admin) {
 				is_admin_label = "True";
@@ -258,7 +250,7 @@
 						<Dropdown class="w-44 p-3 space-y-3 text-sm">
 							{#each tagData as tag}
 								<li>
-									<Checkbox checked={tagArray.some(t => t.tagId === tag.id)} on:change={() => handleTagSelect(tag.id, tag.name)}>
+									<Checkbox checked={isTagSelected(tag.id)} on:change={() => handleTagSelect(tag.id, tag.name)}>
 										{tag.name}
 									</Checkbox>
 								</li>
