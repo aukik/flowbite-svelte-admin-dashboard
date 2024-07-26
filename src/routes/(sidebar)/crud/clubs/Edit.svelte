@@ -107,7 +107,7 @@
 		data.user_type = "teacher";
 		let clubUpdate_api = apiUrl + '/admin/clubUpdate/';
 		try {
-			const response = await axios.post(clubUpdate_api, { ...data, tags: tagArray }, {
+			const response = await axios.patch(clubUpdate_api, { ...data, tags: tagArray }, {
 				headers: {
 					Authorization: `Bearer ${token}`
 				}

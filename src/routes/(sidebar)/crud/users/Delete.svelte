@@ -30,11 +30,12 @@
 	console.log(token);
 
     try {
-        const response = await axios.post(`${apiUrl}/admin/userDelete/`, data, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+      const response = await axios.delete(`${apiUrl}/admin/userDelete?id=`+data?.id, {
+				headers: {
+					Authorization: `Bearer ${token}`
+				},
+
+			});
         open=false
         window.location.reload();
         console.log(response.data); // Handle response data as needed

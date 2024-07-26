@@ -31,7 +31,7 @@
   data.user_type = "student"
 
     try {
-        const response = await axios.post(`${apiUrl}/admin/workshopDelete/`, data, {
+        const response = await axios.delete(`${apiUrl}/admin/workshopDelete?id=`+data?.id, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

@@ -84,7 +84,7 @@ let event_type_label = data?.event_type;
 	let eventUpdate_api = apiUrl + '/admin/eventUpdate/';
 
     try {
-        const response = await axios.post(eventUpdate_api, data, {
+        const response = await axios.patch(eventUpdate_api, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

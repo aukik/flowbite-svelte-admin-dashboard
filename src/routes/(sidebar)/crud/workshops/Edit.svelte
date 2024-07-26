@@ -93,7 +93,7 @@
 	data.user_type = "teacher"
 
     try {
-        const response = await axios.post(`${apiUrl}/admin/workshopUpdate/`, data, {
+        const response = await axios.patch(`${apiUrl}/admin/workshopUpdate/`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

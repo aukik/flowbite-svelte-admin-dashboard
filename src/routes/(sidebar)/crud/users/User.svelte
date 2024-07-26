@@ -60,7 +60,7 @@
 	console.log(token);
 
     try {
-        const response = await axios.post(`${apiUrl}/admin/userUpdate/`, data, {
+        const response = await axios.patch(`${apiUrl}/admin/userUpdate/`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

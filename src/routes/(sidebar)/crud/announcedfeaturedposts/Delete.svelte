@@ -9,7 +9,7 @@
 
   const apiUrl = process.env.VITE_API_URL;
   console.log('API URL:', apiUrl);
-  let clubDelete_api = apiUrl +'/admin/featuredannouncedpostsDelete/'
+  // let clubDelete_api = apiUrl +'/admin/featuredannouncedpostsDelete/'
 
 	function getCookie(name) {
     const cookies = document.cookie.split(';');
@@ -33,10 +33,11 @@
   data.user_type = "student"
 
     try {
-        const response = await axios.post(clubDelete_api, data, {
+        const response = await axios.delete(`${apiUrl}/admin/featuredannouncedpostsDelete?id=`+data?.id, {
             headers: {
                 Authorization: `Bearer ${token}`
-            }
+            },
+            data: { id: data.id }
         });
         open=false
         window.location.reload();

@@ -97,7 +97,7 @@ console.log('API URL:', apiUrl);
 	data.user_type = "teacher"
 	let clubUpdate_api = apiUrl + '/admin/featuredannouncedpostsUpdate/';
     try {
-        const response = await axios.post(clubUpdate_api, data, {
+        const response = await axios.patch(clubUpdate_api, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

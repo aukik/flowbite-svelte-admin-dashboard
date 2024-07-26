@@ -9,7 +9,7 @@
 
   const apiUrl = process.env.VITE_API_URL;
   console.log('API URL:', apiUrl);
-  let clubDelete_api = apiUrl +'/admin/clubDelete/'
+  // let clubDelete_api = apiUrl +'/admin/clubDelete/'
 
 	function getCookie(name) {
     const cookies = document.cookie.split(';');
@@ -31,9 +31,9 @@
     console.log(data.id);
 	console.log(token);
   data.user_type = "student"
-
+  // let clubDelete_api = apiUrl +'/admin/clubDelete/'
     try {
-        const response = await axios.post(clubDelete_api, data, {
+        const response = await axios.delete(`${apiUrl}/admin/clubDelete?id=`+data?.id,{
             headers: {
                 Authorization: `Bearer ${token}`
             }

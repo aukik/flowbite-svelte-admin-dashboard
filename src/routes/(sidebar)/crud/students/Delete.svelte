@@ -31,10 +31,11 @@
   data.user_type = "student"
 
     try {
-        const response = await axios.post(`${apiUrl}/admin/userTeacherStudentDelete/`, data, {
+        const response = await axios.delete(`${apiUrl}/admin/userTeacherStudentDelete?id=${data.id}&user_type=${data.user_type}`, {
             headers: {
                 Authorization: `Bearer ${token}`
-            }
+            },
+            data: { id: data.id ,user_type : "student"}
         });
         open=false
         window.location.reload();

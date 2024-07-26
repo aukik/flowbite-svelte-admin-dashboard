@@ -28,9 +28,9 @@
     console.log(data.id);
 	console.log(token);
   data.user_type = "student"
-  let eventDelete_api = apiUrl + '/admin/eventDelete/' ; 
+  // let eventDelete_api = apiUrl + '/admin/eventDelete/' ; 
     try {
-        const response = await axios.post(eventDelete_api, data, {
+        const response = await axios.delete(`${apiUrl}/admin/eventDelete?id=`+data?.id,  {
             headers: {
                 Authorization: `Bearer ${token}`
             }
