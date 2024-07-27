@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Input, Label, Modal, Textarea, Dropdown, DropdownItem, DropdownDivider, DropdownHeader} from 'flowbite-svelte';
+	import { Button, Input, Label, Modal, Textarea, Dropdown, DropdownItem, DropdownDivider, DropdownHeader,Checkbox} from 'flowbite-svelte';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import axios from 'axios';
 	
@@ -11,6 +11,9 @@
 
 	let inputValue;
 	let token;
+	let tagArray: { tagId: any }[] = [];
+	let tag_label = 'Select Tags';
+	let tagData: any = [];
 	let user_label="Select Club";
 	let event_type_label="Event Type";
 	let is_admin_label="Is Admin";
@@ -56,6 +59,32 @@ function handleEventTypeChange(event) {
 			is_admin_label="False";
 		}
   }
+
+
+  const handleTagSelect = (id: any, name: any) => {
+		const index = tagArray.findIndex(tag => tag.tagId === id);
+
+		if (index !== -1) {
+			// Tag is already selected, remove it
+			tagArray = tagArray.filter(tag => tag.tagId !== id);
+		} else {
+			// Tag is not selected, add it
+			tagArray = [...tagArray, { tagId: id }];
+		}
+
+		// Update the tag label
+		updateTagLabel();
+	}
+
+  const updateTagLabel = () => {
+		if (tagArray.length === 0) {
+			tag_label = 'Select Tags';
+		} else if (tagArray.length === 1) {
+			tag_label = tagData.find(tag => tag.id === tagArray[0].tagId)?.name || 'Select Tags';
+		} else {
+			tag_label = `${tagArray.length} tags selected`;
+		}
+	}
 
 	function getCookie(name) {
     const cookies = document.cookie.split(';');
@@ -118,7 +147,7 @@ function handleEventTypeChange(event) {
 
         const formData = new FormData();
         formData.append('images', file);
-        formData.append('data', JSON.stringify(data)); 
+        formData.append('data', JSON.stringify({ ...data, tags: tagArray }));
 
         try {
             // First, upload the image
@@ -172,13 +201,21 @@ function handleEventTypeChange(event) {
   token = getCookie('token');
   console.log("token",token);
   let allClubData_api = apiUrl + '/admin/allclubData/' ;
+  let alltag_api = apiUrl + '/admin/tags/';
   const response= await axios.get(allClubData_api, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
-				clubData=response.data.result
-				console.log(clubData)
+				clubData=response.data.result;
+				console.log(clubData);
+	const responsetags = await axios.get(alltag_api, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+		tagData = responsetags.data.result;
+		console.log("This is tag data", tagData);
 
 
 });
@@ -307,6 +344,26 @@ function handleEventTypeChange(event) {
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
+
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Tags</span>
+					<div class="pt-5">
+						<Button>{tag_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+							{#each tagData as tag}
+								<li>
+									<Checkbox checked={tagArray.some(t => t.tagId === tag.id)} on:change={() => handleTagSelect(tag.id, tag.name)}>
+										{tag.name}
+									</Checkbox>
+								</li>
+							{/each}
+						</Dropdown>
+					</div>
+				</Label>
+
+
+
 				<Label class="col-span-6 space-y-2">
                     <span>Photo</span>
                     <Input

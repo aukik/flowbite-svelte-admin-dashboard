@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Input, Label, Modal, Textarea,Dropdown, DropdownItem, DropdownDivider, DropdownHeader } from 'flowbite-svelte';
+	import { Button, Input, Label, Modal, Textarea,Dropdown, DropdownItem, DropdownDivider, DropdownHeader,Checkbox } from 'flowbite-svelte';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import axios from 'axios';
 	import { onMount, afterUpdate} from 'svelte';
@@ -9,6 +9,8 @@
 
 	let  clubData=[];
 	const apiUrl = process.env.VITE_API_URL;
+	let tagData: any = [];
+	let tag_label = 'Select Tags';
 	let teacherData = [];
 	let sponsorData = [];
 	let is_certificate_label="Certificate";
@@ -81,6 +83,41 @@
     }
 }
 
+
+function isTagSelected(tagId: string) {
+		return data.tags && data.tags.some(tag => tag.tag.id === tagId);
+	}
+
+	const handleTagSelect = (id: string, name: string) => {
+		if (!data.tags) {
+			data.tags = [];
+		}
+
+		const index = data.tags.findIndex(tag => tag.tag.id === id);
+
+		if (index !== -1) {
+			// Tag is already selected, remove it
+			data.tags = data.tags.filter(tag => tag.tag.id !== id);
+		} else {
+			// Tag is not selected, add it
+			data.tags = [...data.tags, { tag: { id, name } }];
+		}
+
+		// Update the tag label
+		updateTagLabel();
+	}
+
+	const updateTagLabel = () => {
+		if (!data.tags || data.tags.length === 0) {
+			tag_label = 'Select Tags';
+		} else if (data.tags.length === 1) {
+			tag_label = data.tags[0].tag.name;
+		} else {
+			tag_label = `${data.tags.length} tags selected`;
+		}
+	}
+
+
   async function handleSubmit() {
     // Assuming `token` is defined somewhere accessible
     
@@ -91,9 +128,10 @@
     console.log(data.id);
 	console.log(token);
 	data.user_type = "teacher"
+	const tagsToSend = data.tags ? data.tags.map(tag => ({ tagId: tag.tag.id })) : [];
 
     try {
-        const response = await axios.patch(`${apiUrl}/admin/workshopUpdate/`, data, {
+        const response = await axios.patch(`${apiUrl}/admin/workshopUpdate/`, { ...data, tags: tagsToSend }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -115,6 +153,7 @@
 			const el = form.elements.namedItem(key);
 			if (el) el.value = data[key];
 		}
+		updateTagLabel();
 	}
 	1;
 
@@ -133,6 +172,7 @@
 
   token = getCookie('token');
   console.log("token",token);
+  let alltag_api = apiUrl + '/admin/tags/';
   const response= await axios.get(`${apiUrl}/admin/allclubData/`, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -140,6 +180,14 @@
         });
 				clubData=response.data.result
 				console.log(clubData)
+	const responsetags = await axios.get(alltag_api, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+		tagData = responsetags.data.result;
+		console.log("This is tag data", tagData);
+		updateTagLabel();
 
 
 
@@ -340,6 +388,9 @@ afterUpdate(() => {
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
+
+
+
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Content</span>
 					<Input
@@ -349,6 +400,22 @@ afterUpdate(() => {
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
+				</Label>
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Tags</span>
+					<div class="pt-5">
+						<Button>{tag_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+							{#each tagData as tag}
+								<li>
+									<Checkbox checked={isTagSelected(tag.id)} on:change={() => handleTagSelect(tag.id, tag.name)}>
+										{tag.name}
+									</Checkbox>
+								</li>
+							{/each}
+						</Dropdown>
+					</div>
 				</Label>
 
 
