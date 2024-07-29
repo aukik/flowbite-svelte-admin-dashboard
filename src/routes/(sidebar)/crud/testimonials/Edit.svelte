@@ -169,7 +169,7 @@ afterUpdate(() => {
 					/>
 				</Label>
 
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
+                <!-- <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Picture</span>
 					<Input
 					bind:value={data.picture}
@@ -178,7 +178,7 @@ afterUpdate(() => {
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
-				</Label>
+				</Label> -->
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Text Box</span>
 					<Input bind:value={data.text_box} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />

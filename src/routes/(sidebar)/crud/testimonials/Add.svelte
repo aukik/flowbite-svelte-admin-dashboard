@@ -3,6 +3,7 @@
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import axios from 'axios';
 	import { onMount } from 'svelte';
+	import { writable } from 'svelte/store';
 	export let open: boolean = false; // modal control
 
 	export let data: Record<string, string> = {};
@@ -17,6 +18,7 @@
 	user_label=name
 	data.schoolId=id
 }
+const selectedFile = writable<File | null>(null);
 
 
 function handleStudentMediumChange(event) {
@@ -52,6 +54,16 @@ function handleStudentMediumChange(event) {
     }
     return null;
   }
+
+
+  function handleFileChange(event: Event) {
+        const target = event.target as HTMLInputElement;
+        if (target.files) {
+            selectedFile.set(target.files[0]);
+        }
+    }
+
+
   async function handleSubmit() {
     // Assuming `token` is defined somewhere accessible
 
@@ -62,6 +74,19 @@ function handleStudentMediumChange(event) {
     //console.log(data.id);
 	console.log(token);
 	data.user_type = "student"
+	let file;
+        selectedFile.subscribe(value => {
+            file = value;
+        })();
+
+        if (!file) {
+            console.error('No file selected');
+            return null;
+        }
+
+        const formData = new FormData();
+        formData.append('images', file);
+        formData.append('data', JSON.stringify(data));
 
 
     try {
@@ -80,9 +105,10 @@ function handleStudentMediumChange(event) {
 		data.created_by_account_type = "admin";
 
 
-        const response = await axios.post(`${apiUrl}/admin/testimonialRegistration/`, data, {
+        const response = await axios.post(`${apiUrl}/admin/testimonialRegistration/`, formData, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
             }
         });
 				open=false
@@ -155,7 +181,7 @@ function handleStudentMediumChange(event) {
 					/>
 				</Label>
 
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
+                <!-- <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Picture</span>
 					<Input
 					bind:value={data.picture}
@@ -164,13 +190,16 @@ function handleStudentMediumChange(event) {
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
-				</Label>
+				</Label> -->
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Text Box</span>
 					<Input bind:value={data.text_box} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
 				</Label>
 
-
+                <Label class="col-span-6 space-y-2">
+                    <span>Photo</span>
+                    <Input type="file" name="photo" accept="image/*" on:change={handleFileChange} class="border outline-none" />
+                </Label>
 
 
 
