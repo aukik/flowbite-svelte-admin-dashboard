@@ -78,9 +78,11 @@
 			icon: BrainSolid,
 			children: {
 
-				Workshop: '/crud/workshops',
+				
 				Club: '/crud/clubs',
-				Event: '/crud/event'
+				Competition: '/crud/competition',
+				Event: '/crud/event',
+				Workshop: '/crud/workshops'
 			}
 		},
 		{
