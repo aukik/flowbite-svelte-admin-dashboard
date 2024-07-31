@@ -63,7 +63,7 @@ let userData = [];
 const fetchAllUserData = async (token) => {
   try {
 	// Make a GET request to the endpoint with the Authorization header
-	const response = await axios.get(`${BASE_URL}/admin/allpostData`, {
+	const response = await axios.get(`${BASE_URL}/admin/allFeaturedPosts`, {
 	  headers: {
 		Authorization: `Bearer ${token}`
 	  }
@@ -182,7 +182,7 @@ onMount(async () => {
 	<div class="p-4">
 		<Breadcrumb class="mb-5">
 			<BreadcrumbItem home>Home</BreadcrumbItem>
-			<BreadcrumbItem href="/crud/users">Activitis</BreadcrumbItem>
+			<BreadcrumbItem href="/crud/users">Homepage</BreadcrumbItem>
 			<BreadcrumbItem>List</BreadcrumbItem>
 		</Breadcrumb>
 		<Heading tag="h1" class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
@@ -235,7 +235,7 @@ onMount(async () => {
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
-			{#each ['Title', 'Text','Post Type', 'Visibility', 'Actions'] as title}
+			{#each ['Title', 'Text','Author', 'Tags', 'Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -247,9 +247,9 @@ onMount(async () => {
 
 					<TableBodyCell
 					class="max-w-sm overflow-hidden truncate p-4 text-base font-normal text-gray-500 dark:text-gray-400 xl:max-w-xs"
-				>{user.text_content||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.post_type||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.visibility||"N/A"}</TableBodyCell>
+				>{user.text_box||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.author||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.tag||"N/A"}</TableBodyCell>
 					<!-- <TableBodyCell class="p-4">{user.club_type||"N/A"}</TableBodyCell> -->
 					<!-- <TableBodyCell class="p-4">{user.created_by_account_type||"N/A"}</TableBodyCell> -->
 

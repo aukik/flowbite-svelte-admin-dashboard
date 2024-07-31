@@ -80,8 +80,39 @@ function handlePostTypeChange(event) {
         }
     }
 
-    async function uploadImage() {
-        let file;
+    // async function uploadImage() {
+    //     let file;
+    //     selectedFile.subscribe(value => {
+    //         file = value;
+    //     })();
+
+    //     if (!file) {
+    //         console.error('No file selected');
+    //         return null;
+    //     }
+
+    //     const formData = new FormData();
+    //     formData.append('image', file);
+
+    //     try {
+    //         const response = await axios.post(`${apiUrl}/admin/uploadImage`, formData, {
+    //             headers: {
+    //                 'Content-Type': 'multipart/form-data',
+    //                 Authorization: `Bearer ${token}`
+    //             }
+    //         });
+    //         return response.data;
+    //     } catch (error) {
+    //         console.error('Error uploading image:', error);
+    //         return null;
+    //     }
+    // }
+
+    async function handleSubmit() {
+        console.log("Inside submit");
+        console.log(data);
+        console.log(token);
+		let file;
         selectedFile.subscribe(value => {
             file = value;
         })();
@@ -92,52 +123,34 @@ function handlePostTypeChange(event) {
         }
 
         const formData = new FormData();
-        formData.append('image', file);
-
-        try {
-            const response = await axios.post(`${apiUrl}/admin/uploadImage`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            return response.data;
-        } catch (error) {
-            console.error('Error uploading image:', error);
-            return null;
-        }
-    }
-
-    async function handleSubmit() {
-        console.log("Inside submit");
-        console.log(data);
-        console.log(token);
+        formData.append('images', file);
+        formData.append('data', JSON.stringify(data));
   
 
         try {
-            // First, upload the image
-            const imageData = await uploadImage();
-            if (imageData) {
-                data.imageUrl = imageData.imageUrl;
-                data.imagename = imageData.localImageName;
-            }
+            // // First, upload the image
+            // const imageData = await uploadImage();
+            // if (imageData) {
+            //     data.imageUrl = imageData.imageUrl;
+            //     data.imagename = imageData.localImageName;
+            // }
 
-            const userDataResponse = await axios.get(`${apiUrl}/admin/userData`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            // const userDataResponse = await axios.get(`${apiUrl}/admin/userData`, {
+            //     headers: {
+            //         Authorization: `Bearer ${token}`
+            //     }
+            // });
 
-            const createdById = userDataResponse.data.user.id;
-            console.log('Created By ID:', createdById);
+            // const createdById = userDataResponse.data.user.id;
+            // console.log('Created By ID:', createdById);
 
-            data.created_by_id = createdById;
-            data.created_by_account_type = "admin";
+            // data.created_by_id = createdById;
+            // data.created_by_account_type = "admin";
 
-			let endpoint = apiUrl + '/admin/postRegistration/'
+			let endpoint = apiUrl + '/admin/uploadFeaturedPost/'
 
 
-            const response = await axios.post(endpoint, data, {
+            const response = await axios.post(endpoint, formData, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -168,31 +181,31 @@ function handlePostTypeChange(event) {
 
   token = getCookie('token');
   console.log("token",token);
-  let allschool_api = apiUrl + '/admin/allstudentData/';
-  let allworkshop_api = apiUrl + '/admin/allworkshopData/';
-  let allcompetition_api = apiUrl + '/admin/allcompetitionData/';
+//   let allschool_api = apiUrl + '/admin/allstudentData/';
+//   let allworkshop_api = apiUrl + '/admin/allworkshopData/';
+//   let allcompetition_api = apiUrl + '/admin/allcompetitionData/';
 
-  const response= await axios.get(allschool_api, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-				studentData=response.data.result
-				console.log(studentData)
-	const responseteacher= await axios.get(allworkshop_api, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-				workshopData=responseteacher.data.result
-				console.log(workshopData)
-	const responsesponsor= await axios.get(allcompetition_api, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-				competitionData=responsesponsor.data.result
-				console.log(competitionData)
+//   const response= await axios.get(allschool_api, {
+//             headers: {
+//                 Authorization: `Bearer ${token}`
+//             }
+//         });
+// 				studentData=response.data.result
+// 				console.log(studentData)
+// 	const responseteacher= await axios.get(allworkshop_api, {
+//             headers: {
+//                 Authorization: `Bearer ${token}`
+//             }
+//         });
+// 				workshopData=responseteacher.data.result
+// 				console.log(workshopData)
+// 	const responsesponsor= await axios.get(allcompetition_api, {
+//             headers: {
+//                 Authorization: `Bearer ${token}`
+//             }
+//         });
+// 				competitionData=responsesponsor.data.result
+// 				console.log(competitionData)
 
 
 });
@@ -200,7 +213,7 @@ function handlePostTypeChange(event) {
 
 <Modal
 	bind:open
-	title={Object.keys(data).length ? 'Add new user' : 'Add  new Club'}
+	title={Object.keys(data).length ? 'Add new user' : 'Add  new Blog'}
 	size="md"
 	class="m-4"
 >
@@ -221,7 +234,28 @@ function handlePostTypeChange(event) {
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Text Content</span>
 					<Input
-					bind:value={data.text_content}
+					bind:value={data.text_box}
+						name="email"
+						type="email"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Author</span>
+					<Input
+					bind:value={data.author}
+						name="email"
+						type="email"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Tag</span>
+					<Input
+					bind:value={data.tag}
 						name="email"
 						type="email"
 						class="border outline-none"
@@ -236,90 +270,16 @@ function handlePostTypeChange(event) {
 
 
 
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span></span>
-					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
-					<div class="pt-5">
-						<Button >{post_type_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
-							<DropdownItem  on:click={() => handlePostTypeChange('student post')}>Student Post</DropdownItem>
-							<DropdownItem  on:click={() => handlePostTypeChange('activity post')}>Activity Post</DropdownItem>
-							<DropdownItem  on:click={() => handlePostTypeChange('student activity post')}>Student Activity Post</DropdownItem>
-							<DropdownItem  on:click={() => handlePostTypeChange('join now post')}>Join Now Post</DropdownItem>
-							<DropdownItem  on:click={() => handlePostTypeChange('advertisement post')}>Advertisement Post</DropdownItem>
-						</Dropdown>
-					</div>
-				</Label>
 
 
 
 
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span></span>
-					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
-					<div class="pt-5">
-						<Button >{visibility_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
-							<DropdownItem  on:click={() => handleVisibilityChange('public')}>Public</DropdownItem>
-							<DropdownItem  on:click={() => handleVisibilityChange('private')}>Private</DropdownItem>
-
-						</Dropdown>
-					</div>
-				</Label>
 
 
 
 
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Students</span>
-					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
-					<span></span>
-
-					<div class="pt-5">
-						<Button >{user_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
-							{#each studentData as user}
-								<DropdownItem  on:click={() => handleStudentSelect(user?.id,user?.name)}>{user?.name}, {user?.location}</DropdownItem>
-							<!-- <DropdownItem  on:click={() => handleVisibilityChange('false')}>False</DropdownItem> -->
-							{/each}
-						</Dropdown>
-					</div>
-				</Label>
 
 
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Workshop</span>
-					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
-					<span></span>
-
-					<div class="pt-5">
-						<Button >{workshop_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
-							{#each workshopData as user}
-								<DropdownItem  on:click={() => handleWorkshopSelect(user?.id,user?.name)}>{user?.name}, {user?.motto}</DropdownItem>
-							<!-- <DropdownItem  on:click={() => handleVisibilityChange('false')}>False</DropdownItem> -->
-							{/each}
-						</Dropdown>
-					</div>
-				</Label>
-
-
-
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Competition</span>
-					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
-					<span></span>
-
-					<div class="pt-5">
-						<Button >{competition_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
-							{#each competitionData as user}
-								<DropdownItem  on:click={() => handleCompetitionSelect(user?.id,user?.name)}>{user?.name}, {user?.motto}</DropdownItem>
-							<!-- <DropdownItem  on:click={() => handleVisibilityChange('false')}>False</DropdownItem> -->
-							{/each}
-						</Dropdown>
-					</div>
-				</Label>
 
 
 

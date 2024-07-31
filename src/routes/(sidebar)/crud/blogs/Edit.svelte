@@ -119,11 +119,13 @@ console.log('API URL:', apiUrl);
 
   async function handleSubmit() {
 
-	data.user_type = "teacher"
+	// data.user_type = "teacher"
 
-	let clubUpdate_api = apiUrl + '/admin/clubUpdate/';
+	let blogsUpdate_api = apiUrl + '/admin/featuredPostsUpdate/';
+	console.log(blogsUpdate_api);
     try {
-        const response = await axios.post(clubUpdate_api, {...data,tags:tagArray}, {
+		console.log(data);
+        const response = await axios.patch(blogsUpdate_api, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -154,47 +156,47 @@ console.log('API URL:', apiUrl);
 
   token = getCookie('token');
   console.log("token",token);
-  let allschool_api = apiUrl + '/admin/allschoolData/';
-  let allteacher_api = apiUrl + '/admin/allteacherData/';
-  let allsponsor_api = apiUrl + '/admin/allsponsorData/';
-	let alltag_api = apiUrl + '/admin/tags/';
+//   let allschool_api = apiUrl + '/admin/allschoolData/';
+//   let allteacher_api = apiUrl + '/admin/allteacherData/';
+//   let allsponsor_api = apiUrl + '/admin/allsponsorData/';
+// 	let alltag_api = apiUrl + '/admin/tags/';
 
 
-  // Retrieve the token from session storage
-  //const token = sessionStorage.getItem('token');
+//   // Retrieve the token from session storage
+//   //const token = sessionStorage.getItem('token');
 
-  const response= await axios.get(allschool_api, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-				schoolData=response.data.result
-				console.log(schoolData)
+//   const response= await axios.get(allschool_api, {
+//             headers: {
+//                 Authorization: `Bearer ${token}`
+//             }
+//         });
+// 				schoolData=response.data.result
+// 				console.log(schoolData)
 
-	const responsetags= await axios.get(alltag_api, {
-			headers: {
-					Authorization: `Bearer ${token}`
-			}
-	});
-	tagData=responsetags.data.result
-	console.log("This is tag data")
-	console.log(tagData)
+// 	const responsetags= await axios.get(alltag_api, {
+// 			headers: {
+// 					Authorization: `Bearer ${token}`
+// 			}
+// 	});
+// 	tagData=responsetags.data.result
+// 	console.log("This is tag data")
+// 	console.log(tagData)
 
-	const responsesponsor= await axios.get(allsponsor_api, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-				sponsorData=responsesponsor.data.result
-				console.log(sponsorData)
+// 	const responsesponsor= await axios.get(allsponsor_api, {
+//             headers: {
+//                 Authorization: `Bearer ${token}`
+//             }
+//         });
+// 				sponsorData=responsesponsor.data.result
+// 				console.log(sponsorData)
 
-	const responseteacher= await axios.get(allteacher_api, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-				teacherData=responseteacher.data.result
-				console.log(teacherData)
+// 	const responseteacher= await axios.get(allteacher_api, {
+//             headers: {
+//                 Authorization: `Bearer ${token}`
+//             }
+//         });
+// 				teacherData=responseteacher.data.result
+// 				console.log(teacherData)
 
 
 
@@ -233,7 +235,7 @@ afterUpdate(() => {
 <Modal
 	bind:open
 
-	title={Object.keys(data).length ? 'Edit Club' : 'Add new user'}
+	title={Object.keys(data).length ? 'Edit Blog' : 'Add new user'}
 
 	size="md"
 	class="m-4"
@@ -243,107 +245,45 @@ afterUpdate(() => {
 		<form on:submit={handleSubmit} use:init>
 			<div class="grid grid-cols-6 gap-6">
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Name</span>
-					<Input bind:value={data.club_name} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
+					<span>Title</span>
+					<Input bind:value={data.title} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
 				</Label>
 
+
+
+
+
+
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Motto</span>
+					<span>Text Content</span>
 					<Input
-					bind:value={data.motto}
+					bind:value={data.text_box}
 						name="email"
 						type="email"
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Description</span>
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Author</span>
 					<Input
-					bind:value={data.description}
-						name="student id"
-						type="text"
+					bind:value={data.author}
+						name="email"
+						type="email"
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
-
-
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Club Type</span>
-					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
-					<div class="pt-5">
-						<Button >{data.club_type}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
-							<DropdownItem  on:click={() => handleClubTypeChange('school')}>School</DropdownItem>
-							<DropdownItem  on:click={() => handleClubTypeChange('sponsor')}>Sponsor</DropdownItem>
-						</Dropdown>
-					</div>
-				</Label>
-
-
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Total Students</span>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Tag</span>
 					<Input
-					bind:value={data.total_students}
-						name="student id"
-						type="text"
+					bind:value={data.tag}
+						name="email"
+						type="email"
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
-				</Label>
-
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Teacher</span>
-					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
-					<span></span>
-
-					<div class="pt-5">
-						<Button >{teacher_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
-							{#each data.school.teacher as user}
-								<DropdownItem  on:click={() => handleTeacherSelect(user?.id,user?.name)}>{user?.name}, {user?.teacher_designation}</DropdownItem>
-							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
-							{/each}
-						</Dropdown>
-					</div>
-				</Label>
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Sponsor</span>
-					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
-					<span></span>
-
-					<div class="pt-5">
-						<Button >{sponsor_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
-							{#each sponsorData as user}
-								<DropdownItem  on:click={() => handleSponsorSelect(user?.id,user?.name)}>{user?.name}, {user?.email}</DropdownItem>
-							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
-							{/each}
-						</Dropdown>
-					</div>
-				</Label>
-
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Tags</span>
-					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
-					<span></span>
-
-					<div class="pt-5">
-						<Button>{tag_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown class="w-44 p-3 space-y-3 text-sm">
-							{#each tagData as tag}
-								<li>
-									<Checkbox
-										checked={tagArray.some(t => t.tagId === tag.id)}
-										on:change={() => handleTagSelect(tag.id, tag.name)}
-									>
-										{tag.name}
-									</Checkbox>
-								</li>
-							{/each}
-						</Dropdown>
-					</div>
 				</Label>
 
 
