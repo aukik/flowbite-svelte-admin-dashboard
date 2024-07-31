@@ -202,7 +202,7 @@
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Club Type</span>
 					<div class="pt-5">
-						<Button>{club_type_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Button>{data.club_type}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
 						<Dropdown>
 							<DropdownItem on:click={() => handleClubTypeChange('school')}>School</DropdownItem>
 							<DropdownItem on:click={() => handleClubTypeChange('sponsor')}>Sponsor</DropdownItem>
