@@ -279,7 +279,7 @@ afterUpdate(() => {
 
 
 
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
+                <!-- <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>People Joined</span>
 					<Input
 					bind:value={data.people_joined}
@@ -298,8 +298,8 @@ afterUpdate(() => {
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
-				</Label>
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
+				</Label> -->
+                <!-- <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Rating</span>
 					<Input
 					bind:value={data.rating}
@@ -308,7 +308,7 @@ afterUpdate(() => {
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
-				</Label>
+				</Label> -->
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Duration</span>
 					<Input

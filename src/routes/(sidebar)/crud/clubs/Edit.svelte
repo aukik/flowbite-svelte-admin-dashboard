@@ -210,10 +210,10 @@
 					</div>
 				</Label>
 
-				<Label class="col-span-6 space-y-2 sm:col-span-3">
+				<!-- <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Total Students</span>
 					<Input bind:value={data.total_students} name="student id" type="text" class="border outline-none" placeholder="e.g. bonnie@flowbite.com" />
-				</Label>
+				</Label> -->
 
 				{#if data.club_type === 'school'}
 					<Label class="col-span-6 space-y-2 sm:col-span-3">

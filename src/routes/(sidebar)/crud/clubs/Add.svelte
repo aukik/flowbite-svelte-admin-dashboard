@@ -296,7 +296,7 @@ function handleClubTypeChange(event) {
 				</Label>
 
 
-
+<!-- 
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Total Students</span>
 					<Input
@@ -306,7 +306,7 @@ function handleClubTypeChange(event) {
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
-				</Label>
+				</Label> -->
 
 
 
