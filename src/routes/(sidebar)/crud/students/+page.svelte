@@ -55,7 +55,7 @@
 
 // Define userData variable
 let userData = [];
-let avatarData = [];
+// let avatarData = [];
 
 // Function to fetch all user data
 const fetchAllUserData = async (token) => {
@@ -75,12 +75,12 @@ const fetchAllUserData = async (token) => {
 
 
 
-		// Make a GET request to the endpoint with the Authorization header
-		const responsex = await axios.get(`${BASE_URL}/admin/avatarList`, {
-	  headers: {
-		Authorization: `Bearer ${token}`
-	  }
-	});
+	// 	// Make a GET request to the endpoint with the Authorization header
+	// 	const responsex = await axios.get(`${BASE_URL}/admin/avatarList`, {
+	//   headers: {
+	// 	Authorization: `Bearer ${token}`
+	//   }
+	// });
 //
 	// Update avatarData with response data
 	avatarData = responsex.data.result;
