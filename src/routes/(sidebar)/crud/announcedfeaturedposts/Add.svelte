@@ -33,9 +33,7 @@
 
 
 function handleClubTypeChange(event) {
-	// console.log(event)
     data.club_type = event;
-		// console.log(data)
 		if(event==="school"){
 			club_type_label="School";
 		}else{
@@ -45,9 +43,7 @@ function handleClubTypeChange(event) {
 
 
 	function handleIsAdminChange(event) {
-	// console.log(event)
     data.is_admin = event;
-		// console.log(data)
 		if(event==="true"){
 			is_admin_label="True";
 		}else{
@@ -65,15 +61,14 @@ function handleClubTypeChange(event) {
     }
     return null;
   }
+
+  let link = '';
+  let announcement = '';
+
   async function handleSubmit() {
-    // Assuming `token` is defined somewhere accessible
-
-
-    // Assuming `data` contains the payload you want to send in the request
     console.log("Inside submit");
     console.log(data);
 	console.log(data.schoolId);
-    //console.log(data.id);
 	console.log(token);
 
 	let userdata_api = apiUrl + '/admin/userData';
@@ -84,30 +79,30 @@ function handleClubTypeChange(event) {
             }
         });
 
-        // Extracting the created_by_id from the response
         const createdById = userDataResponse.data.user.id;
         console.log('Created By ID:', createdById);
 
-        // Assigning the created_by_id to data
         data.created_by_id = createdById;
 		data.created_by_account_type = "admin";
 		
+        // Create JSON data format with link and announcement
+        data.data = JSON.stringify({
+            link: link,
+            announcement: announcement
+        });
 
-		
 		let endpoint = apiUrl + '/admin/featuredannouncedpostsRegistration/';
 
-
-    // Making the POST request to the appropriate endpoint
-    const response = await axios.post(endpoint, data, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
-				open=false
-				window.location.reload();
-        console.log(response.data); // Handle response data as needed
+        const response = await axios.post(endpoint, data, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+		open=false
+		window.location.reload();
+        console.log(response.data);
     } catch (error) {
-        console.error('Error:');
+        console.error('Error:', error);
     }
 }
 
@@ -125,9 +120,6 @@ function handleClubTypeChange(event) {
 	let sponsorData = [];
 
 	onMount(async () => {
-  // Retrieve the token from session storage
-  //const token = sessionStorage.getItem('token');
-
   token = getCookie('token');
   console.log("token",token);
   let allschool_api = apiUrl + '/admin/allschoolData/';
@@ -155,14 +147,12 @@ function handleClubTypeChange(event) {
         });
 				sponsorData=responsesponsor.data.result
 				console.log(sponsorData)
-
-
 });
 </script>
 
 <Modal
 	bind:open
-	title={Object.keys(data).length ? 'Add new user' : 'Add  new Featured Announced Posts'}
+	title={Object.keys(data).length ? 'Edit Featured Announced Post' : 'Add New Featured Announced Post'}
 	size="md"
 	class="m-4"
 >
@@ -172,19 +162,18 @@ function handleClubTypeChange(event) {
 			<div class="grid grid-cols-6 gap-6">
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Type</span>
-					<Input bind:value={data.type} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
+					<Input bind:value={data.type} name="type" class="border outline-none" placeholder="e.g. Announcement" required />
 				</Label>
-
-
 
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Title</span>
 					<Input
 					bind:value={data.title}
-						name="email"
-						type="email"
+						name="title"
+						type="text"
 						class="border outline-none"
-						placeholder="e.g. bonnie@flowbite.com"
+						placeholder="Enter title"
+						required
 					/>
 				</Label>
 
@@ -192,44 +181,41 @@ function handleClubTypeChange(event) {
 					<span>Color Code</span>
 					<Input
 					bind:value={data.colorcode}
-						name="student_id"
+						name="colorcode"
 						type="text"
 						class="border outline-none"
-						placeholder="e.g. bonnie@flowbite.com"
+						placeholder="e.g. #FF0000"
+						required
 					/>
 				</Label>
-
-
 
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Data</span>
+					<span>Link</span>
 					<Input
-					bind:value={data.data}
-						name="student_id"
-						type="text"
+					bind:value={link}
+						name="link"
+						type="url"
 						class="border outline-none"
-						placeholder="e.g. bonnie@flowbite.com"
+						placeholder="e.g. https://example.com"
 					/>
 				</Label>
 
-
-
-
-
-
-
-
-
-
-
-
-
+                <Label class="col-span-6 space-y-2">
+					<span>Announcement</span>
+					<Textarea
+					bind:value={announcement}
+						name="announcement"
+						class="border outline-none"
+						placeholder="Enter announcement text"
+						rows="3"
+					/>
+				</Label>
 			</div>
 		</form>
 	</div>
 
 	<!-- Modal footer -->
 	<div slot="footer">
-		<Button on:click = {handleSubmit}>{Object.keys(data).length ? 'Save all' : 'Add teacher'}</Button>
+		<Button on:click={handleSubmit}>{Object.keys(data).length ? 'Save changes' : 'Add post'}</Button>
 	</div>
 </Modal>

@@ -236,10 +236,31 @@ afterUpdate(() => {
 
 
 
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
+                <!-- <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Data</span>
 					<Input
 					bind:value={data.data}
+						name="student_id"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label> -->
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Link</span>
+					<Input
+					bind:value={data.data.link}
+						name="student_id"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Announcement</span>
+					<Input
+					bind:value={data.data.announcement}
 						name="student_id"
 						type="text"
 						class="border outline-none"

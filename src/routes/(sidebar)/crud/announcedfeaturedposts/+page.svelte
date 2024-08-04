@@ -235,7 +235,7 @@ onMount(async () => {
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
-			{#each ['Title', 'Type','Color Code','Data', 'Actions'] as title}
+			{#each ['Title', 'Type','Color Code','Link','Announcement', 'Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -249,11 +249,13 @@ onMount(async () => {
 					<TableBodyCell class="p-4">{user.colorcode||"N/A"}</TableBodyCell>
 
 
-					<TableBodyCell
+					<!-- <TableBodyCell
 					class="max-w-sm overflow-hidden truncate p-4 text-base font-normal text-gray-500 dark:text-gray-400 xl:max-w-xs"
 				>
 				{user.data ? JSON.stringify(user.data, null, 2) : "N/A"}
-				</TableBodyCell>
+				</TableBodyCell> -->
+				<TableBodyCell class="p-4">{user.data.link||"N/A"}</TableBodyCell>
+				<TableBodyCell class="p-4">{user.data.announcement||"N/A"}</TableBodyCell>
 
 
 
