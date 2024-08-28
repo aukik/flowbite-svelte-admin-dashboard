@@ -24,6 +24,7 @@
 	import User from './Edit.svelte';
 	import Adduser from './Add.svelte';
 	import Delete from './Delete.svelte';
+	import Verification from './verification.svelte'
 	import MetaTag from '../../../utils/MetaTag.svelte';
 	import { onMount } from 'svelte';
 	import axios from 'axios';
@@ -161,7 +162,7 @@ onMount(async () => {
   console.log("GG");
   startPolling();
 });
-
+	let openVerification: boolean = false; // modal control
 	let openUser: boolean = false; // modal control
 	let addUser: boolean = false; // modal control
 	let openDelete: boolean = false; // modal control
@@ -232,7 +233,7 @@ onMount(async () => {
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
-			{#each ['Name', 'Motto','Location','Established Year','Actions'] as title}
+			{#each ['Name', 'Motto','Location','Established Year','Is Verified','Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -259,6 +260,21 @@ onMount(async () => {
 						<Button
 							size="sm"
 							class="gap-2 px-3"
+							on:click={() => {
+								if (!user.isVerified) { // Check if isVerified is false
+									current_user = user;
+									openVerification = true;
+								}
+							}}
+						>
+							<EditOutline size="sm" />{user.isVerified}
+						</Button>
+					</TableBodyCell>
+					
+					<TableBodyCell class="space-x-2 p-4">
+						<Button
+							size="sm"
+							class="gap-2 px-3"
 							on:click={() => ((current_user = user), (openUser = true))}
 						>
 							<EditOutline size="sm" /> Edit
@@ -279,7 +295,7 @@ onMount(async () => {
 </main>
 
 <!-- Modals -->
-
+<Verification bind:open={openVerification} data={current_user} />
 <User bind:open={openUser} data={current_user} />
 <Adduser bind:open={addUser} data={current_user}/>
 <Delete bind:open={openDelete}  data={current_user} />

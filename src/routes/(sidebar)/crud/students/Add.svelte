@@ -215,7 +215,8 @@
                         <Button>{avatar_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
                         <Dropdown>
                             {#each avatarData as user}
-                                <DropdownItem on:click={() => handleAvatarSelect(user?.id,user?.name)}><img width="80px" src={user?.imageUrl} alt={"avatar-"+user?.imagename} class="text-sm font-normal text-gray-500 dark:text-gray-400"/></DropdownItem>
+                            <p>{user?.name}</p>
+                                <DropdownItem on:click={() => handleAvatarSelect(user?.id,user?.name)}><img width="80px" src={user?.imageUrl} alt={"avatar-"+user?.imagename} class="text-sm font-normal text-gray-500 dark:text-gray-400"/></DropdownItem>                                
                             {/each}
                         </Dropdown>
                     </div>
