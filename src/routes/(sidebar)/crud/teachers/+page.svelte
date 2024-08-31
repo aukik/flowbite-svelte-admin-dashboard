@@ -27,6 +27,8 @@
 	import MetaTag from '../../../utils/MetaTag.svelte';
 	import { onMount } from 'svelte';
 	import axios from 'axios';
+	import Verification from './verification.svelte'
+
 
 	const apiUrl = process.env.VITE_API_URL;
 	function setCookie(name, value, days) {
@@ -161,7 +163,7 @@ onMount(async () => {
   console.log("GG");
   startPolling();
 });
-
+	let openVerification: boolean = false; // modal control
 	let openUser: boolean = false; // modal control
 	let addUser: boolean = false; // modal control
 	let openDelete: boolean = false; // modal control
@@ -232,7 +234,7 @@ onMount(async () => {
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
-			{#each ['Name', 'Accreditation','Designation', 'Actions'] as title}
+			{#each ['Name', 'School','Designation','Phone Number','Is Verified', 'Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -248,10 +250,24 @@ onMount(async () => {
 						</div>
 					</TableBodyCell>
 
-					<TableBodyCell class="p-4">{user.teacher_institution_accreditation||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.schoolName||"N/A"}</TableBodyCell>
 					<TableBodyCell class="p-4">{user.teacher_designation||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.phone_number||"N/A"}</TableBodyCell>
 					<!-- <TableBodyCell class="p-4">{user.created_by_account_type||"N/A"}</TableBodyCell> -->
-
+					<TableBodyCell class="space-x-2 p-4">
+						<Button
+							size="sm"
+							class="gap-2 px-3"
+							on:click={() => {
+								if (!user.isVerified) { // Check if isVerified is false
+									current_user = user;
+									openVerification = true;
+								}
+							}}
+						>
+							<EditOutline size="sm" />{user.isVerified}
+						</Button>
+					</TableBodyCell>
 
 
 					<TableBodyCell class="space-x-2 p-4">
@@ -278,7 +294,7 @@ onMount(async () => {
 </main>
 
 <!-- Modals -->
-
+<Verification bind:open={openVerification} data={current_user} />
 <User bind:open={openUser} data={current_user} />
 <Adduser bind:open={addUser} data={current_user}/>
 <Delete bind:open={openDelete}  data={current_user} />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Input, Label, Modal, Textarea, Dropdown, DropdownItem, DropdownDivider, DropdownHeader} from 'flowbite-svelte';
+	import { Button, Input, Label, Modal, Textarea, Dropdown, DropdownItem, DropdownDivider, DropdownHeader,Checkbox} from 'flowbite-svelte';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import axios from 'axios';
 	import { onMount } from 'svelte';
@@ -9,6 +9,46 @@
 
 	const apiUrl = process.env.VITE_API_URL;
 	let token;
+	let teacherData = [];
+	let tagArray: { tagId: any }[] = [];
+	let teacher_label = "Select Teacher";
+	let tagData: any = [];
+	let tag_label = 'Select Tags';
+
+
+	const handleTeacherSelect = (id: any, name: any) => {
+		teacher_label = name;
+		data.creatorId = id;
+		data.teacherName = name;
+	}
+
+
+	const handleTagSelect = (id: any, name: any) => {
+		const index = tagArray.findIndex(tag => tag.tagId === id);
+
+		if (index !== -1) {
+			// Tag is already selected, remove it
+			tagArray = tagArray.filter(tag => tag.tagId !== id);
+		} else {
+			// Tag is not selected, add it
+			tagArray = [...tagArray, { tagId: id }];
+		}
+
+		// Update the tag label
+		updateTagLabel();
+	}
+
+  const updateTagLabel = () => {
+		if (tagArray.length === 0) {
+			tag_label = 'Select Tags';
+		} else if (tagArray.length === 1) {
+			tag_label = tagData.find(tag => tag.id === tagArray[0].tagId)?.name || 'Select Tags';
+		} else {
+			tag_label = `${tagArray.length} tags selected`;
+		}
+	}
+
+
 
 	function getCookie(name) {
     const cookies = document.cookie.split(';');
@@ -78,8 +118,23 @@
 
   token = getCookie('token');
   console.log("token",token);
+  let alltag_api = apiUrl + '/admin/tags/';
+  let allteacher_api = apiUrl + '/admin/allteacherData/';
+  const responseteacher = await axios.get(allteacher_api, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+		teacherData = responseteacher.data.result;
+		console.log(teacherData);
 
-  
+		const responsetags = await axios.get(alltag_api, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+		tagData = responsetags.data.result;
+		console.log("This is tag data", tagData);
 
 
 
@@ -114,7 +169,7 @@
 					/>
 				</Label> -->
 
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
+                <!-- <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Location</span>
 					<Input
 					bind:value={data.location}
@@ -123,7 +178,7 @@
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
-				</Label>
+				</Label> -->
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Established Year</span>
 					<Input
@@ -144,9 +199,136 @@
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Email</span>
+					<Input
+					bind:value={data.email}
+						name="student_id"
+						type="email"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Contact Number</span>
+					<Input
+					bind:value={data.contact_number}
+						name="student_id"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>School Code</span>
+					<Input
+					bind:value={data.school_code}
+						name="student_id"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>About Us</span>
+					<Input
+					bind:value={data.about_us}
+						name="student_id"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Website Url</span>
+					<Input
+					bind:value={data.websiteUrl}
+						name="student_id"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Address Line 1</span>
+					<Input
+					bind:value={data.address_line_1}
+						name="student_id"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Address Line 2</span>
+					<Input
+					bind:value={data.address_line_2}
+						name="student_id"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Zip Code</span>
+					<Input
+					bind:value={data.zipcode}
+						name="student_id"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>City</span>
+					<Input
+					bind:value={data.city}
+						name="student_id"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Country</span>
+					<Input
+					bind:value={data.country}
+						name="student_id"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Creator Teacher</span>
+					<div class="pt-5">
+						<Button>{teacher_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							{#each teacherData as teacher}
+								<DropdownItem on:click={() => handleTeacherSelect(teacher.id, teacher.name)}>{teacher.name}, {teacher.teacher_designation}</DropdownItem>
+							{/each}
+						</Dropdown>
+					</div>
+				</Label>
 
 
-
+				
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Tags</span>
+					<div class="pt-5">
+						<Button>{tag_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+							{#each tagData as tag}
+								<li>
+									<Checkbox checked={tagArray.some(t => t.tagId === tag.id)} on:change={() => handleTagSelect(tag.id, tag.name)}>
+										{tag.name}
+									</Checkbox>
+								</li>
+							{/each}
+						</Dropdown>
+					</div>
+				</Label>
 
 
 

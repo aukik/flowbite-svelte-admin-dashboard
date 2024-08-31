@@ -3,10 +3,11 @@
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import axios from 'axios';
 	import { onMount, afterUpdate} from 'svelte';
+	import { writable } from 'svelte/store';
 	export let open: boolean = false; // modal control
 
 	export let data: Record<string, string> = {};
-
+	const selectedFile = writable<File | null>(null);
 	let  schoolData=[];
 	let teacherData = [];
 	let sponsorData :any= [];
@@ -38,7 +39,12 @@ console.log('API URL:', apiUrl);
 		sponsor_label = name,
 		data.sponsorId = id
 	}
-
+	function handleFileChange(event: Event) {
+        const target = event.target as HTMLInputElement;
+        if (target.files) {
+            selectedFile.set(target.files[0]);
+        }
+    }
 
   const handleTagSelect = (id: any, name: any) => {
     const index = tagArray.findIndex(tag => tag.tagId === id);
@@ -118,6 +124,22 @@ console.log('API URL:', apiUrl);
 
 
   async function handleSubmit() {
+	let file;
+
+	selectedFile.subscribe(value => {
+            file = value;
+        })();
+
+        if (!file) {
+            console.error('No file selected');
+            return null;
+        }
+
+        const formData = new FormData();
+        formData.append('images', file);
+        formData.append('data', JSON.stringify(data));
+
+
 
 	// data.user_type = "teacher"
 
@@ -125,7 +147,7 @@ console.log('API URL:', apiUrl);
 	console.log(blogsUpdate_api);
     try {
 		console.log(data);
-        const response = await axios.patch(blogsUpdate_api, data, {
+        const response = await axios.patch(blogsUpdate_api, formData, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -285,6 +307,25 @@ afterUpdate(() => {
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Url</span>
+					<Input
+					bind:value={data.url}
+						name="email"
+						type="email"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+
+
+
+
+				<Label class="col-span-6 space-y-2">
+                    <span>Photo</span>
+                    <Input type="file" name="photo" accept="image/*" on:change={handleFileChange} class="border outline-none" />
+                </Label>
+
 
 
 

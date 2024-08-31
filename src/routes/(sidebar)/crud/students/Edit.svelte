@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Input, Label, Modal, Textarea,Dropdown, DropdownItem, DropdownDivider, DropdownHeader } from 'flowbite-svelte';
+	import { Button, Input, Label, Modal, Textarea,Dropdown, DropdownItem, DropdownDivider, DropdownHeader,Checkbox } from 'flowbite-svelte';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import axios from 'axios';
 	import { onMount, afterUpdate} from 'svelte';
@@ -11,6 +11,13 @@
 	let is_admin_label="Is Admin";
 	let inputValue;
 	let token;
+
+	let tagArray: { tagId: any }[] = [];
+
+	let tagData: any = [];
+	let tag_label = 'Select Tags';
+
+
 	let schoolData = [];
 	const apiUrl = process.env.VITE_API_URL;
 	function getCookie(name) {
@@ -47,6 +54,41 @@ const handleVerfiedBadgeSelect = (value) => {
   }
 
 
+
+  function isTagSelected(tagId: string) {
+		return data.tags && data.tags.some(tag => tag.tag.id === tagId);
+	}
+
+	const handleTagSelect = (id: string, name: string) => {
+		if (!data.tags) {
+			data.tags = [];
+		}
+
+		const index = data.tags.findIndex(tag => tag.tag.id === id);
+
+		if (index !== -1) {
+			// Tag is already selected, remove it
+			data.tags = data.tags.filter(tag => tag.tag.id !== id);
+		} else {
+			// Tag is not selected, add it
+			data.tags = [...data.tags, { tag: { id, name } }];
+		}
+
+		// Update the tag label
+		updateTagLabel();
+	}
+
+	const updateTagLabel = () => {
+		if (!data.tags || data.tags.length === 0) {
+			tag_label = 'Select Tags';
+		} else if (data.tags.length === 1) {
+			tag_label = data.tags[0].tag.name;
+		} else {
+			tag_label = `${data.tags.length} tags selected`;
+		}
+	}
+
+
 	// function handleIsAdminChange(event) {
 	// // console.log(event)
   //   data.is_admin = event;
@@ -67,8 +109,10 @@ const handleVerfiedBadgeSelect = (value) => {
 
 	data.user_type = "student"
 
+	let studentUpdate_api = apiUrl + '/admin/userTeacherStudentUpdate/';
+	const tagsToSend = data.tags ? data.tags.map(tag => ({ tagId: tag.tag.id })) : [];
     try {
-        const response = await axios.patch(`${apiUrl}/admin/userTeacherStudentUpdate/`, data, {
+		const response = await axios.patch(studentUpdate_api, { ...data, tags: tagsToSend }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -90,6 +134,7 @@ const handleVerfiedBadgeSelect = (value) => {
 			const el = form.elements.namedItem(key);
 			if (el) el.value = data[key];
 		}
+		updateTagLabel();
 	}
 	1;
 
@@ -98,6 +143,7 @@ const handleVerfiedBadgeSelect = (value) => {
   //const token = sessionStorage.getItem('token');
 		// console.log(data)
   token = getCookie('token');
+  let alltag_api = apiUrl + '/admin/tags/';
   console.log("token",token);
   const response= await axios.get(`${apiUrl}/admin/allschoolData/`, {
             headers: {
@@ -107,6 +153,15 @@ const handleVerfiedBadgeSelect = (value) => {
 				schoolData=response.data.result
 				console.log(schoolData)
 
+
+const responsetags = await axios.get(alltag_api, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+		tagData = responsetags.data.result;
+		console.log("This is tag data", tagData);
+				updateTagLabel();
 
 
 });
@@ -218,6 +273,114 @@ afterUpdate(() => {
 						</Dropdown>
 					</div>
 				</Label>
+
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+                    <span>Phone Number</span>
+                    <Input
+                        bind:value={data.phone_number}
+                        name="phone_number"
+                        type="text"
+                        class="border outline-none"
+                        placeholder="e.g. bonnie@flowbite.com"
+                    />
+                </Label>
+                <Label class="col-span-6 space-y-2 sm:col-span-3">
+                    <span>Gender</span>
+                    <Input
+                        bind:value={data.gender}
+                        name="gender"
+                        type="text"
+                        class="border outline-none"
+                        placeholder="e.g. bonnie@flowbite.com"
+                    />
+                </Label>
+
+                <Label class="col-span-6 space-y-2 sm:col-span-3">
+                    <span>Address</span>
+                    <Input
+                        bind:value={data.address}
+                        name="address"
+                        type="text"
+                        class="border outline-none"
+                        placeholder="e.g. bonnie@flowbite.com"
+                    />
+                </Label>
+
+
+                <Label class="col-span-6 space-y-2 sm:col-span-3">
+                    <span>User Bio</span>
+                    <Input
+                        bind:value={data.user_bio}
+                        name="user_bio"
+                        type="text"
+                        class="border outline-none"
+                        placeholder="e.g. bonnie@flowbite.com"
+                    />
+                </Label>
+
+                <Label class="col-span-6 space-y-2 sm:col-span-3">
+                    <span>Academic Level</span>
+                    <Input
+                        bind:value={data.academic_level}
+                        name="academic_level"
+                        type="text"
+                        class="border outline-none"
+                        placeholder="e.g. bonnie@flowbite.com"
+                    />
+                </Label>
+
+                <Label class="col-span-6 space-y-2 sm:col-span-3">
+                    <span>Location</span>
+                    <Input
+                        bind:value={data.location}
+                        name="location"
+                        type="text"
+                        class="border outline-none"
+                        placeholder="e.g. bonnie@flowbite.com"
+                    />
+                </Label>
+
+
+                <Label class="col-span-6 space-y-2 sm:col-span-3">
+                    <span>About Student</span>
+                    <Input
+                        bind:value={data.aboutStudent}
+                        name="aboutStudent"
+                        type="text"
+                        class="border outline-none"
+                        placeholder="e.g. bonnie@flowbite.com"
+                    />
+                </Label>
+
+                <Label class="col-span-6 space-y-2 sm:col-span-3">
+                    <span>Academic Objective</span>
+                    <Input
+                        bind:value={data.academicObjective}
+                        name="academicObjective"
+                        type="text"
+                        class="border outline-none"
+                        placeholder="e.g. bonnie@flowbite.com"
+                    />
+                </Label>
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Tags</span>
+					<div class="pt-5">
+						<Button>{tag_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+							{#each tagData as tag}
+								<li>
+									<Checkbox checked={isTagSelected(tag.id)} on:change={() => handleTagSelect(tag.id, tag.name)}>
+										{tag.name}
+									</Checkbox>
+								</li>
+							{/each}
+						</Dropdown>
+					</div>
+				</Label>
+
+
 
 
 

@@ -262,6 +262,16 @@ function handlePostTypeChange(event) {
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Url</span>
+					<Input
+					bind:value={data.url}
+						name="email"
+						type="email"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
 
 
 

@@ -235,7 +235,7 @@ onMount(async () => {
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
-			{#each ['Title', 'Text','Author', 'Tags', 'Actions'] as title}
+			{#each ['Title', 'Text','Author', 'Tags','Url', 'Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -250,6 +250,7 @@ onMount(async () => {
 				>{user.text_box||"N/A"}</TableBodyCell>
 					<TableBodyCell class="p-4">{user.author||"N/A"}</TableBodyCell>
 					<TableBodyCell class="p-4">{user.tag||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.url||"N/A"}</TableBodyCell>
 					<!-- <TableBodyCell class="p-4">{user.club_type||"N/A"}</TableBodyCell> -->
 					<!-- <TableBodyCell class="p-4">{user.created_by_account_type||"N/A"}</TableBodyCell> -->
 

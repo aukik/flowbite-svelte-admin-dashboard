@@ -233,7 +233,7 @@ onMount(async () => {
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
-			{#each ['Name', 'Motto','Location','Established Year','Is Verified','Actions'] as title}
+			{#each ['Name', 'Location','Email','Phone Number','Is Verified','Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -241,17 +241,17 @@ onMount(async () => {
 			{#each userData as user}
 				<TableBodyRow class="text-base">
 					<!-- <TableBodyCell class="w-4 p-4"><Checkbox /></TableBodyCell> -->
+					<TableBodyCell class="p-4">{user.name||"N/A"}</TableBodyCell>
+
 					<TableBodyCell class="mr-12 flex items-center space-x-6 whitespace-nowrap p-4">
 
 						<div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-							<div class="text-base font-semibold text-gray-900 dark:text-white">{user.name}</div>
-							
+							<div class="text-base font-semibold text-gray-900 dark:text-white">{user?.city}</div>
+							<div class="text-sm font-normal text-gray-500 dark:text-gray-400">{user?.country}</div>
 						</div>
 					</TableBodyCell>
-
-					<TableBodyCell class="p-4">{user.motto||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.location||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.established_year||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.email||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user.contact_number||"N/A"}</TableBodyCell>
 					<!-- <TableBodyCell class="p-4">{user.created_by_account_type||"N/A"}</TableBodyCell> -->
 
 
