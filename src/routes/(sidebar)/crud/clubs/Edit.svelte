@@ -11,6 +11,7 @@
 	let sponsorData: any = [];
 	let tagData: any = [];
 	let tag_label = 'Select Tags';
+	let club_access_label = "Select Access"
 
 	let user_label = "Select School";
 	let club_type_label = "Club Type";
@@ -19,6 +20,22 @@
 		user_label = name;
 		data.schoolId = id;
 	}
+	const handleCreatorSelect = (id,name) => {
+
+	data.creatorId=id
+	data.club_creator.name = name
+}
+
+	function handleAccessChange(event) {
+	// console.log(event)
+    data.access = event;
+		// console.log(data)
+		if(event=== true){
+			club_access_label="True";
+		}else{
+			club_access_label="False";
+		}
+  }
 	const apiUrl = process.env.VITE_API_URL;
 	console.log('API URL:', apiUrl);
 	let teacher_label = "Select Teacher";
@@ -258,6 +275,48 @@
 						</Dropdown>
 					</div>
 				</Label>
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Creator</span>
+					<!-- <Input bind:value={data.userId} name="name" class="border outline-none" placeholder="" required /> -->
+					<span></span>
+
+					<div class="pt-5">
+						<Button >{data.club_creator.name}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							{#each teacherData as teacher}
+							<DropdownItem on:click={() => handleCreatorSelect(teacher.id, teacher.name)}>{teacher.name}, {teacher.teacher_designation}</DropdownItem>
+						{/each}
+						</Dropdown>
+					</div>
+				</Label>
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Visibility</span>
+					<Input
+					bind:value={data.visibility}
+						name="student_id"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span></span>
+					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
+					<div class="pt-5">
+						<Button >{data.access}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							<DropdownItem  on:click={() => handleAccessChange(true)}>True</DropdownItem>
+							<DropdownItem  on:click={() => handleAccessChange(false)}>False</DropdownItem>
+						</Dropdown>
+					</div>
+				</Label>
+
+
+
 			</div>
 		</form>
 	</div>

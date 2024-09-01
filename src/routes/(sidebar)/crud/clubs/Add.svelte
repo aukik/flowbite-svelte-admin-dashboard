@@ -14,6 +14,7 @@
 	let tagData: any = [];
 	let user_label="Select School";
 	let club_type_label="Club Type";
+	let club_access_label = "Select Access"
 	let is_admin_label="Is Admin";
 	const handleSchoolSelect = (id,name) => {
 	user_label=name
@@ -45,6 +46,19 @@ function handleClubTypeChange(event) {
 			club_type_label="Sponsor";
 		}
   }
+
+  function handleAccessChange(event) {
+	// console.log(event)
+    data.access = event;
+		// console.log(data)
+		if(event=== true){
+			club_access_label="True";
+		}else{
+			club_access_label="False";
+		}
+  }
+
+
   const handleTagSelect = (id: any, name: any) => {
 		const index = tagArray.findIndex(tag => tag.tagId === id);
 
@@ -369,6 +383,30 @@ function handleClubTypeChange(event) {
 						</Dropdown>
 					</div>
 				</Label>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Visibility</span>
+					<Input
+					bind:value={data.visibility}
+						name="student_id"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. bonnie@flowbite.com"
+					/>
+				</Label>
+
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span></span>
+					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
+					<div class="pt-5">
+						<Button >{club_access_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							<DropdownItem  on:click={() => handleAccessChange(true)}>True</DropdownItem>
+							<DropdownItem  on:click={() => handleAccessChange(false)}>False</DropdownItem>
+						</Dropdown>
+					</div>
+				</Label>
+
 
 
 
