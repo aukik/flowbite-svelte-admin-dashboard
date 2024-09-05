@@ -31,6 +31,20 @@
 	let currentPage = 1; // Start from page 1
 	let totalPages = 1; // Initialize with 1, will be updated dynamically
 	const itemsPerPage = 10; // Number of items per page
+	let searchQuery = ""; // For storing the search query (city)
+	let isVerifiedFilter = "all"; // For storing the filter value (isVerified)
+	let cityFilter = "all";
+
+
+		// Function to handle search and filter
+		const applyFilters = async () => {
+		const token = getCookie('token');
+		if (token) {
+			await fetchAllUserData(token);
+		} else {
+			console.error('Token not found in session storage.');
+		}
+	};
 
 	function setCookie(name, value, days) {
 		let expires = "";
@@ -63,14 +77,26 @@
 	// Function to fetch all user data with pagination
 	const fetchAllUserData = async (token) => {
 		try {
+			// Build the query parameters based on the search and filter values
+			const params: Record<string, any> = {
+				page: currentPage,
+				limit: itemsPerPage,
+			};
+			if (searchQuery) {
+				params.search = searchQuery;
+			}
+			if (isVerifiedFilter !== "all") {
+				params.isVerified = isVerifiedFilter;
+			}
+			if (cityFilter !== "all") {
+				params.city = cityFilter;
+			}
+
 			const response = await axios.get(`${BASE_URL}/admin/getAllSchoolsPagination`, {
 				headers: {
 					Authorization: `Bearer ${token}`
 				},
-				params: {
-					page: currentPage,
-					limit: itemsPerPage,
-				}
+				params
 			});
 
 			userData = response.data.result;
@@ -86,7 +112,6 @@
 			console.error('Error fetching user data:', error);
 		}
 	};
-
 	// Function to get refresh token
 	const getRefreshToken = async () => {
 		try {
@@ -198,6 +223,44 @@
 					<DotsVerticalOutline size="lg" />
 				</ToolbarButton>
 			</div> -->
+
+
+
+			<Input
+			placeholder="Search by Name"
+			bind:value={searchQuery}
+			class="me-4 w-80 border xl:w-96"
+		/>
+
+		<select bind:value={isVerifiedFilter} class="me-4 w-40 border xl:w-52 rounded-md bg-gray-800 text-gray-300 placeholder-gray-400 p-2">
+			<option value="all">All Verification</option>
+			<option value="true">Verified</option>
+			<option value="false">Not Verified</option>
+		</select>
+
+
+		<select bind:value={cityFilter} class="me-4 w-40 border xl:w-52 rounded-md bg-gray-800 text-gray-300 placeholder-gray-400 p-2">
+			<option value="all">All Cities</option>
+			<option value="Dhaka">Dhaka</option>
+			<option value="Chattogram">Chattogram</option>
+			<option value="Khulna">Khulna</option>
+			<option value="Sylhet">Sylhet</option>
+			<option value="Rajshahi">Rajshahi</option>
+			<option value="Mymensingh">Mymensingh</option>
+			<option value="Rangpur">Rangpur</option>
+			<option value="Barisal">Barisal</option>
+			<option value="Cumilla">Cumilla</option>
+			<option value="Gazipur">Gazipur</option>
+			<option value="Narayanganj">Narayanganj</option>
+		  </select>
+		  
+		  
+
+		<Button size="sm" on:click={applyFilters} class="gap-2 whitespace-nowrap px-3">
+			Apply Filters
+		</Button>
+
+
 
 			<div slot="end" class="flex items-center space-x-2">
 				<Button

@@ -245,8 +245,8 @@ onMount(async () => {
 					<!-- <TableBodyCell class="w-4 p-4"><Checkbox /></TableBodyCell> -->
 					<TableBodyCell class="p-4">{user.club_name||"N/A"}</TableBodyCell>
 
-					<TableBodyCell class="p-4">{user.motto||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.description||"N/A"}</TableBodyCell>
+					<TableBodyCell class="max-w-sm overflow-hidden truncate p-4 text-base font-normal text-gray-500 dark:text-gray-400 xl:max-w-xs">{user.motto||"N/A"}</TableBodyCell>
+					<TableBodyCell class="max-w-sm overflow-hidden truncate p-4 text-base font-normal text-gray-500 dark:text-gray-400 xl:max-w-xs">{user.description||"N/A"}</TableBodyCell>
 					<TableBodyCell class="p-4">{user.total_students||"N/A"}</TableBodyCell>
 					<TableBodyCell class="p-4">{user.club_type||"N/A"}</TableBodyCell>
 					<!-- <TableBodyCell class="p-4">{user.created_by_account_type||"N/A"}</TableBodyCell> -->
