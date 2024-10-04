@@ -97,12 +97,33 @@
 
 
 				{#if data?.studentWorkshopCertificate?.[0]?.certificateUrl}
-					<img src="{data?.studentWorkshopCertificate?.[0]?.certificateUrl}" alt="certificate" class="col-span-6" />
-
+				{#if data.studentWorkshopCertificate[0].certificateUrl.toLowerCase().endsWith('.pdf')}
+				<!-- <object data={data.studentWorkshopCertificate[0].certificateUrl} type="application/pdf" class="col-span-6 w-full h-[600px]" title="Student Workshop Certificate"> -->
+					<iframe
+						src={`https://docs.google.com/viewer?url=${encodeURIComponent(data.studentWorkshopCertificate[0].certificateUrl)}&embedded=true`}
+						width="100%"
+						height="600px"
+						frameborder="0"
+						title="Student Workshop Certificate PDF Viewer"
+					>
+						<p class="text-white">
+							Your browser doesn't support PDF viewing.
+							<a href={data.studentWorkshopCertificate[0].certificateUrl} target="_blank" rel="noopener noreferrer">
+								Click here to download the PDF
+							</a>.
+						</p>
+					</iframe>
+				<!-- </object> -->
 				{:else}
-					<p class="text-white">No Certificate to show</p>
+					<img
+						src={data.studentWorkshopCertificate[0].certificateUrl}
+						alt="certificate"
+						class="col-span-6"
+					/>
 				{/if}
-
+			{:else}
+				<p class="text-white">No Certificate to show</p>
+			{/if}
 
 
 				<Label class="col-span-6 space-y-2 my-8">
