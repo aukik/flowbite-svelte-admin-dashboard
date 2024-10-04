@@ -12,7 +12,7 @@
 	console.log(user_label);
 	let tagData: any = [];
 	let tag_label = 'Select Tags';
-	
+
 	let is_admin_label="Is Admin";
 	const handleClubSelect = (id,name) => {
 	user_label=name
@@ -106,7 +106,7 @@ let event_type_label = data?.event_type;
 
   async function handleSubmit() {
     // Assuming `token` is defined somewhere accessible
-    
+
 
     // Assuming `data` contains the payload you want to send in the request
     console.log("Inside submit");
@@ -151,7 +151,7 @@ let event_type_label = data?.event_type;
   console.log("token",token);
 
 	user_label = data?.club?.club_name;
-	
+
 	let teacherData = [];
 	let sponsorData = [];
 
@@ -159,7 +159,7 @@ let event_type_label = data?.event_type;
   // Retrieve the token from session storage
   //const token = sessionStorage.getItem('token');
   event_type_label = data?.event_type
-	
+
   let allClubData_api = apiUrl + '/admin/allclubData/' ;
   let alltag_api = apiUrl + '/admin/tags/';
   const response= await axios.get(allClubData_api, {
@@ -191,7 +191,7 @@ afterUpdate(() => {
 				student_medium_label = "Private";
 			}
 		}
-		
+
 		if (open) {
 			console.log("-----------------------{}")
 			console.log(data.is_admin);
@@ -214,7 +214,7 @@ afterUpdate(() => {
 	bind:open
 
 	title={Object.keys(data).length ? 'Edit Event' : 'Add new user'}
-	
+
 	size="md"
 	class="m-4"
 >
@@ -233,7 +233,7 @@ afterUpdate(() => {
 
 					<div class="pt-5">
 						<Button >{data.club.club_name}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
+						<Dropdown class="overflow-y-auto max-h-80">
 							{#each clubData as user}
 								<DropdownItem  on:click={() => handleClubSelect(user?.id,user?.club_name)}>{user?.club_name}, {user?.motto}</DropdownItem>
 							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
@@ -311,7 +311,7 @@ afterUpdate(() => {
 							<DropdownItem  on:click={() => handleEventTypeChange('private')}>private</DropdownItem>
 						</Dropdown>
 					</div>
-				</Label>				
+				</Label>
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Host Location</span>
 					<Input
@@ -326,7 +326,7 @@ afterUpdate(() => {
 					<span>Tags</span>
 					<div class="pt-5">
 						<Button>{tag_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+						<Dropdown class="overflow-y-auto max-h-80 w-44 p-3 space-y-3 text-sm">
 							{#each tagData as tag}
 								<li>
 									<Checkbox checked={isTagSelected(tag.id)} on:change={() => handleTagSelect(tag.id, tag.name)}>

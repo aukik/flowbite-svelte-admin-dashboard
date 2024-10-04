@@ -19,7 +19,7 @@
 
     let tagData: any = [];
     let tag_label = 'Select Tags';
-    
+
     // Create a writable store for the selected file
     const selectedFile = writable<File | null>(null);
 
@@ -213,7 +213,7 @@
 		});
 		tagData = responsetags.data.result;
 		console.log("This is tag data", tagData);
-    
+
 
     });
 </script>
@@ -239,7 +239,7 @@
 
                     <div class="pt-5">
                         <Button>{user_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-                        <Dropdown>
+                        <Dropdown class="overflow-y-auto max-h-80">
                             {#each schoolData as user}
                                 <DropdownItem on:click={() => handleSchoolSelect(user?.id,user?.name)}>{user?.name}, {user?.location}</DropdownItem>
                             {/each}
@@ -253,10 +253,10 @@
 
                     <div class="pt-5">
                         <Button>{avatar_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-                        <Dropdown>
+                        <Dropdown class="overflow-y-auto max-h-80">
                             {#each avatarData as user}
                             <p>{user?.name}</p>
-                                <DropdownItem on:click={() => handleAvatarSelect(user?.id,user?.name)}><img width="80px" src={user?.imageUrl} alt={"avatar-"+user?.imagename} class="text-sm font-normal text-gray-500 dark:text-gray-400"/></DropdownItem>                                
+                                <DropdownItem on:click={() => handleAvatarSelect(user?.id,user?.name)}><img width="80px" src={user?.imageUrl} alt={"avatar-"+user?.imagename} class="text-sm font-normal text-gray-500 dark:text-gray-400"/></DropdownItem>
                             {/each}
                         </Dropdown>
                     </div>
@@ -287,7 +287,7 @@
                     <span></span>
                     <div class="pt-5">
                         <Button>{student_medium_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-                        <Dropdown>
+                        <Dropdown class="overflow-y-auto max-h-80">
                             <DropdownItem on:click={() => handleStudentMediumChange('Bangla')}>Bangla</DropdownItem>
                             <DropdownItem on:click={() => handleStudentMediumChange('English')}>English</DropdownItem>
                         </Dropdown>
@@ -296,7 +296,7 @@
 
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
                     <span>Password</span>
-                    <Input 
+                    <Input
                         bind:value={data.password}
                         name="password"
                         type = "password"
@@ -398,7 +398,7 @@
 					<span>Tags</span>
 					<div class="pt-5">
 						<Button>{tag_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+						<Dropdown class="overflow-y-auto max-h-80 w-44 p-3 space-y-3 text-sm">
 							{#each tagData as tag}
 								<li>
 									<Checkbox checked={tagArray.some(t => t.tagId === tag.id)} on:change={() => handleTagSelect(tag.id, tag.name)}>

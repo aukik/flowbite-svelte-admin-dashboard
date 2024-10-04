@@ -75,7 +75,7 @@
 
   function handleIsCertificateChange(event) {
     data.certificate = event === "true";
-    
+
     if (data.certificate) {
         is_certificate_label = "True";
     } else {
@@ -120,7 +120,7 @@ function isTagSelected(tagId: string) {
 
   async function handleSubmit() {
     // Assuming `token` is defined somewhere accessible
-    
+
 
     // Assuming `data` contains the payload you want to send in the request
     console.log("Inside submit");
@@ -166,7 +166,7 @@ function isTagSelected(tagId: string) {
 
 
 
-	
+
   // Retrieve the token from session storage
   //const token = sessionStorage.getItem('token');
 
@@ -226,7 +226,7 @@ afterUpdate(() => {
 	bind:open
 
 	title={Object.keys(data).length ? 'Edit Workshop' : 'Add new user'}
-	
+
 	size="md"
 	class="m-4"
 >
@@ -245,7 +245,7 @@ afterUpdate(() => {
 
 					<div class="pt-5">
 						<Button >{data.club.club_name}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
+						<Dropdown class="overflow-y-auto max-h-80">
 							{#each clubData as user}
 								<DropdownItem  on:click={() => handleClubSelect(user?.id,user?.club_name)}>{user?.club_name}, {user?.motto}</DropdownItem>
 							<!-- <DropdownItem  on:click={() => handleIsCertificateChange('false')}>False</DropdownItem> -->
@@ -406,7 +406,7 @@ afterUpdate(() => {
 					<span>Tags</span>
 					<div class="pt-5">
 						<Button>{tag_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+						<Dropdown class="overflow-y-auto max-h-80 w-44 p-3 space-y-3 text-sm">
 							{#each tagData as tag}
 								<li>
 									<Checkbox checked={isTagSelected(tag.id)} on:change={() => handleTagSelect(tag.id, tag.name)}>

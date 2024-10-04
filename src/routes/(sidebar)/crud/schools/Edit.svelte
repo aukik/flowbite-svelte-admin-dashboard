@@ -81,7 +81,7 @@
 
   async function handleSubmit() {
     // Assuming `token` is defined somewhere accessible
-    
+
 
     // Assuming `data` contains the payload you want to send in the request
     console.log("Inside submit");
@@ -141,7 +141,7 @@
 		});
 		tagData = responsetags.data.result;
 		console.log("This is tag data", tagData);
-  
+
 		updateTagLabel
 
 });
@@ -177,7 +177,7 @@ afterUpdate(() => {
 	bind:open
 
 	title={Object.keys(data).length ? 'Edit School' : 'Add new user'}
-	
+
 	size="md"
 	class="m-4"
 >
@@ -223,7 +223,7 @@ afterUpdate(() => {
 						class="border outline-none"
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
-				</Label>			
+				</Label>
 
 
 
@@ -332,7 +332,7 @@ afterUpdate(() => {
 					<span>Creator Teacher</span>
 					<div class="pt-5">
 						<Button>{teacher_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
+						<Dropdown class="overflow-y-auto max-h-80">
 							{#each teacherData as teacher}
 								<DropdownItem on:click={() => handleTeacherSelect(teacher.id, teacher.name)}>{teacher.name}, {teacher.teacher_designation}</DropdownItem>
 							{/each}
@@ -341,12 +341,12 @@ afterUpdate(() => {
 				</Label>
 
 
-				
+
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Tags</span>
 					<div class="pt-5">
 						<Button>{tag_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+						<Dropdown class="overflow-y-auto max-h-80 w-44 p-3 space-y-3 text-sm">
 							{#each tagData as tag}
 								<li>
 									<Checkbox checked={isTagSelected(tag.id)} on:change={() => handleTagSelect(tag.id, tag.name)}>

@@ -2,7 +2,7 @@
 	import { Button, Input, Label, Modal, Textarea, Dropdown, DropdownItem, DropdownDivider, DropdownHeader,Checkbox} from 'flowbite-svelte';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import axios from 'axios';
-	
+
 	import { onMount } from 'svelte';
 	export let open: boolean = false; // modal control
 
@@ -36,7 +36,7 @@
 	}
 
 	const apiUrl = process.env.VITE_API_URL;
-	
+
 function handleEventTypeChange(event) {
 	// console.log(event)
     data.event_type = event;
@@ -242,7 +242,7 @@ function handleEventTypeChange(event) {
 
 					<div class="pt-5">
 						<Button >{user_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
+						<Dropdown class="overflow-y-auto max-h-80">
 							{#each clubData as user}
 								<DropdownItem  on:click={() => handleClubSelect(user?.id,user?.club_name)}>{user?.club_name}, {user?.motto}</DropdownItem>
 							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
@@ -316,7 +316,7 @@ function handleEventTypeChange(event) {
 						placeholder="e.g. bonnie@flowbite.com"
 					/>
 				</Label> -->
-				
+
 
 
 
@@ -350,7 +350,7 @@ function handleEventTypeChange(event) {
 					<span>Tags</span>
 					<div class="pt-5">
 						<Button>{tag_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+						<Dropdown class="overflow-y-auto max-h-80 w-44 p-3 space-y-3 text-sm">
 							{#each tagData as tag}
 								<li>
 									<Checkbox checked={tagArray.some(t => t.tagId === tag.id)} on:change={() => handleTagSelect(tag.id, tag.name)}>

@@ -186,7 +186,7 @@
                     <span>School</span>
                     <div class="pt-5">
                         <Button>{user_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-                        <Dropdown>
+                        <Dropdown class="overflow-y-auto max-h-80">
                             {#each schoolData as user}
                                 <DropdownItem on:click={() => handleSchoolSelect(user?.id, user?.name)}>{user?.name}, {user?.location}</DropdownItem>
                             {/each}
@@ -226,7 +226,7 @@
                     <span>Phone Number</span>
                     <Input bind:value={data.phone_number} name="phone_number" type="text" class="border outline-none" placeholder="e.g. React Developer" required />
                 </Label>
-                
+
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
                     <span>User Bio</span>
                     <Input bind:value={data.user_bio} name="user_bio" type="text" class="border outline-none" placeholder="e.g. React Developer" required />
@@ -236,7 +236,7 @@
 					<span>Tags</span>
 					<div class="pt-5">
 						<Button>{tag_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+						<Dropdown class="overflow-y-auto max-h-80 w-44 p-3 space-y-3 text-sm">
 							{#each tagData as tag}
 								<li>
 									<Checkbox checked={tagArray.some(t => t.tagId === tag.id)} on:change={() => handleTagSelect(tag.id, tag.name)}>
@@ -247,7 +247,7 @@
 						</Dropdown>
 					</div>
 				</Label>
-                
+
 
 
 

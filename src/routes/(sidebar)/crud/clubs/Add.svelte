@@ -158,7 +158,7 @@ function handleClubTypeChange(event) {
 		const formData = new FormData();
 		formData.append('images', file);
 		formData.append('data', JSON.stringify({ ...data, tags: tagArray }));
-  
+
 
         try {
             // First, upload the image
@@ -167,7 +167,7 @@ function handleClubTypeChange(event) {
             //     data.imageUrl = imageData.imageUrl;
             //     data.imagename = imageData.localImageName;
             // }
-			
+
             // const userDataResponse = await axios.get(`${apiUrl}/admin/userData`, {
             //     headers: {
             //         Authorization: `Bearer ${token}`
@@ -277,7 +277,7 @@ function handleClubTypeChange(event) {
 
 					<div class="pt-5">
 						<Button >{user_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
+						<Dropdown class="overflow-y-auto max-h-80">
 							{#each schoolData as user}
 								<DropdownItem  on:click={() => handleSchoolSelect(user?.id,user?.name)}>{user?.name}, {user?.location}</DropdownItem>
 							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
@@ -310,7 +310,7 @@ function handleClubTypeChange(event) {
 				</Label>
 
 
-					<!-- 
+					<!--
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Total Students</span>
 					<Input
@@ -347,7 +347,7 @@ function handleClubTypeChange(event) {
 
 					<div class="pt-5">
 						<Button >{sponsor_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
+						<Dropdown class="overflow-y-auto max-h-80">
 							{#each sponsorData as user}
 								<DropdownItem  on:click={() => handleSponsorSelect(user?.id,user?.name)}>{user?.name}, {user?.email}</DropdownItem>
 							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
@@ -360,7 +360,7 @@ function handleClubTypeChange(event) {
 					<span>Tags</span>
 					<div class="pt-5">
 						<Button>{tag_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+						<Dropdown class="overflow-y-auto max-h-80 w-44 p-3 space-y-3 text-sm">
 							{#each tagData as tag}
 								<li>
 									<Checkbox checked={tagArray.some(t => t.tagId === tag.id)} on:change={() => handleTagSelect(tag.id, tag.name)}>
@@ -376,7 +376,7 @@ function handleClubTypeChange(event) {
 					<span>Club Creator</span>
 					<div class="pt-5">
 						<Button>{teacher_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
+						<Dropdown class="overflow-y-auto max-h-80">
 							{#each teacherData as teacher}
 								<DropdownItem on:click={() => handleTeacherSelect(teacher.id, teacher.name)}>{teacher.name}, {teacher.teacher_designation}</DropdownItem>
 							{/each}

@@ -111,7 +111,7 @@ function isTagSelected(tagId: string) {
 
   async function handleSubmit() {
     // Assuming `token` is defined somewhere accessible
-    
+
 
     // Assuming `data` contains the payload you want to send in the request
     console.log("Inside submit");
@@ -162,7 +162,7 @@ function isTagSelected(tagId: string) {
         });
 				schoolData=response.data.result
 				console.log(schoolData)
-  
+
 		const responsetags = await axios.get(alltag_api, {
 			headers: {
 				Authorization: `Bearer ${token}`
@@ -204,7 +204,7 @@ afterUpdate(() => {
 	bind:open
 
 	title={Object.keys(data).length ? 'Edit Teacher' : 'Add new user'}
-	
+
 	size="md"
 	class="m-4"
 >
@@ -245,7 +245,7 @@ afterUpdate(() => {
 
 					<div class="pt-5">
 						<Button >{data.schoolName}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown>
+						<Dropdown  class="overflow-y-auto max-h-80">
 							{#each schoolData as user}
 								<DropdownItem  on:click={() => handleSchoolSelect(user?.id,user?.name)}>{user?.name}, {user?.location}</DropdownItem>
 							<!-- <DropdownItem  on:click={() => handleIsAdminChange('false')}>False</DropdownItem> -->
@@ -278,7 +278,7 @@ afterUpdate(() => {
                     <span>Phone Number</span>
                     <Input bind:value={data.phone_number} name="phone_number" type="text" class="border outline-none" placeholder="e.g. React Developer" required />
                 </Label>
-                
+
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
                     <span>User Bio</span>
                     <Input bind:value={data.user_bio} name="user_bio" type="text" class="border outline-none" placeholder="e.g. React Developer" required />
@@ -293,7 +293,7 @@ afterUpdate(() => {
 					<span>Tags</span>
 					<div class="pt-5">
 						<Button>{tag_label}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
-						<Dropdown class="w-44 p-3 space-y-3 text-sm">
+						<Dropdown class="overflow-y-auto max-h-80 w-44 p-3 space-y-3 text-sm">
 							{#each tagData as tag}
 								<li>
 									<Checkbox checked={isTagSelected(tag.id)} on:change={() => handleTagSelect(tag.id, tag.name)}>
