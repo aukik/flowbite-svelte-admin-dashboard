@@ -1,5 +1,5 @@
 <script lang="ts">
-
+  import { page } from '$app/stores';
 	import {
 		Avatar,
 		Breadcrumb,
@@ -18,18 +18,16 @@
 		PlusOutline,
 		TrashBinSolid
 	} from 'flowbite-svelte-icons';
-	import Users from '../../../data/users.json';
-	import { imagesPath } from '$lib/variables';
 
 	import User from './Edit.svelte';
-	import Adduser from './Add.svelte';
-	import Delete from './Delete.svelte';
+
 	import MetaTag from '../../../utils/MetaTag.svelte';
 	import { onMount } from 'svelte';
 	import axios from 'axios';
 	const apiUrl = process.env.VITE_API_URL;
-
-	function setCookie(name, value, days) {
+ //*****************************************************************************************************************
+  //SECTION ************************** GARBAGE CODE STARTS HERE********************************************
+	function setCookie(name:any, value:any, days:any) {
     let expires = "";
     if (days) {
       let date = new Date();
@@ -38,8 +36,7 @@
     }
     document.cookie = name + "=" + (value || "") + expires + "; path=/";
   }
-
-  function getCookie(name) {
+  function getCookie(name:any) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].trim();
@@ -49,39 +46,26 @@
     }
     return null;
   }
-
  // Define the base URL for the API
  const BASE_URL = apiUrl;
-
 // Define userData variable
-let userData = [];
+let userData:any = [];
 let avatarData = [];
-
-// Function to fetch all user data
-const fetchAllUserData = async (token) => {
+// SECTION Except this one
+$: workshopId = $page.url.searchParams.get('workshopId');
+$: workshopName = $page.url.searchParams.get('workshopName');
+const fetchAllUserData = async (token:any) => {
   try {
 	// Make a GET request to the endpoint with the Authorization header
-	const response = await axios.get(`${BASE_URL}/admin/allstudentData`, {
+	const response = await axios.get(`${BASE_URL}/admin/getAllStudentsByWorkshopId?workshopId=${workshopId}`, {
 	  headers: {
 		Authorization: `Bearer ${token}`
 	  }
 	});
-//
+
 	// Update userData with response data
-	userData = response.data.result;
+	userData = response?.data?.result;
 
-
-
-
-
-
-	// 	// Make a GET request to the endpoint with the Authorization header
-	// 	const responsex = await axios.get(`${BASE_URL}/admin/avatarList`, {
-	//   headers: {
-	// 	Authorization: `Bearer ${token}`
-	//   }
-	// });
-//
 	// Update avatarData with response data
 	avatarData = response?.data?.result;
 
@@ -93,10 +77,7 @@ const fetchAllUserData = async (token) => {
 	console.error('Error fetching user data:');
   }
 };
-
-
 const BASE_URL_refreshtoken = apiUrl;
-
 // Function to get refresh token
 const getRefreshToken = async () => {
     try {
@@ -130,7 +111,6 @@ const getRefreshToken = async () => {
         throw error;
     }
 };
-
 const updateTokens = async () => {
     try {
         const { newToken, newRefreshToken } = await getRefreshToken();
@@ -151,27 +131,19 @@ const updateTokens = async () => {
         console.error('Error:');
     }
 };
-
 const startPolling = () => {
 
 //updateTokens(); // Initial call
 setInterval(updateTokens, 10000); // Poll every 5 seconds
 };
-
-
-
 // Call fetchAllUserData on component mount
 onMount(async () => {
-  // Retrieve the token from session storage
-  //const token = sessionStorage.getItem('token');
+
 
   const token = getCookie('token');
   console.log("token",token);
 
-  //const sessionData = sessionStorage.getItem('key');
- // console.log(sessionData);
 
-  // If token exists, call fetchAllUserData
   if (token) {
 	await fetchAllUserData(token);
   } else {
@@ -182,6 +154,9 @@ onMount(async () => {
   startPolling();
 });
 
+  //SECTION ************************** GARBAGE CODE ENDS HERE********************************************
+//************************************************************************************************************************************
+
 	let openUser: boolean = false; // modal control
 	let addUser: boolean = false; // modal control
 	let openDelete: boolean = false; // modal control
@@ -191,6 +166,10 @@ onMount(async () => {
   const description: string = 'CRUD users examaple - Octobrain Admin Dashboard';
   const title: string = 'Octobrain Admin Dashboard - CRUD Users';
   const subtitle: string = 'CRUD Users';
+
+
+
+
 </script>
 
 <MetaTag {path} {description} {title} {subtitle} />
@@ -203,48 +182,18 @@ onMount(async () => {
 			<BreadcrumbItem>List</BreadcrumbItem>
 		</Breadcrumb>
 		<Heading tag="h1" class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
-			All Students
+			All Students under {workshopName} Workshop
 		</Heading>
 
 		<Toolbar embedded class="w-full py-4 text-gray-500  dark:text-gray-400">
-			<!-- <Input placeholder="Search for users" class="me-4 w-80 border xl:w-96" />
-			<div class="border-l border-gray-100 pl-2 dark:border-gray-700">
-				<ToolbarButton
-					color="dark"
-					class="m-0 rounded p-1 hover:bg-gray-100 focus:ring-0 dark:hover:bg-gray-700"
-				>
-					<CogSolid size="lg" />
-				</ToolbarButton>
-				<ToolbarButton
-					color="dark"
-					class="m-0 rounded p-1 hover:bg-gray-100 focus:ring-0 dark:hover:bg-gray-700"
-				>
-					<TrashBinSolid size="lg" />
-				</ToolbarButton>
-				<ToolbarButton
-					color="dark"
-					class="m-0 rounded p-1 hover:bg-gray-100 focus:ring-0 dark:hover:bg-gray-700"
-				>
-					<ExclamationCircleSolid size="lg" />
-				</ToolbarButton>
-				<ToolbarButton
-					color="dark"
-					class="m-0 rounded p-1 hover:bg-gray-100 focus:ring-0 dark:hover:bg-gray-700"
-				>
-					<DotsVerticalOutline size="lg" />
-				</ToolbarButton>
-			</div> -->
 
 			<div slot="end" class="flex items-center space-x-2">
-				<Button
+				<!-- <Button
 					size="sm"
 					class="gap-2 whitespace-nowrap px-3"
 					on:click={() => ((current_user = {}), (addUser = true))}
 				>
 					<PlusOutline size="sm" />Add students
-				</Button>
-				<!-- <Button size="sm" color="alternative" class="gap-2 px-3">
-					<DownloadSolid size="md" class="-ml-1" />Export
 				</Button> -->
 			</div>
 		</Toolbar>
@@ -264,11 +213,11 @@ onMount(async () => {
 
 						<div class="text-sm font-normal text-gray-500 dark:text-gray-400">
 							<div class="text-base font-semibold text-gray-900 dark:text-white">{user?.name}</div>
-							<div class="text-sm font-normal text-gray-500 dark:text-gray-400">{user?.email}</div>
+							<div class="text-sm font-normal text-gray-500 dark:text-gray-400">{user?.sso?.email}</div>
 						</div>
 					</TableBodyCell>
 
-					<TableBodyCell class="p-4">{user?.schoolName||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user?.school?.name||"N/A"}</TableBodyCell>
 					<TableBodyCell class="p-4">{user?.location||"N/A"}</TableBodyCell>
 					<TableBodyCell class="p-4">{user?.phone_number||"N/A"}</TableBodyCell>
 					<TableBodyCell class="p-4">{user?.emailVerification||"False"}</TableBodyCell>
@@ -284,15 +233,7 @@ onMount(async () => {
 							class="gap-2 px-3"
 							on:click={() => ((current_user = user), (openUser = true))}
 						>
-							<EditOutline size="sm" /> Edit
-						</Button>
-						<Button
-							color="red"
-							size="sm"
-							class="gap-2 px-3"
-							on:click={() => ((current_user = user), (openDelete = true))}
-						>
-							<TrashBinSolid size="sm" /> Delete
+							<EditOutline size="sm" /> Certificate
 						</Button>
 					</TableBodyCell>
 				</TableBodyRow>
@@ -301,8 +242,5 @@ onMount(async () => {
 	</Table>
 </main>
 
+<User bind:open={openUser} data={current_user} workshopId={workshopId}/>
 <!-- Modals -->
-
-<User bind:open={openUser} data={current_user} />
-<Adduser bind:open={addUser} data={current_user}/>
-<Delete bind:open={openDelete}  data={current_user} />

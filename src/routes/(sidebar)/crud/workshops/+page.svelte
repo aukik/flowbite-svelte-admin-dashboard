@@ -28,6 +28,7 @@
 	import { onMount } from 'svelte';
 	import axios from 'axios';
 	import { writable } from 'svelte/store';  // Add this import
+	import { goto } from '$app/navigation';
 
 
 	function setCookie(name, value, days) {
@@ -169,6 +170,7 @@ onMount(async () => {
 	let addUser: boolean = false; // modal control
 	let openDelete: boolean = false; // modal control
 
+
 	let current_user: any = {};
 	const path: string = '/crud/users';
   const description: string = 'CRUD users examaple - Octobrain Admin Dashboard';
@@ -243,17 +245,27 @@ onMount(async () => {
 			{#each userData as user}
 				<TableBodyRow class="text-base">
 					<!-- <TableBodyCell class="w-4 p-4"><Checkbox /></TableBodyCell> -->
-					<TableBodyCell class="p-4">{user.name||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user?.name||"N/A"}</TableBodyCell>
 
 					<TableBodyCell class="max-w-sm overflow-hidden truncate p-4 text-base font-normal text-gray-500 dark:text-gray-400 xl:max-w-xs">{user.motto||"N/A"}</TableBodyCell>
 					<TableBodyCell class="max-w-sm overflow-hidden truncate p-4 text-base font-normal text-gray-500 dark:text-gray-400 xl:max-w-xs">{user.description||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.people_joined||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.workshop_type||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user?.people_joined||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user?.workshop_type||"N/A"}</TableBodyCell>
 					<!-- <TableBodyCell class="p-4">{user.created_by_account_type||"N/A"}</TableBodyCell> -->
 
 
 
 					<TableBodyCell class="space-x-2 p-4">
+
+						<Button
+						size="sm"
+						class="gap-2 px-3"
+						on:click={() => (goto(`/crud/workshop_certificate?workshopId=${user?.id}&workshopName=${user?.name}`))}
+					>
+						<PlusOutline size="sm" /> Certificate
+					</Button>
+
+
 						<Button
 							size="sm"
 							class="gap-2 px-3"
