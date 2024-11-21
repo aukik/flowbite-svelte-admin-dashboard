@@ -28,6 +28,15 @@
 		sponsor_label = name,
 		data.sponsorId = id
 	}
+
+	const handleHighlightTypeChange = (event) => {
+		data.isHighlighted = event;
+	}
+
+	const handleFeaturedTypeChange = (event) => {
+		data.type = event;
+	}
+
 	const apiUrl = process.env.VITE_API_URL;
 	console.log('API URL:', apiUrl);
 
@@ -64,6 +73,8 @@ function handleClubTypeChange(event) {
 
   let link = '';
   let announcement = '';
+	let isHighlighted = false;
+	let buttonText = '';
 
   async function handleSubmit() {
     console.log("Inside submit");
@@ -84,11 +95,12 @@ function handleClubTypeChange(event) {
 
         data.created_by_id = createdById;
 		data.created_by_account_type = "admin";
-		
+
         // Create JSON data format with link and announcement
         data.data = JSON.stringify({
             link: link,
-            announcement: announcement
+            announcement: announcement,
+						buttonText: buttonText
         });
 
 		let endpoint = apiUrl + '/admin/featuredannouncedpostsRegistration/';
@@ -162,7 +174,17 @@ function handleClubTypeChange(event) {
 			<div class="grid grid-cols-6 gap-6">
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Type</span>
-					<Input bind:value={data.type} name="type" class="border outline-none" placeholder="e.g. Announcement" required />
+					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
+					<div class="pt-5">
+						<Button >{data?.type=== "around octobrain" ? "Around Octobrain" : data?.type=== "sponsored" ? "Sponsored" : "Suggested"}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+
+							<DropdownItem  on:click={() => handleFeaturedTypeChange("around octobrain")}>Around Octobrain</DropdownItem>
+							<DropdownItem  on:click={() => handleFeaturedTypeChange("sponsored")}>Sponsored</DropdownItem>
+							<DropdownItem  on:click={() => handleFeaturedTypeChange("suggested")}>Suggested</DropdownItem>
+
+						</Dropdown>
+					</div>
 				</Label>
 
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
@@ -177,16 +199,16 @@ function handleClubTypeChange(event) {
 					/>
 				</Label>
 
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Color Code</span>
-					<Input
-					bind:value={data.colorcode}
-						name="colorcode"
-						type="text"
-						class="border outline-none"
-						placeholder="e.g. #FF0000"
-						required
-					/>
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Is Highlighted</span>
+					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
+					<div class="pt-5">
+						<Button >{data?.isHighlighted?"True":"False"}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							<DropdownItem  on:click={() => handleHighlightTypeChange(true)}>True</DropdownItem>
+							<DropdownItem  on:click={() => handleHighlightTypeChange(false)}>False</DropdownItem>
+						</Dropdown>
+					</div>
 				</Label>
 
                 <Label class="col-span-6 space-y-2 sm:col-span-3">
@@ -199,6 +221,18 @@ function handleClubTypeChange(event) {
 						placeholder="e.g. https://example.com"
 					/>
 				</Label>
+
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Button Text</span>
+					<Input
+					bind:value={buttonText}
+						name="buttonText"
+						type="text"
+						class="border outline-none"
+						placeholder="e.g. see morer"
+					/>
+				</Label>
+
 
                 <Label class="col-span-6 space-y-2">
 					<span>Announcement</span>

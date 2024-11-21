@@ -10,7 +10,7 @@
 	let  schoolData=[];
 	let teacherData = [];
 	let sponsorData = [];
-	
+
 	let user_label="Select School";
 	let club_type_label="Club Type";
 	let is_admin_label="Is Admin";
@@ -33,6 +33,14 @@ console.log('API URL:', apiUrl);
 	const handleSponsorSelect = (id, name) => {
 		sponsor_label = name,
 		data.sponsorId = id
+	}
+
+	const handleFeaturedTypeChange = (event) => {
+		data.type = event;
+	}
+
+	const handleHighlightTypeChange = (event) => {
+		data.isHighlighted = event;
 	}
 
 
@@ -87,7 +95,7 @@ console.log('API URL:', apiUrl);
 
   async function handleSubmit() {
     // Assuming `token` is defined somewhere accessible
-    
+
 
     // Assuming `data` contains the payload you want to send in the request
     console.log("Inside submit");
@@ -121,7 +129,7 @@ console.log('API URL:', apiUrl);
 		}
 	}
 	1;
-	
+
 
 	onMount(async () => {
   // Retrieve the token from session storage
@@ -134,7 +142,7 @@ console.log('API URL:', apiUrl);
   let allsponsor_api = apiUrl + '/admin/allsponsorData/';
 
 
-	
+
   // Retrieve the token from session storage
   //const token = sessionStorage.getItem('token');
 
@@ -197,7 +205,7 @@ afterUpdate(() => {
 	bind:open
 
 	title={Object.keys(data).length ? 'Edit Featured Announced Post' : 'Add new user'}
-	
+
 	size="md"
 	class="m-4"
 >
@@ -207,7 +215,17 @@ afterUpdate(() => {
 			<div class="grid grid-cols-6 gap-6">
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
 					<span>Type</span>
-					<Input bind:value={data.type} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
+					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
+					<div class="pt-5">
+						<Button >{data?.type=== "around octobrain" ? "Around Octobrain" : data?.type=== "sponsored" ? "Sponsored" : "Suggested"}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+
+							<DropdownItem  on:click={() => handleFeaturedTypeChange("around octobrain")}>Around Octobrain</DropdownItem>
+							<DropdownItem  on:click={() => handleFeaturedTypeChange("sponsored")}>Sponsored</DropdownItem>
+							<DropdownItem  on:click={() => handleFeaturedTypeChange("suggested")}>Suggested</DropdownItem>
+
+						</Dropdown>
+					</div>
 				</Label>
 
 
@@ -223,17 +241,18 @@ afterUpdate(() => {
 					/>
 				</Label>
 
-                <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Color Code</span>
-					<Input
-					bind:value={data.colorcode}
-						name="student_id"
-						type="text"
-						class="border outline-none"
-						placeholder="e.g. bonnie@flowbite.com"
-					/>
-				</Label>
 
+				<Label class="col-span-6 space-y-2 sm:col-span-3">
+					<span>Is Highlighted</span>
+					<!-- <Input bind:value={data.account_type} name="account_type" class="border outline-none" placeholder="e.g. Green" required /> -->
+					<div class="pt-5">
+						<Button >{data?.isHighlighted?"True":"False"}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+						<Dropdown>
+							<DropdownItem  on:click={() => handleHighlightTypeChange(true)}>True</DropdownItem>
+							<DropdownItem  on:click={() => handleHighlightTypeChange(false)}>False</DropdownItem>
+						</Dropdown>
+					</div>
+				</Label>
 
 
                 <!-- <Label class="col-span-6 space-y-2 sm:col-span-3">
@@ -257,20 +276,34 @@ afterUpdate(() => {
 					/>
 				</Label>
 
+
 				<Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Announcement</span>
+					<span>Button Text</span>
 					<Input
-					bind:value={data.data.announcement}
-						name="student_id"
+					bind:value={data.data.buttonText}
+						name="buttonText"
 						type="text"
 						class="border outline-none"
-						placeholder="e.g. bonnie@flowbite.com"
+						placeholder="e.g. click this button"
 					/>
 				</Label>
 
 
 
+
+
+
 			</div>
+			<Label class="col-span-6 space-y-2 sm:col-span-3 my-8">
+				<span>Announcement</span>
+				<Textarea
+				bind:value={data.data.announcement}
+					name="student_id"
+					type="text"
+					class="border outline-none"
+					placeholder="e.g. bonnie@flowbite.com"
+				/>
+			</Label>
 		</form>
 	</div>
 

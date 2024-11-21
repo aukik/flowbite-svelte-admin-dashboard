@@ -235,7 +235,7 @@ onMount(async () => {
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
-			{#each ['Title', 'Type','Color Code','Link','Announcement', 'Actions'] as title}
+			{#each ['Title', 'Type','Link','Announcement','Button Text', 'Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -243,10 +243,10 @@ onMount(async () => {
 			{#each userData as user}
 				<TableBodyRow class="text-base">
 					<!-- <TableBodyCell class="w-4 p-4"><Checkbox /></TableBodyCell> -->
-					<TableBodyCell class="p-4">{user.title||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user?.title||"N/A"}</TableBodyCell>
 
-					<TableBodyCell class="p-4">{user.type||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user.colorcode||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user?.type||"N/A"}</TableBodyCell>
+					<!-- <TableBodyCell class="p-4">{user.colorcode||"N/A"}</TableBodyCell> -->
 
 
 					<!-- <TableBodyCell
@@ -254,8 +254,9 @@ onMount(async () => {
 				>
 				{user.data ? JSON.stringify(user.data, null, 2) : "N/A"}
 				</TableBodyCell> -->
-				<TableBodyCell class="p-4">{user.data.link||"N/A"}</TableBodyCell>
-				<TableBodyCell class="p-4">{user.data.announcement||"N/A"}</TableBodyCell>
+				<TableBodyCell class="p-4">{user?.data?.link||"N/A"}</TableBodyCell>
+				<TableBodyCell class="p-4">{user?.data?.announcement||"N/A"}</TableBodyCell>
+				<TableBodyCell class="p-4">{user?.data?.buttonText||"N/A"}</TableBodyCell>
 
 
 
