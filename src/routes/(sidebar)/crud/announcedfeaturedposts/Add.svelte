@@ -76,6 +76,8 @@ function handleClubTypeChange(event) {
 	let isHighlighted = false;
 	let buttonText = '';
 
+
+
   async function handleSubmit() {
     console.log("Inside submit");
     console.log(data);
@@ -94,7 +96,9 @@ function handleClubTypeChange(event) {
         console.log('Created By ID:', createdById);
 
         data.created_by_id = createdById;
-		data.created_by_account_type = "admin";
+				data.created_by_account_type = "admin";
+				data.isHighlighted = data.isHighlighted ?? false;
+				data.type = data.type?? "suggested";
 
         // Create JSON data format with link and announcement
         data.data = JSON.stringify({
