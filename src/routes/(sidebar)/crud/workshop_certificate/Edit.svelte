@@ -10,6 +10,10 @@
 
 	export let workshopId: any = {};
 	const selectedFile = writable<File | null>(null);
+	let placementRank:string = ""
+
+		// data.studentWorkshopCertificate[0].placementRank = '';
+
 	let token: string= '';
 	const apiUrl:string = process.env.VITE_API_URL;
 	let buttonDisabled:boolean = false;
@@ -40,16 +44,19 @@
 							selectedFile.subscribe(value => {
 									file = value;
 							})();
-							if(!file){
-									alert('Please select a file');
-									buttonDisabled = false;
-									return;
-							}
+							// if(!file){
+							// 		alert('Please select a file');
+							// 		buttonDisabled = false;
+							// 		return;
+							// }
 
 							const formData = new FormData();
-							formData.append('images', file);
+							if(file) formData.append('images', file);
 
-							const response = await axios.post(`${apiUrl}/admin/addCertificateStudentWorkshop?workshopId=${workshopId}&studentId=${data?.id}`, formData, {
+							// formData.append('certificateName', data?.studentWorkshopCertificate?.[0].certificateName);
+							// formData.append('placementRank', data?.studentWorkshopCertificate?.[0]?.placementRank);
+
+							const response = await axios.post(`${apiUrl}/admin/addCertificateStudentWorkshop?workshopId=${workshopId}&studentId=${data?.id}&placementRank=${data?.studentWorkshopCertificate?.[0]?.placementRank ?? placementRank}`, formData, {
 									headers: {
 											Authorization: `Bearer ${token}`,
 											'Content-Type': 'multipart/form-data'
@@ -73,7 +80,9 @@
 		}
 
 		onMount(async () => {
+
 			token = getCookie('token');
+
 		})
 
 </script>
@@ -126,8 +135,26 @@
 			{/if}
 
 
+
+				<Label class="col-span-6 space-y-2 my-4">
+					<span>Certificate Placement/Rank </span>
+
+					{#if data?.studentWorkshopCertificate?.[0]?.placementRank}
+					<Input
+					type="text" name="Certificate Placement" placeholder="Certificate Placement" class="border outline-none" bind:value={data.studentWorkshopCertificate[0].placementRank}
+					/>
+					{:else}
+					<Input
+					type="text" name="Certificate Placement" placeholder="Certificate Placement" class="border outline-none" bind:value={placementRank}
+					/>
+					{/if}
+
+					</Label>
+
 				<Label class="col-span-6 space-y-2 my-8">
 					<span>Photo</span>
+
+
 					<Input
 							type="file"
 							name="photo"
