@@ -1,22 +1,23 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import {
-		Avatar,
 		Breadcrumb,
 		BreadcrumbItem,
 		Button,
-		Checkbox,
 		Heading,
-		Indicator
+		Input,
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell,
+		Toolbar
 	} from 'flowbite-svelte';
-	import { Input, Table, TableBody, TableBodyCell, TableBodyRow, TableHead } from 'flowbite-svelte';
-	import { TableHeadCell, Toolbar } from 'flowbite-svelte';
-	import { EditOutline } from 'flowbite-svelte-icons';
 
 	import MetaTag from '../../../utils/MetaTag.svelte';
 	import { onMount } from 'svelte';
 	import axios from 'axios';
-	import User from './Edit.svelte';
 
 	const apiUrl = process.env.VITE_API_URL;
 
@@ -29,15 +30,16 @@
 	let totalPages = 1; // Initialize with 1, will be updated dynamically
 	const itemsPerPage = 10; // Number of items per page
 	let searchQuery = ""; // For storing the search query (name)
+	let isPaidFilter = "all"; // For storing the filter value (paid or all)
 
 	// Workshop details from URL
 	$: workshopId = $page.url.searchParams.get('workshopId');
 	$: workshopName = $page.url.searchParams.get('workshopName');
 
-	// Function to fetch all students who have paid for the workshop
-	const fetchPaidUserData = async (token: any) => {
+	// Function to fetch students with filters, search, and pagination
+	const fetchFilteredUserData = async (token: any) => {
 		try {
-			// Build the query parameters based on the search value
+			// Build the query parameters based on the search and filter values
 			const params: Record<string, any> = {
 				workshopId,
 				page: currentPage,
@@ -45,6 +47,9 @@
 			};
 			if (searchQuery) {
 				params.search = searchQuery;
+			}
+			if (isPaidFilter !== "all") {
+				params.isPaid = isPaidFilter === "true";
 			}
 
 			const response = await axios.get(`${BASE_URL}/admin/getAllStudentsByWorkshopPayment`, {
@@ -54,16 +59,9 @@
 				params
 			});
 
-			// Filter only students who have completed payment
-			// userData = response.data.result.data.filter((user: any) => user.paymentComplete);
-			userData = response.data.result.data;
-			totalPages = response.data.result.pagination?.totalPages || 1;
-
-			// Handle edge case where the current page might exceed total pages
-			if (currentPage > totalPages && totalPages > 0) {
-				currentPage = totalPages;
-				await fetchPaidUserData(token); // Fetch data for the last valid page
-			}
+			// Populate userData and pagination details
+			userData = response.data.result;
+			totalPages = response.data.pagination.totalPages || 1;
 		} catch (error) {
 			console.error('Error fetching user data:', error);
 		}
@@ -81,41 +79,34 @@
 		return null;
 	}
 
-	// Call fetchPaidUserData on component mount
+	// Call fetchFilteredUserData on component mount
 	onMount(async () => {
 		const token = getCookie('token');
 		if (token) {
-			await fetchPaidUserData(token);
+			await fetchFilteredUserData(token);
 		} else {
 			console.error('Token not found in session storage.');
 		}
 	});
 
-	// Function to apply filters
+	// Function to apply filters and search
 	const applyFilters = async () => {
 		const token = getCookie('token');
 		if (token) {
-			await fetchPaidUserData(token);
+			await fetchFilteredUserData(token);
 		} else {
 			console.error('Token not found in session storage.');
 		}
 	};
-
-	let openUser: boolean = false; // modal control
-	let current_user: any = {};
-	const path: string = '/crud/users';
-	const description: string = 'CRUD users example - Octobrain Admin Dashboard';
-	const title: string = 'Octobrain Admin Dashboard - CRUD Users';
-	const subtitle: string = 'CRUD Users';
 </script>
 
-<MetaTag {path} {description} {title} {subtitle} />
+<MetaTag path="/crud/users" description="CRUD users example - Octobrain Admin Dashboard" title="Octobrain Admin Dashboard - CRUD Users" subtitle="CRUD Users" />
 
 <main class="relative h-full w-full overflow-y-auto bg-white dark:bg-gray-800">
 	<div class="p-4">
 		<Breadcrumb class="mb-5">
 			<BreadcrumbItem home>Home</BreadcrumbItem>
-			<BreadcrumbItem href="/crud/users">Users</BreadcrumbItem>
+			<BreadcrumbItem href="/crud/workshops">Workshop</BreadcrumbItem>
 			<BreadcrumbItem>List</BreadcrumbItem>
 		</Breadcrumb>
 		<Heading tag="h1" class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
@@ -129,6 +120,12 @@
 				class="me-4 w-80 border xl:w-96"
 			/>
 
+			<select bind:value={isPaidFilter} class="me-4 w-40 border xl:w-52 rounded-md bg-gray-800 text-gray-300 placeholder-gray-400 p-2">
+				<option value="all">All Students</option>
+				<option value="true">Paid Students</option>
+				<option value="false">Unpaid Students</option>
+			</select>
+
 			<Button size="sm" on:click={applyFilters} class="gap-2 whitespace-nowrap px-3">
 				Apply Filters
 			</Button>
@@ -136,7 +133,7 @@
 	</div>
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
-			{#each ['Name', 'School', 'Payment Number', 'TrxDetails','Is Payment Complete'] as title}
+			{#each ['Name', 'School', 'Payment Number', 'TrxDetails', 'Is Payment Complete'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -154,21 +151,11 @@
 					<TableBodyCell class="p-4">{user?.payerAccount || "N/A"}</TableBodyCell>
 					<TableBodyCell class="mr-12 flex items-center space-x-6 whitespace-nowrap p-4">
 						<div class="text-sm font-normal text-gray-500 dark:text-gray-400">
-							<div class="text-base font-semibold text-gray-900 dark:text-white">{user?.trxID}</div>
-							<div class="text-sm font-normal text-gray-500 dark:text-gray-400">{user?.date}</div>
+							<div class="text-base font-semibold text-gray-900 dark:text-white">{user?.trxID || "N/A"}</div>
+							<div class="text-sm font-normal text-gray-500 dark:text-gray-400">{user?.date || "N/A"}</div>
 						</div>
 					</TableBodyCell>
-					<TableBodyCell class="p-4">{user?.paymentComplete || "false"}</TableBodyCell>
-
-					<!-- <TableBodyCell class="space-x-2 p-4">
-						<Button
-							size="sm"
-							class="gap-2 px-3"
-							on:click={() => ((current_user = user), (openUser = true))}
-						>
-							<EditOutline size="sm" /> View Details
-						</Button>
-					</TableBodyCell> -->
+					<TableBodyCell class="p-4">{user?.paymentComplete ? "True" : "False"}</TableBodyCell>
 				</TableBodyRow>
 			{/each}
 		</TableBody>
@@ -187,7 +174,7 @@
 				on:click={() => {
 					if (currentPage > 1) {
 						currentPage--;
-						fetchPaidUserData(getCookie('token'));
+						fetchFilteredUserData(getCookie('token'));
 					}
 				}}
 				disabled={currentPage === 1}
@@ -200,7 +187,7 @@
 				on:click={() => {
 					if (currentPage < totalPages) {
 						currentPage++;
-						fetchPaidUserData(getCookie('token'));
+						fetchFilteredUserData(getCookie('token'));
 					}
 				}}
 				disabled={currentPage >= totalPages}
@@ -210,5 +197,3 @@
 		</div>
 	</div>
 </main>
-
-<User bind:open={openUser} data={current_user} workshopId={workshopId} />
