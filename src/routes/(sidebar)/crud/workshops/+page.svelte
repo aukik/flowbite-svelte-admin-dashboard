@@ -267,6 +267,15 @@ onMount(async () => {
 
 
 						<Button
+						size="sm"
+						class="gap-2 px-3"
+						on:click={() => (goto(`/crud/workshop_payments?workshopId=${user?.id}&workshopName=${user?.name}`))}
+					>
+						<PlusOutline size="sm" /> Payments
+					</Button>
+
+
+						<Button
 							size="sm"
 							class="gap-2 px-3"
 							on:click={() => ((current_user = user), (openUser = true))}
