@@ -136,7 +136,7 @@
 	</div>
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
-			{#each ['Name', 'School', 'Contact Number', 'Email','Is Payment Complete'] as title}
+			{#each ['Name', 'School', 'Payment Number', 'TrxDetails','Is Payment Complete'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -151,8 +151,13 @@
 					</TableBodyCell>
 
 					<TableBodyCell class="p-4">{user?.school?.name || "N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user?.phone_number || "N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user?.email || "N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user?.payerAccount || "N/A"}</TableBodyCell>
+					<TableBodyCell class="mr-12 flex items-center space-x-6 whitespace-nowrap p-4">
+						<div class="text-sm font-normal text-gray-500 dark:text-gray-400">
+							<div class="text-base font-semibold text-gray-900 dark:text-white">{user?.trxID}</div>
+							<div class="text-sm font-normal text-gray-500 dark:text-gray-400">{user?.date}</div>
+						</div>
+					</TableBodyCell>
 					<TableBodyCell class="p-4">{user?.paymentComplete || "false"}</TableBodyCell>
 
 					<!-- <TableBodyCell class="space-x-2 p-4">

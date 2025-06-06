@@ -237,7 +237,7 @@ onMount(async () => {
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
 			<!-- <TableHeadCell class="w-4 p-4"><Checkbox /></TableHeadCell> -->
-			{#each ['Name', 'Motto','Description', 'People Joined', 'Workshop Type','Actions'] as title}
+			{#each ['Name', 'Activity Type','Pending Join Request', 'People Joined','Actions'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -247,10 +247,10 @@ onMount(async () => {
 					<!-- <TableBodyCell class="w-4 p-4"><Checkbox /></TableBodyCell> -->
 					<TableBodyCell class="p-4">{user?.name||"N/A"}</TableBodyCell>
 
-					<TableBodyCell class="max-w-sm overflow-hidden truncate p-4 text-base font-normal text-gray-500 dark:text-gray-400 xl:max-w-xs">{user.motto||"N/A"}</TableBodyCell>
-					<TableBodyCell class="max-w-sm overflow-hidden truncate p-4 text-base font-normal text-gray-500 dark:text-gray-400 xl:max-w-xs">{user.description||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user?.people_joined||"N/A"}</TableBodyCell>
-					<TableBodyCell class="p-4">{user?.workshop_type||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user?.activityType||"N/A"}</TableBodyCell>
+					<TableBodyCell class="p-4">{user?._count.studentWorkshopJoinRequest}</TableBodyCell>
+					<TableBodyCell class="p-4">{user?._count.course_student_bridge}</TableBodyCell>
+					<!-- <TableBodyCell class="p-4">{user?.workshop_type||"N/A"}</TableBodyCell> -->
 					<!-- <TableBodyCell class="p-4">{user.created_by_account_type||"N/A"}</TableBodyCell> -->
 
 
