@@ -104,6 +104,7 @@ If you have questions or need help integrating the product please [contact us](h
 
 - Copyright 2019-2023 Bergside Inc. (https://flowbite.com)
 - Open-source under the [MIT License](https://github.com/themesberg/flowbite-admin-dashboard/blob/main/LICENSE)
+- ABC
 
 ## Useful Links
 
