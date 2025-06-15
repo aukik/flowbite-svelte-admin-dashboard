@@ -69,7 +69,8 @@
 
 				Admin: '/crud/users',
 				Student: '/crud/students',
-				Teacher: '/crud/teachers'
+				Teacher: '/crud/teachers',
+				Instructor: '/crud/instructor',
 			}
 		},
 
