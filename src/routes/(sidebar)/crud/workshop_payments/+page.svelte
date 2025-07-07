@@ -18,7 +18,8 @@
 	import MetaTag from '../../../utils/MetaTag.svelte';
 	import { onMount } from 'svelte';
 	import axios from 'axios';
-
+	import { EditOutline } from 'flowbite-svelte-icons';
+	import User from './Edit.svelte';
 	const apiUrl = process.env.VITE_API_URL;
 
 	// Define the base URL for the API
@@ -88,7 +89,8 @@
 			console.error('Token not found in session storage.');
 		}
 	});
-
+	let openUser: boolean = false; // modal control
+	let current_user: any = {};
 	// Function to apply filters and search
 	const applyFilters = async () => {
 		const token = getCookie('token');
@@ -133,7 +135,7 @@
 	</div>
 	<Table>
 		<TableHead class="border-y border-gray-200 bg-gray-100 dark:border-gray-700">
-			{#each ['Name', 'School', 'Payment Number', 'TrxDetails', 'Is Payment Complete'] as title}
+			{#each ['Name', 'School', 'Payment Number', 'TrxDetails', 'Is Payment Complete', 'Action'] as title}
 				<TableHeadCell class="p-4 font-medium">{title}</TableHeadCell>
 			{/each}
 		</TableHead>
@@ -156,6 +158,18 @@
 						</div>
 					</TableBodyCell>
 					<TableBodyCell class="p-4">{user?.paymentComplete ? "True" : "False"}</TableBodyCell>
+
+					<TableBodyCell class="space-x-2 p-4">
+						<Button
+							size="sm"
+							class="gap-2 px-3"
+							on:click={() => ((current_user = user), (openUser = true))}
+						>
+							<EditOutline size="sm" /> Make Payment
+						</Button>
+					</TableBodyCell>
+
+
 				</TableBodyRow>
 			{/each}
 		</TableBody>
@@ -197,3 +211,5 @@
 		</div>
 	</div>
 </main>
+
+<User bind:open={openUser} data={current_user} workshopId={workshopId} />

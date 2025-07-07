@@ -1,178 +1,139 @@
 <script lang="ts">
-	import { Button, Input, Label, Modal, Textarea,Dropdown, DropdownItem, DropdownDivider, DropdownHeader,Checkbox } from 'flowbite-svelte';
-	import { ChevronDownOutline } from 'flowbite-svelte-icons';
+	import { Button, Input, Label, Modal } from 'flowbite-svelte';
 	import axios from 'axios';
-	import { onMount, afterUpdate} from 'svelte';
-	import { writable } from 'svelte/store';
+	import { onMount } from 'svelte';
+
 	export let open: boolean = false; // modal control
+	export let data: Record<any, any> = {}; // Student data
+	export let workshopId: any = {}; // Workshop ID
+	let payerAccount: string = ""; // Payer account (e.g., email)
+	let transactionId: string = ""; // Transaction ID
+	let paymentId: string = ""; // Payment ID
+	let amount: number = 0; // Payment amount
+	let token: string = '';
+	const apiUrl: string = process.env.VITE_API_URL;
+	let buttonDisabled: boolean = false;
 
-	export let data: Record<any, any> = {};
-
-	export let workshopId: any = {};
-	const selectedFile = writable<File | null>(null);
-	let placementRank:string = ""
-
-		// data.studentWorkshopCertificate[0].placementRank = '';
-
-	let token: string= '';
-	const apiUrl:string = process.env.VITE_API_URL;
-	let buttonDisabled:boolean = false;
-
-	function getCookie(name:string) {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.startsWith(name + '=')) {
-                return cookie.substring(name.length + 1);
-            }
-        }
-        return "";
-    }
-
-
-	function handleFileChange(event: Event) {
-        const target = event.target as HTMLInputElement;
-        if (target.files) {
-            selectedFile.set(target.files[0]);
-        }
-    }
-
-  async function handleSubmit() {
-			try{
-					    buttonDisabled = true;
-							let file:any;
-							selectedFile.subscribe(value => {
-									file = value;
-							})();
-							// if(!file){
-							// 		alert('Please select a file');
-							// 		buttonDisabled = false;
-							// 		return;
-							// }
-
-							const formData = new FormData();
-							if(file) formData.append('images', file);
-
-							// formData.append('certificateName', data?.studentWorkshopCertificate?.[0].certificateName);
-							// formData.append('placementRank', data?.studentWorkshopCertificate?.[0]?.placementRank);
-
-							const response = await axios.post(`${apiUrl}/admin/addCertificateStudentWorkshop?workshopId=${workshopId}&studentId=${data?.id}&placementRank=${data?.studentWorkshopCertificate?.[0]?.placementRank ?? placementRank}`, formData, {
-									headers: {
-											Authorization: `Bearer ${token}`,
-											'Content-Type': 'multipart/form-data'
-									}
-							});
-
-							if(response.status === 200){
-
-                  alert('Certificate uploaded successfully');
-              } else {
-                  alert('Error uploading certificate');
-              }
-							buttonDisabled = false;
-							open = false;
-							window.location.reload();
-
-
-					} catch (error) {
-							console.error('Error:');
-					}
+	// Function to get token from cookies
+	function getCookie(name: string) {
+		const cookies = document.cookie.split(';');
+		for (let i = 0; i < cookies.length; i++) {
+			const cookie = cookies[i].trim();
+			if (cookie.startsWith(name + '=')) {
+				return cookie.substring(name.length + 1);
+			}
 		}
+		return "";
+	}
 
-		onMount(async () => {
+	// Function to handle form submission
+	async function handleSubmit() {
+		try {
+			buttonDisabled = true;
 
-			token = getCookie('token');
+			// Prepare the payment data
+			const paymentData = {
+				payerAccount: payerAccount || data?.email, // Use the provided payer account or student's email
+				paymentID: paymentId, // Generate a unique payment ID
+				trxID: transactionId, // Generate a unique transaction ID
+				date: new Date(), // Current date and time
+				amount: amount, // Payment amount
+				workshopId: workshopId, // Workshop ID
+				studentId: data?.id // Student ID
+			};
 
-		})
+			// Make the payment API call
+			const paymentResponse = await axios.post(`${apiUrl}/admin/createStudentPayment`, paymentData, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-Type': 'application/json'
+				}
+			});
 
+			if (paymentResponse.status === 200) {
+				alert('Payment processed successfully');
+			} else {
+				alert('Error processing payment');
+			}
+
+			buttonDisabled = false;
+			open = false;
+			window.location.reload();
+		} catch (error) {
+			console.error('Error:', error);
+			alert('An error occurred. Please try again.');
+			buttonDisabled = false;
+		}
+	}
+
+	// Fetch token on component mount
+	onMount(async () => {
+		token = getCookie('token');
+	});
 </script>
 
 <Modal
 	bind:open
-
-	title={"Certificate"}
-
+	title={"Make Payment"}
 	size="md"
 	class="m-4"
 >
 	<!-- Modal body -->
 	<div class="space-y-6 p-0">
-		<form on:submit={handleSubmit} >
+		<form on:submit|preventDefault={handleSubmit}>
 			<div class="flex flex-col">
-				<!-- <Label class="col-span-6 space-y-2 sm:col-span-3">
-					<span>Name</span>
-					<Input bind:value={data.name} name="name" class="border outline-none" placeholder="e.g. Bonnie" required />
-				</Label> -->
-
-
-				{#if data?.studentWorkshopCertificate?.[0]?.certificateUrl}
-				{#if data.studentWorkshopCertificate[0].certificateUrl.toLowerCase().endsWith('.pdf')}
-				<!-- <object data={data.studentWorkshopCertificate[0].certificateUrl} type="application/pdf" class="col-span-6 w-full h-[600px]" title="Student Workshop Certificate"> -->
-					<iframe
-						src={`https://docs.google.com/viewer?url=${encodeURIComponent(data?.studentWorkshopCertificate?.[0]?.certificateUrl)}&embedded=true`}
-						width="100%"
-						height="600px"
-						frameborder="0"
-						title="Student Workshop Certificate PDF Viewer"
-					>
-						<p class="text-white">
-							Your browser doesn't support PDF viewing.
-							<a href={data?.studentWorkshopCertificate?.[0]?.certificateUrl} target="_blank" rel="noopener noreferrer">
-								Click here to download the PDF
-							</a>.
-						</p>
-					</iframe>
-				<!-- </object> -->
-				{:else}
-					<img
-						src={data.studentWorkshopCertificate[0].certificateUrl}
-						alt="certificate"
-						class="col-span-6"
+				<Label class="col-span-6 space-y-2 my-4">
+					<span>Payer Account (PhoneNumber)</span>
+					<Input
+						type="number"
+						name="payerAccount"
+						placeholder="Enter payer PhoneNumber"
+						class="border outline-none"
+						bind:value={payerAccount}
+						required
 					/>
-				{/if}
-			{:else}
-				<p class="text-white">No Certificate to show</p>
-			{/if}
-
-
+				</Label>
 
 				<Label class="col-span-6 space-y-2 my-4">
-					<span>Certificate Placement/Rank </span>
-
-					{#if data?.studentWorkshopCertificate?.[0]?.placementRank}
+					<span>Amount</span>
 					<Input
-					type="text" name="Certificate Placement" placeholder="Certificate Placement" class="border outline-none" bind:value={data.studentWorkshopCertificate[0].placementRank}
+						type="number"
+						name="amount"
+						placeholder="Enter payment amount"
+						class="border outline-none"
+						bind:value={amount}
+						required
 					/>
-					{:else}
+				</Label>
+								<Label class="col-span-6 space-y-2 my-4">
+					<span>Transaction ID</span>
 					<Input
-					type="text" name="Certificate Placement" placeholder="Certificate Placement" class="border outline-none" bind:value={placementRank}
+						type="text"
+						name="amount"
+						placeholder="Enter Transaction ID"
+						class="border outline-none"
+						bind:value={transactionId}
+						required
 					/>
-					{/if}
+				</Label>
 
-					</Label>
-
-				<Label class="col-span-6 space-y-2 my-8">
-					<span>Photo</span>
-
-
+				<Label class="col-span-6 space-y-2 my-4">
+					<span>Payment ID</span>
 					<Input
-							type="file"
-							name="photo"
-							accept="image/*"
-							on:change={handleFileChange}
-							class="border outline-none"
+						type="text"
+						name="paymentId"
+						placeholder="Enter Payment ID"
+						class="border outline-none"
+						bind:value={paymentId}
+						required
 					/>
-			</Label>
-
-
-
-
+				</Label>
 			</div>
 		</form>
 	</div>
 
 	<!-- Modal footer -->
 	<div slot="footer">
-		<Button disabled={buttonDisabled} on:click = {handleSubmit}>{'Upload Certificate'}</Button>
+		<Button disabled={buttonDisabled} on:click={handleSubmit}>{'Make Payment'}</Button>
 	</div>
 </Modal>
