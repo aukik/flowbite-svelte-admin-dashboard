@@ -254,7 +254,7 @@
 
 			emailResults = response.data;
 			showToastMessage(
-				`Emails sent! ${response.data.summary.successful} successful, ${response.data.summary.failed} failed.`,
+				`Emails sent! ${response.data.summary.successful} successful, ${response.data.summary.failed} failed. ${response.data.summary.emailsMarkedAsVerified} emails marked as verified.`,
 				'success'
 			);
 
@@ -263,6 +263,12 @@
 			// Clear selections after successful send
 			selectedPayments = [];
 			selectAll = false;
+
+			// Refresh the data to show updated verification status
+			const refreshToken = getCookie('token');
+			if (refreshToken) {
+				await fetchAllCustomPaymentData(refreshToken);
+			}
 
 		} catch (error) {
 			console.error('Error sending emails:', error);
@@ -380,6 +386,7 @@
 								<p>Total: {emailResults.summary.total}</p>
 								<p>Successful: {emailResults.summary.successful}</p>
 								<p>Failed: {emailResults.summary.failed}</p>
+								<p>Emails marked as verified: {emailResults.summary.emailsMarkedAsVerified || 0}</p>
 							</div>
 							{#if emailResults.results.some(r => !r.success)}
 								<div class="mt-2">
@@ -406,11 +413,14 @@
 					</TableHeadCell>
 					<TableHeadCell>Name</TableHeadCell>
 					<TableHeadCell>Email</TableHeadCell>
+					<TableHeadCell>Email Verified</TableHeadCell>
 					<TableHeadCell>Amount</TableHeadCell>
 					<TableHeadCell>Contact Number</TableHeadCell>
 					<TableHeadCell>Transaction ID</TableHeadCell>
 					<TableHeadCell>School Name</TableHeadCell>
 					<TableHeadCell>Grade</TableHeadCell>
+					<TableHeadCell>Coupon Code</TableHeadCell>
+					<TableHeadCell>Final Amount</TableHeadCell>
 					<TableHeadCell>Reference</TableHeadCell>
 					<TableHeadCell>Created At</TableHeadCell>
 					<TableHeadCell>Actions</TableHeadCell>
@@ -433,11 +443,41 @@
 									{/if}
 								</div>
 							</TableBodyCell>
+							<TableBodyCell>
+								<div class="flex items-center">
+									{#if customPayment.emailVerified}
+										<CheckCircleSolid class="h-4 w-4 text-green-500 mr-1" />
+										<span class="text-green-700 dark:text-green-400">Verified</span>
+									{:else}
+										<CloseCircleSolid class="h-4 w-4 text-red-500 mr-1" />
+										<span class="text-red-700 dark:text-red-400">Not Verified</span>
+									{/if}
+								</div>
+							</TableBodyCell>
 							<TableBodyCell>{customPayment.amount || 'N/A'}</TableBodyCell>
 							<TableBodyCell>{customPayment.contact_number || 'N/A'}</TableBodyCell>
 							<TableBodyCell>{customPayment.transaction_id || 'N/A'}</TableBodyCell>
 							<TableBodyCell>{customPayment.school_name || 'N/A'}</TableBodyCell>
 							<TableBodyCell>{customPayment.grade || 'N/A'}</TableBodyCell>
+							<TableBodyCell>
+								{#if customPayment.coupon_code}
+									<span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">
+										{customPayment.coupon_code}
+									</span>
+								{:else}
+									N/A
+								{/if}
+							</TableBodyCell>
+							<TableBodyCell>
+								{#if customPayment.final_amount}
+									<span class="font-semibold">৳{customPayment.final_amount}</span>
+									{#if customPayment.discount_amount}
+										<span class="text-green-600 text-sm block">(-৳{customPayment.discount_amount})</span>
+									{/if}
+								{:else}
+									{customPayment.amount || 'N/A'}
+								{/if}
+							</TableBodyCell>
 							<TableBodyCell>{customPayment.reference || 'N/A'}</TableBodyCell>
 							<TableBodyCell>{formatDate(customPayment.createdAt)}</TableBodyCell>
 							<TableBodyCell>

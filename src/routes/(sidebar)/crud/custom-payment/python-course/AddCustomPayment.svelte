@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Input, Label, Modal, Textarea, Dropdown, DropdownItem, DropdownHeader } from 'flowbite-svelte';
+	import { Button, Input, Label, Modal, Textarea, Dropdown, DropdownItem, DropdownHeader, Toggle } from 'flowbite-svelte';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import axios from 'axios';
 	import { onMount } from 'svelte';
@@ -50,6 +50,7 @@
 		const formData = new FormData(form);
 		data.name = formData.get('name') as string;
 		data.email = formData.get('email') as string;
+		data.emailVerified = data.emailVerified || false; // Keep the current toggle state
 		data.amount = formData.get('amount') as string;
 		data.what_are_you_purchasing = formData.get('what_are_you_purchasing') as string;
 		data.reference = formData.get('reference') as string;
@@ -57,6 +58,9 @@
 		data.transaction_id = formData.get('transaction_id') as string;
 		data.school_name = formData.get('school_name') as string;
 		data.grade = formData.get('grade') as string;
+		data.coupon_code = formData.get('coupon_code') as string;
+		data.discount_amount = formData.get('discount_amount') as string;
+		data.final_amount = formData.get('final_amount') as string;
 	}
 </script>
 
@@ -84,6 +88,11 @@
 				placeholder="Enter email"
 				required
 			/>
+		</Label>
+
+		<Label class="space-y-2">
+			<span>Email Verified</span>
+			<Toggle bind:checked={data.emailVerified} />
 		</Label>
 
 		<Label class="space-y-2">
@@ -155,6 +164,36 @@
 				name="grade"
 				bind:value={data.grade}
 				placeholder="Enter grade (e.g., Grade 8, Class 10)"
+			/>
+		</Label>
+
+		<Label class="space-y-2">
+			<span>Coupon Code</span>
+			<Input
+				type="text"
+				name="coupon_code"
+				bind:value={data.coupon_code}
+				placeholder="Enter coupon code (optional)"
+			/>
+		</Label>
+
+		<Label class="space-y-2">
+			<span>Discount Amount</span>
+			<Input
+				type="number"
+				name="discount_amount"
+				bind:value={data.discount_amount}
+				placeholder="Enter discount amount (optional)"
+			/>
+		</Label>
+
+		<Label class="space-y-2">
+			<span>Final Amount</span>
+			<Input
+				type="number"
+				name="final_amount"
+				bind:value={data.final_amount}
+				placeholder="Enter final amount"
 			/>
 		</Label>
 
