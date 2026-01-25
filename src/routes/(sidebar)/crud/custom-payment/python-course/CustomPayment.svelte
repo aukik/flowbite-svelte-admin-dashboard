@@ -55,6 +55,8 @@
 		data.reference = formData.get('reference') as string;
 		data.contact_number = formData.get('contact_number') as string;
 		data.transaction_id = formData.get('transaction_id') as string;
+		data.school_name = formData.get('school_name') as string;
+		data.grade = formData.get('grade') as string;
 	}
 </script>
 
@@ -133,6 +135,26 @@
 				name="transaction_id"
 				bind:value={data.transaction_id}
 				placeholder="Enter transaction ID"
+			/>
+		</Label>
+
+		<Label class="space-y-2">
+			<span>School Name</span>
+			<Input
+				type="text"
+				name="school_name"
+				bind:value={data.school_name}
+				placeholder="Enter school name"
+			/>
+		</Label>
+
+		<Label class="space-y-2">
+			<span>Grade</span>
+			<Input
+				type="text"
+				name="grade"
+				bind:value={data.grade}
+				placeholder="Enter grade (e.g., Grade 8, Class 10)"
 			/>
 		</Label>
 
