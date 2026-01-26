@@ -1,0 +1,10 @@
+{
+	"runtime": "nodejs22.x",
+	"handler": "..\\..\\..\\dev\\flowbite-svelte-admin-dashboard\\.svelte-kit\\vercel-tmp\\index.js",
+	"launcherType": "Nodejs",
+	"experimentalResponseStreaming": true,
+	"framework": {
+		"slug": "sveltekit",
+		"version": "2.5.6"
+	}
+}
