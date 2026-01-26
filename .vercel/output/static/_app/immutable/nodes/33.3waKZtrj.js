@@ -1,0 +1,1 @@
+import{H as r}from"../chunks/BUApaBEI.js";function t(e,o){throw new r(e,o)}function n({params:e}){const o=+e.code;if(isNaN(o)||o<400||o>599)return t(500,"Wrong code");t(o,"Not found")}const a=Object.freeze(Object.defineProperty({__proto__:null,load:n},Symbol.toStringTag,{value:"Module"}));export{a as universal};
