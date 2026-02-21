@@ -117,6 +117,13 @@
 
 			}
 		},
+		{
+			name: 'Custom Payment',
+			icon: CogOutline,
+			children: {
+				'Python Course': '/crud/custom-payment/python-course'
+			}
+		},
 		// { name: 'Settings', icon: CogOutline, href: '/settings' },
 		// {
 		// 	name: 'Pages',
